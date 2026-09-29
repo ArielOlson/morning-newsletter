@@ -1,0 +1,23 @@
+# Newsletter privacy
+
+Only `/morning-newsletter/` is protected. The main website stays public. The hosted page receives an AES-256-GCM encrypted edition, authenticated with a key derived using PBKDF2-SHA256 (600,000 iterations). Each build uses a fresh random salt and nonce. The password is never embedded in HTML, JavaScript, GitHub settings, or the public repository.
+
+This is password-based encryption, not a native passkey or server login. Save the newsletter password in Apple Passwords for `www.arielolson.com` with username `Ariel’s Morning Edit`. Supported devices can use Face ID or Touch ID to authorize autofill. Anyone who knows or guesses the password can read the newsletter. Public encrypted files allow offline guessing, so a short password provides less protection than a long random one; there is no server-side rate limit.
+
+The password lives in ignored `config/security.local.json`, shaped as `{"password":"your chosen password"}`. Keep this file backed up privately. A missing password blocks builds and publishing; never substitute plaintext. The local setup page at `http://127.0.0.1:5173/__local/privacy-setup` can show or copy the configured password when `pnpm dev` is running. That page and its password endpoint are not in the production build. Local development is unencrypted and bound to the Mac's loopback interface; do not expose the development server or use a public tunnel.
+
+Production holds the password and decrypted edition only in page memory. Reloading, leaving the page, using Lock, or 15 minutes of inactivity locks it. The browser may keep encrypted network responses; it receives no plaintext edition file. Saved NYC discoveries remain local to the browser. Encryption does not protect against a compromised device, browser extension, or someone reading an already unlocked screen.
+
+## Change the password
+
+Update only `config/security.local.json`, then run `pnpm refresh`, `pnpm test`, `pnpm build`, and `pnpm publish:newsletter`. Wait for that commit's Pages workflow and run `pnpm verify:live`. Update the saved password in Apple Passwords. Old encrypted editions can still be decrypted with their original password; changing the password cannot revoke downloaded copies. Never silently rotate Ariel's password during routine daily refreshes.
+
+## Public history
+
+The earlier public repository is preserved as the private `ArielOlson/morning-newsletter-private-archive`, with its Pages site disabled. A new public `ArielOlson/morning-newsletter` contains only safe source files and encrypted editions, without the old plaintext Git history. Do not copy commits or push branches from the archived checkout back into the public repository. Do not make the archive public. The publisher uses a fresh checkout; the old checkout and publication state remain in ignored `.cache/` storage for recovery.
+
+Earlier visitors or third-party caches may retain previously public data; making the archive private cannot recall those copies. Google or Apple public calendar sharing is a separate access setting. Newsletter encryption does not make a publicly shared calendar private. Connected calendar access remains available as a fallback; changing calendar sharing must be handled separately.
+
+## Daily checks
+
+Build through `pnpm build` only. It excludes plaintext `public/data/` from Vite, encrypts the edition, and writes `dist/data/brief.enc.json`. The publisher verifies that decryption exactly matches the current local edition and rejects plaintext build data. `pnpm verify:live` checks the deployed encrypted payload locally without printing personal data, verifies the old plaintext URL returns 404, and checks page assets. Use `pnpm test:privacy` to test the lock screen locally; set `PRIVACY_TEST_URL=https://www.arielolson.com/morning-newsletter/` to test the live site.

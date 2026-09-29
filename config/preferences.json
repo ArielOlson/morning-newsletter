@@ -1,0 +1,37 @@
+{
+  "name": "Ariel",
+  "timezone": "America/New_York",
+  "location": "New York, NY",
+  "latitude": 40.7128,
+  "longitude": -74.006,
+  "umbrellaThreshold": 35,
+  "interests": [
+    "sample sale",
+    "pop-up",
+    "popup",
+    "seasonal",
+    "festival",
+    "market",
+    "exhibit",
+    "free",
+    "opening",
+    "weekend",
+    "limited",
+    "fall",
+    "autumn"
+  ],
+  "newsMaxAgeDays": 10,
+  "maxFinds": 8,
+  "excludeKeywords": [
+    "amtrak",
+    "flights",
+    "airport",
+    "airline",
+    "hours from",
+    "adirondack",
+    "lake george",
+    "upstate",
+    "hudson valley",
+    "connecticut"
+  ]
+}

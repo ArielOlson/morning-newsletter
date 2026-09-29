@@ -1,0 +1,15 @@
+node_modules/
+.env*
+!.env.example
+config/calendar.local.json
+config/events.local.json
+public/data/
+.cache/
+test-results/
+.playwright/
+.playwright-cli/
+.DS_Store
+
+config/*.local.json
+
+# The prepared dist/ site is intentionally committed for GitHub Pages.

@@ -1,0 +1,46 @@
+{
+  "feeds": [
+    {
+      "name": "Secret NYC",
+      "url": "https://secretnyc.co/feed/",
+      "homepage": "https://secretnyc.co/"
+    },
+    {
+      "name": "6sqft",
+      "url": "https://www.6sqft.com/feed/",
+      "homepage": "https://www.6sqft.com/"
+    }
+  ],
+  "directories": [
+    {
+      "name": "260 Sample Sale",
+      "category": "Sample sales",
+      "url": "https://260samplesale.com/"
+    },
+    {
+      "name": "NYC Parks",
+      "category": "Free & outdoors",
+      "url": "https://www.nycgovparks.org/events"
+    },
+    {
+      "name": "NYC Tourism",
+      "category": "Seasonal & pop-ups",
+      "url": "https://www.nyctourism.com/things-to-do/events/"
+    }
+  ],
+  "sampleSalesFeed": "https://virtual.260samplesale.com/pages/ny-event-metafields-xml",
+  "financeFeeds": [
+    {
+      "name": "CNBC",
+      "url": "https://www.cnbc.com/id/10000664/device/rss/rss.html"
+    },
+    {
+      "name": "CNBC",
+      "url": "https://www.cnbc.com/id/100003114/device/rss/rss.html"
+    },
+    {
+      "name": "BBC Business",
+      "url": "https://feeds.bbci.co.uk/news/business/rss.xml"
+    }
+  ]
+}

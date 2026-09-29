@@ -1,0 +1,154 @@
+import ical from 'node-ical';
+import { DateTime } from 'luxon';
+import { XMLParser, XMLValidator } from 'fast-xml-parser';
+
+export const dayInZone = (date = new Date(), zone = 'America/New_York') => DateTime.fromJSDate(date, { zone }).toISODate();
+export const addDays = (day, n, zone = 'America/New_York') => DateTime.fromISO(day, { zone }).plus({ days: n }).toISODate();
+export const safeURL = value => { try { const u = new URL(value); return u.protocol === 'https:' ? u.href : ''; } catch { return ''; } };
+export function validateEvents(events) {
+  if (!Array.isArray(events)) throw new Error('events must be an array');
+  const ids = new Set();
+  for (const event of events) {
+    if (!event.id || ids.has(event.id)) throw new Error('Each event needs a unique id');
+    ids.add(event.id);
+    if (typeof event.title !== 'string' || !event.title.trim()) throw new Error('Each event needs a title');
+    for (const key of ['startDate', 'endDate']) {
+      if (key === 'endDate' && !event[key]) continue;
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(event[key] || '') || !DateTime.fromISO(event[key]).isValid) throw new Error('Event dates must be valid YYYY-MM-DD dates');
+    }
+    if ((event.endDate || event.startDate) < event.startDate) throw new Error('Event endDate must not precede startDate');
+    if (event.remindDaysBefore !== undefined && (!Number.isInteger(event.remindDaysBefore) || event.remindDaysBefore < 0 || event.remindDaysBefore > 365)) throw new Error('remindDaysBefore must be 0-365');
+    if (event.url && !safeURL(event.url)) throw new Error('Event links must use HTTPS');
+  }
+  return events;
+}
+export function remindersFor(events, day, zone = 'America/New_York') {
+  return validateEvents(events).filter(e => day >= addDays(e.startDate, -(e.remindDaysBefore ?? 7), zone) && day <= (e.endDate || e.startDate))
+    .map(e => ({ ...e, status: day < e.startDate ? 'upcoming' : 'today' })).sort((a,b) => a.startDate.localeCompare(b.startDate));
+}
+const localDay = d => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+export function calendarEvents(text, day, zone, lookAheadDays = 14, includeDescriptions = false) {
+  if (!text.includes('BEGIN:VCALENDAR') || !text.includes('END:VCALENDAR')) throw new Error('Invalid calendar response');
+  const parsed = ical.sync.parseICS(text);
+  const from = DateTime.fromISO(day, { zone }).startOf('day');
+  const to = from.plus({ days: lookAheadDays });
+  const events = [];
+  for (const e of Object.values(parsed)) {
+    if (e.type !== 'VEVENT' || !e.start || e.status === 'CANCELLED') continue;
+    const instances = ical.expandRecurringEvent(e, { from: from.minus({ days: 2 }).toJSDate(), to: to.plus({ days: 2 }).toJSDate(), expandOngoing: true });
+    for (const item of instances) {
+      const source = item.event;
+      if (source.status === 'CANCELLED') continue;
+      const startDate = item.isFullDay ? localDay(item.start) : dayInZone(item.start, zone);
+      const endDate = item.isFullDay ? localDay(item.end) : dayInZone(new Date(Math.max(+item.start, +item.end - 1)), zone);
+      if (startDate >= to.toISODate() || (item.isFullDay ? endDate <= day : item.end < from.toJSDate())) continue;
+      events.push({ id: `${e.uid}:${item.start.toISOString()}`, title: item.summary || 'Untitled event',
+        start: item.start.toISOString(), end: item.end.toISOString(), startDate, endDate,
+        allDay: item.isFullDay, location: source.location || '', note: includeDescriptions ? source.description || '' : '', recurring: item.isRecurring });
+    }
+  }
+  return events.sort((a,b) => a.startDate.localeCompare(b.startDate) || Number(b.allDay)-Number(a.allDay) || a.start.localeCompare(b.start));
+}
+export function weatherSummary(raw, prefs, day) {
+  const d = raw.daily;
+  const i = d?.time?.indexOf(day) ?? -1;
+  if (i < 0 || !Number.isFinite(d.temperature_2m_max[i]) || !Number.isFinite(d.temperature_2m_min[i]) || !Number.isFinite(d.precipitation_probability_max[i])) throw new Error('Forecast missing required daily data');
+  const chance = d.precipitation_probability_max[i];
+  const high = Math.round(d.temperature_2m_max[i]);
+  const low = Math.round(d.temperature_2m_min[i]);
+  const code = d.weather_code[i];
+  const condition = code === 0 ? 'Clear skies' : code <= 3 ? 'A little cloud cover' : code <= 48 ? 'Foggy' : code >= 95 ? 'Thunderstorms possible' : [71,73,75,77,85,86].includes(code) ? 'Snow in the forecast' : 'Rain in the forecast';
+  const hours = (raw.hourly?.time || []).map((time,j) => ({ time, temperature: Math.round(raw.hourly.temperature_2m[j]), rain: raw.hourly.precipitation_probability[j] })).filter(h => h.time.startsWith(day) && +h.time.slice(11,13)>=6 && +h.time.slice(11,13)<=22);
+  const wetHours = hours.filter(h => h.rain >= prefs.umbrellaThreshold);
+  const umbrella = chance >= prefs.umbrellaThreshold || (code >= 51 && ![71,73,75,77,85,86].includes(code));
+  const clothing = high < 40 ? 'Bundle up: a warm coat, scarf, and gloves.' : high < 55 ? 'A proper jacket will feel good today.' : high < 70 ? 'Take a light layer for the cooler parts of the day.' : high < 85 ? 'Light layers today; a cardigan for indoor AC.' : 'Keep it light and bring water. It will be hot.';
+  const uv = d.uv_index_max?.[i];
+  return { day, high, low, code, condition, chance, umbrella, clothing,
+    advice: umbrella ? `Pack a small umbrella.${wetHours.length ? ` Rain is most likely around ${DateTime.fromISO(wetHours[0].time).toFormat('h a').toLowerCase()}.` : ' Keep an eye on the forecast before heading out.'}` : 'You can probably leave the umbrella at home.',
+    uv: Number.isFinite(uv) ? uv : null, wind: d.wind_speed_10m_max?.[i] ?? null,
+    hours: hours.filter(h => [8,12,16,20].includes(+h.time.slice(11,13))), source: 'https://open-meteo.com/' };
+}
+export function parseFeed(xml, source, prefs, now = new Date()) {
+  if (XMLValidator.validate(xml) !== true) throw new Error('Invalid news feed');
+  const parsed = new XMLParser({ ignoreAttributes: false, processEntities: true, htmlEntities: true }).parse(xml);
+  if (!parsed.rss?.channel && !parsed.feed) throw new Error('Not a news feed');
+  const raw = parsed.rss?.channel?.item || parsed.feed?.entry || [];
+  const items = Array.isArray(raw) ? raw : [raw];
+  return items.flatMap(item => {
+    const title = String(item.title?.['#text'] || item.title || '').replace(/<[^>]*>/g, '').trim().slice(0,200);
+    const link = safeURL(typeof item.link === 'string' ? item.link : item.link?.['@_href']);
+    const date = new Date(item.pubDate || item.published || item.updated);
+    const age = (+now - +date) / 86400000;
+    if (!title || !link || !Number.isFinite(age) || age < -1 || age > prefs.newsMaxAgeDays) return [];
+    const lower = title.toLowerCase();
+    if (prefs.excludeKeywords?.some(term => lower.includes(term))) return [];
+    const score = prefs.interests.filter(term => lower.includes(term)).length;
+    if (!score) return [];
+    const category = /sample sale/.test(lower) ? 'Sample sales' : /pop.up|opening/.test(lower) ? 'Pop-ups' : /fall|autumn|season|winter|summer|spring|festival|halloween/.test(lower) ? 'Seasonal' : /free/.test(lower) ? 'Free & lovely' : 'Around town';
+    return [{ id: link, title, url: link, source: source.name, publishedAt: date.toISOString(), category, score, kind: 'discovery' }];
+  });
+}
+
+export function parseSales(xml, day, zone = 'America/New_York') {
+  const data=new XMLParser({ignoreAttributes:false,processEntities:true,htmlEntities:true}).parse(xml);
+  const root=data.pre?.root || data.root;
+  if(!root)throw new Error('Sample sale feed changed');
+  const items=root.event ? (Array.isArray(root.event)?root.event:[root.event]) : [];
+  return items.flatMap(e=>{
+    const startDate=DateTime.fromFormat(String(e.event_start_date),'MM/dd/yyyy').toISODate();
+    const endDate=DateTime.fromFormat(String(e.event_end_date),'MM/dd/yyyy').toISODate();
+    const url=safeURL(e.menu_url);
+    if(e.event_market!=='NY'||!startDate||!endDate||endDate<day||startDate>addDays(day,14,zone)||!url||/cancel/i.test(e.event_status))return [];
+    const rawImage=String(e.event_main_image||'');
+    return [{id:`260:${e.event_id}`,title:`${e.event_name} sample sale`,startDate,endDate,url,category:'Sample sales',kind:'event',source:'260 Sample Sale',image:safeURL(rawImage.startsWith('//')?`https:${rawImage}`:rawImage),note:`${e.event_location}. Check the source for daily opening hours and entry details.`}];
+  }).sort((a,b)=>a.startDate.localeCompare(b.startDate)).slice(0,6);
+}
+
+export function normalizeCalendarURL(value) {
+  const url=new URL(String(value).replace(/^webcal:/,'https:'));
+  if(url.protocol!=='https:')throw new Error('Calendar must use HTTPS or webcal');
+  if(['calendar.google.com','www.google.com'].includes(url.hostname) && url.pathname.startsWith('/calendar') && !url.pathname.endsWith('.ics')){
+    let id=url.searchParams.get('src');
+    if(!id && url.searchParams.get('cid')){const cid=url.searchParams.get('cid');id=cid.includes('@')?cid:Buffer.from(cid,'base64url').toString('utf8');}
+    if(!id || !id.includes('@') || /[\s\x00-\x1f]/.test(id))throw new Error('Use a Google public calendar link or iCal address');
+    return `https://calendar.google.com/calendar/ical/${encodeURIComponent(id)}/public/basic.ics`;
+  }
+  return url.href;
+}
+const cleanText=value=>String(value?.['#text']??value??'').replace(/<[^>]*>/g,' ').replace(/\s+/g,' ').trim();
+export function parseFinance(xml,source,now=new Date()){
+  if(XMLValidator.validate(xml)!==true)throw new Error('Invalid finance feed');
+  const data=new XMLParser({processEntities:true,htmlEntities:true}).parse(xml);
+  if(!data.rss?.channel)throw new Error('Not a finance feed');
+  const items=data.rss.channel.item||[];
+  return (Array.isArray(items)?items:[items]).flatMap(x=>{
+    const title=cleanText(x.title),url=safeURL(x.link),date=new Date(x.pubDate),age=(now-date)/86400000;
+    if(!title||!url||!Number.isFinite(age)||age<0||age>4)return [];
+    const lower=title.toLowerCase();
+    const topic=/yield|treasury|\bbond|interest rate|\bfed\b|inflation/.test(lower)?'rates':/\boil\b|energy|hormuz/.test(lower)?'energy':/stocks|s&p|nasdaq|dow |market|futures/.test(lower)?'markets':/econom|jobs|gdp|industrial|tariff/.test(lower)?'economy':'business';
+    const context={rates:'Higher yields can affect borrowing costs, savings rates, and the price of existing bonds.',energy:'Energy prices feed into transport costs, inflation, and company margins.',markets:'Broad market moves help put individual stock headlines in context.',economy:'Growth and trade data can influence company earnings and interest-rate expectations.',business:'A business development to follow as markets open.'};
+    return [{id:url,title,url,source:source.name,publishedAt:date.toISOString(),summary:cleanText(x.description).split(' ').slice(0,38).join(' '),context:context[topic],topic,score:({rates:5,energy:5,markets:5,economy:4,business:1})[topic]+(source.name==='CNBC'?1:0)-age*.7}];
+  });
+}
+export function topFinance(items){
+  const candidates=[...new Map(items.map(x=>[x.url,x])).values()].sort((a,b)=>b.score-a.score||b.publishedAt.localeCompare(a.publishedAt));
+  const selected=[],topics=new Set();for(const x of candidates){if(!topics.has(x.topic)){selected.push(x);topics.add(x.topic);}if(selected.length===3)break;}
+  for(const x of candidates){if(selected.length===3)break;if(!selected.includes(x))selected.push(x);}return selected;
+}
+export function topCity(items,day){
+  const seen=new Set();return items.filter(x=>!x.endDate||x.endDate>=day).sort((a,b)=>(b.priority||0)-(a.priority||0)||(a.kind==='event'?0:1)-(b.kind==='event'?0:1)||(a.startDate||'9999').localeCompare(b.startDate||'9999')).filter(x=>{const key=x.url||x.id;if(seen.has(key))return false;seen.add(key);return true;}).slice(0,3).map(x=>({...x,what:x.what||x.note||x.title,where:x.where||x.location||'Location not confirmed',when:x.when||null,cost:x.cost||'Not listed by the source'}));
+}
+export function deliverySnapshot(snapshot,now=new Date()){
+  const age=(now-new Date(snapshot?.checkedAt))/3600000;
+  if(!snapshot||!Number.isFinite(age)||age<0||!Array.isArray(snapshot.shipments))return {state:'unavailable',checkedAt:null,shipments:[]};
+  const shipments=[...new Map(snapshot.shipments.map(x=>[x.id,x])).values()].filter(x=>{
+    if(!x.id||!x.merchant||!x.status||!Number.isFinite(+new Date(x.updatedAt)))return false;
+    return x.status!=='delivered'||(+now-new Date(x.updatedAt))<7*86400000;
+  });
+  return {state:age>26?'stale':'fresh',checkedAt:snapshot.checkedAt,shipments,scope:snapshot.scope||'Connected email accounts'};
+}
+export function calendarSnapshot(snapshot,input,day,now=new Date()){
+  const item=snapshot?.calendars?.find(x=>x.input===input),age=(now-new Date(item?.checkedAt))/3600000;
+  if(!item||!Number.isFinite(age)||age<0||age>26||item.windowStart>day||item.windowEnd<=addDays(day,13)||!Array.isArray(item.events))return null;
+  return {events:item.events.filter(x=>x.allDay?x.endDate>day:x.endDate>=day),checkedAt:item.checkedAt};
+}

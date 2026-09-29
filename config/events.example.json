@@ -1,0 +1,22 @@
+{
+  "events": [
+    {
+      "id": "example-dinner",
+      "title": "Book birthday dinner",
+      "startDate": "2026-10-05",
+      "endDate": "2026-10-11",
+      "remindDaysBefore": 7,
+      "note": "Pick somewhere cozy. This appears all week, with a heads-up the week before.",
+      "category": "personal",
+      "url": ""
+    },
+    {
+      "id": "example-one-day",
+      "title": "Remember the birthday card",
+      "startDate": "2026-10-09",
+      "remindDaysBefore": 2,
+      "note": "A one-day reminder.",
+      "category": "personal"
+    }
+  ]
+}

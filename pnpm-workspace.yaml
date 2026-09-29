@@ -1,0 +1,4 @@
+allowBuilds:
+  esbuild: true
+# Install explicitly; running a local read/build should not try to reinstall packages.
+verifyDepsBeforeRun: false
