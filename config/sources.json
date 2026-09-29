@@ -41,6 +41,18 @@
     {
       "name": "BBC Business",
       "url": "https://feeds.bbci.co.uk/news/business/rss.xml"
+    },
+    {
+      "name": "Bloomberg",
+      "url": "https://feeds.bloomberg.com/markets/news.rss"
+    },
+    {
+      "name": "Financial Times",
+      "url": "https://www.ft.com/markets?format=rss"
+    },
+    {
+      "name": "Wall Street Journal",
+      "url": "https://feeds.content.dowjones.io/public/rss/RSSMarketsMain"
     }
   ]
 }

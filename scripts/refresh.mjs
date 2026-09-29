@@ -2,7 +2,7 @@ import { readFile, writeFile, mkdir, rename } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { resolve, dirname } from 'node:path';
 import { randomUUID } from 'node:crypto';
-import { dayInZone, addDays, calendarEvents, remindersFor, validateEvents, weatherSummary, parseFeed, parseSales, normalizeCalendarURL, parseFinance, topFinance, topCity, deliverySnapshot, calendarSnapshot, mergeCalendarPlans, redSoxEvents } from './lib.mjs';
+import { dayInZone, addDays, calendarEvents, remindersFor, validateEvents, weatherSummary, parseFeed, parseSales, normalizeCalendarURL, parseFinance, topFinance, curatedFinance, topCity, deliverySnapshot, calendarSnapshot, mergeCalendarPlans, redSoxEvents } from './lib.mjs';
 import {selectIdeas} from './ideas.mjs';
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 process.chdir(root);
@@ -51,7 +51,7 @@ async function main() {
     ...sources.feeds.map((source,i)=>collect(`news${i}`, async()=>parseFeed(await download(source.url), source, prefs, now), null))];
   const [results, sales, financeResults] = await Promise.all([Promise.all(jobs), collect('sampleSales', async()=>parseSales(await download(sources.sampleSalesFeed),day,prefs.timezone), null), Promise.all((sources.financeFeeds||[]).map((source,i)=>collect(`finance${i}`,async()=>parseFinance(await download(source.url),source,now),null)))]);
   const games=await collect('redSox',async()=>redSoxEvents(JSON.parse(await download(`https://statsapi.mlb.com/api/v1/schedule?sportId=1&teamId=111&startDate=${day}&endDate=${addDays(day,14)}`)),day,prefs.timezone),null);
-  const finance=topFinance(financeResults.flatMap(x=>x||[]));
+  const finance=topFinance([...financeResults.flatMap(x=>x||[]),...curatedFinance(await readJSON('config/finance.local.json',{}),now)]);
   const weather = results[0];
   const plans = results.slice(1,1+calendar.urls.length).flatMap(x=>x||[]);
   const news = results.slice(1+calendar.urls.length).flatMap(x=>x||[]);

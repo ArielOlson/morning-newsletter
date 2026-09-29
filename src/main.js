@@ -68,7 +68,7 @@ function renderFinds(){if(!brief)return;
 const stamp=value=>new Intl.DateTimeFormat('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit',timeZone:zone()}).format(new Date(value));
 function renderFinance(){
   const items=brief.finance||[];
-  $('#finance-content').innerHTML=(items.length<3?'<p class="notice">Fewer than three recent stories are available from the finance feeds.</p>':'')+items.map((f,i)=>`<article class="finance-item"><span class="item-number">0${i+1}</span><div><p class="find-meta">${escape(f.source)} · ${escape(stamp(f.publishedAt))}</p><h3><a href="${escape(safeURL(f.url))}" ${external}>${escape(f.title)} ↗</a></h3>${f.summary?`<p>${escape(f.summary)}</p>`:''}<p class="finance-context"><strong>Context:</strong> ${escape(f.context)}</p></div></article>`).join('');
+  $('#finance-content').innerHTML=(items.length<3?'<p class="notice">Fewer than three recent stories are available from the finance feeds.</p>':'')+items.map((f,i)=>`<article class="finance-item"><span class="item-number">0${i+1}</span><div><p class="find-meta">${escape(f.source)} · ${escape(stamp(f.publishedAt))}</p><h3><a href="${escape(safeURL(f.url))}" ${external}>${escape(f.title)} ↗</a></h3>${f.bullets?.length?`<ul class="finance-facts">${f.bullets.map(t=>`<li>${escape(t)}</li>`).join('')}</ul>`:f.summary?`<p>${escape(f.summary)}</p>`:''}${f.context?`<p class="finance-context"><strong>Why it matters:</strong> ${escape(f.context)}</p>`:''}${f.basis?`<p class="find-meta">${escape(f.basis)}</p>`:''}</div></article>`).join('');
 }
 function renderDeliveries(){
   const d=brief.deliveries||{state:'unavailable',shipments:[]};

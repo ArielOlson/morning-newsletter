@@ -116,6 +116,7 @@ export function normalizeCalendarURL(value) {
   return url.href;
 }
 const cleanText=value=>String(value?.['#text']??value??'').replace(/<[^>]*>/g,' ').replace(/\s+/g,' ').trim();
+export const isRoundup=title=>/things.{0,35}(watch|know)|top \d+|what to (watch|know)|morning (brief|roundup)|daily (brief|roundup)/i.test(title);
 export function parseFinance(xml,source,now=new Date()){
   if(XMLValidator.validate(xml)!==true)throw new Error('Invalid finance feed');
   const data=new XMLParser({processEntities:true,htmlEntities:true}).parse(xml);
@@ -123,17 +124,26 @@ export function parseFinance(xml,source,now=new Date()){
   const items=data.rss.channel.item||[];
   return (Array.isArray(items)?items:[items]).flatMap(x=>{
     const title=cleanText(x.title),url=safeURL(x.link),date=new Date(x.pubDate),age=(now-date)/86400000;
-    if(!title||!url||!Number.isFinite(age)||age<0||age>4)return [];
+    if(!title||!url||!Number.isFinite(age)||age<0||age>2||isRoundup(title)||url.includes('/videos/'))return [];
     const lower=title.toLowerCase();
     const topic=/yield|treasury|\bbond|interest rate|\bfed\b|inflation/.test(lower)?'rates':/\boil\b|energy|hormuz/.test(lower)?'energy':/stocks|s&p|nasdaq|dow |market|futures/.test(lower)?'markets':/econom|jobs|gdp|industrial|tariff/.test(lower)?'economy':'business';
     const context={rates:'Higher yields can affect borrowing costs, savings rates, and the price of existing bonds.',energy:'Energy prices feed into transport costs, inflation, and company margins.',markets:'Broad market moves help put individual stock headlines in context.',economy:'Growth and trade data can influence company earnings and interest-rate expectations.',business:'A business development to follow as markets open.'};
-    return [{id:url,title,url,source:source.name,publishedAt:date.toISOString(),summary:cleanText(x.description).split(' ').slice(0,38).join(' '),context:context[topic],topic,score:({rates:5,energy:5,markets:5,economy:4,business:1})[topic]+(source.name==='CNBC'?1:0)-age*.7}];
+    return [{id:url,title,url,source:source.name,publishedAt:date.toISOString(),summary:cleanText(x.description).split(' ').slice(0,24).join(' '),context:context[topic],topic,score:({rates:5,energy:5,markets:5,economy:4,business:1})[topic]-age*.7}];
   });
 }
+export function curatedFinance(snapshot,now=new Date()){
+ const age=(now-new Date(snapshot?.checkedAt))/3600000;
+ if(!Number.isFinite(age)||age<0||age>30)return [];
+ return (snapshot.stories||[]).filter(x=>x.title&&safeURL(x.url)&&!isRoundup(x.title)&&Array.isArray(x.bullets)&&x.bullets.length&&+new Date(x.publishedAt)<=+now&&+now-new Date(x.publishedAt)<48*3600000).map(x=>({...x,score:100,summary:x.summary||'',basis:x.basis||'Source summary'}));
+}
 export function topFinance(items){
-  const candidates=[...new Map(items.map(x=>[x.url,x])).values()].sort((a,b)=>b.score-a.score||b.publishedAt.localeCompare(a.publishedAt));
-  const selected=[],topics=new Set();for(const x of candidates){if(!topics.has(x.topic)){selected.push(x);topics.add(x.topic);}if(selected.length===3)break;}
-  for(const x of candidates){if(selected.length===3)break;if(!selected.includes(x))selected.push(x);}return selected;
+ const candidates=[...new Map(items.filter(x=>!isRoundup(x.title)).map(x=>[x.url,x])).values()];
+ const selected=[],topics=new Set(),sources=new Set();
+ while(candidates.length&&selected.length<3){
+  candidates.sort((a,b)=>(b.score-(topics.has(b.topic)?10:0)-(sources.has(b.source)?5:0))-(a.score-(topics.has(a.topic)?10:0)-(sources.has(a.source)?5:0))||b.publishedAt.localeCompare(a.publishedAt));
+  const x=candidates.shift();selected.push(x);topics.add(x.topic);sources.add(x.source);
+ }
+ return selected;
 }
 export function topCity(items,day,interests={}){
  const seen=new Set();const score=x=>(x.priority||0)+(x.tags?.includes('red-sox')?40:0)+(interests.artists?.some(a=>x.title.toLowerCase().includes(a.toLowerCase()))?50:0)+(interests.brands?.some(a=>x.title.toLowerCase().includes(a.toLowerCase()))?30:0);

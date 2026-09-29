@@ -86,3 +86,5 @@ test('delivery scans retain separate parcels, flag stale data and expire old del
 });
 
 test('two calendars merge shared events and sort by time',async()=>{const {mergeCalendarPlans}=await import('../scripts/lib.mjs');const e={id:'a',title:'Dinner',start:'2026-09-30T18:00:00-04:00',end:'2026-09-30T19:00:00-04:00',location:'Cafe'};assert.equal(mergeCalendarPlans([e,{...e,id:'b',start:'2026-09-30T22:00:00Z',end:'2026-09-30T23:00:00Z'}]).length,1);});
+
+test('finance excludes click-through roundups and prefers varied publishers',async()=>{const {isRoundup,topFinance,curatedFinance}=await import('../scripts/lib.mjs');assert.equal(isRoundup("Jim Cramer's top 10 things to watch in the stock market Monday"),true);const rows=['CNBC','Bloomberg','Financial Times','Wall Street Journal'].map((source,i)=>({title:'Concrete development '+i,url:'https://example.com/'+i,source,topic:'markets',score:5,publishedAt:'2026-09-29T00:00:00Z'}));assert.equal(new Set(topFinance(rows).map(x=>x.source)).size,3);assert.deepEqual(curatedFinance({checkedAt:'2026-09-20T00:00:00Z',stories:rows},new Date('2026-09-29T00:00:00Z')),[]);});
