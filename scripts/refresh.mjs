@@ -2,7 +2,7 @@ import { readFile, writeFile, mkdir, rename } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { resolve, dirname } from 'node:path';
 import { randomUUID } from 'node:crypto';
-import { dayInZone, addDays, calendarEvents, remindersFor, validateEvents, weatherSummary, parseFeed, parseSales, normalizeCalendarURL, parseFinance, topFinance, topCity, deliverySnapshot, calendarSnapshot } from './lib.mjs';
+import { dayInZone, addDays, calendarEvents, remindersFor, validateEvents, weatherSummary, parseFeed, parseSales, normalizeCalendarURL, parseFinance, topFinance, topCity, deliverySnapshot, calendarSnapshot, mergeCalendarPlans } from './lib.mjs';
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 process.chdir(root);
 const readJSON = async (path, fallback) => { try { return JSON.parse(await readFile(path, 'utf8')); } catch(e) { if (e.code === 'ENOENT' && fallback !== undefined) return fallback; throw new Error(`Cannot read ${path}: check JSON syntax`); } };
@@ -56,7 +56,7 @@ async function main() {
   const personal = events.filter(e => !e.category || e.category === 'personal');
   const cityEvents = events.filter(e => e.category && e.category !== 'personal' && (e.endDate || e.startDate) >= day && e.startDate <= addDays(day,14,prefs.timezone)).map(e => ({...e,kind:'event',source:e.source || 'Your picks'}));
   const brief = { version:1, day, generatedAt:now.toISOString(), name:prefs.name, timezone:prefs.timezone, location:prefs.location,
-    weather, calendar: { connected:calendar.urls.length>0, state:calendar.urls.length ? (plans.length || !errors.some(e=>e.startsWith('calendar')) ? (errors.some(e=>e.startsWith('calendar')) ? 'partial' : 'fresh') : 'unavailable') : 'not-connected', events:[...new Map(plans.map(e=>[e.id,e])).values()] },
+    weather, calendar: { connected:calendar.urls.length>0, sourceCount:calendar.urls.length, state:calendar.urls.length ? (plans.length || !errors.some(e=>e.startsWith('calendar')) ? (errors.some(e=>e.startsWith('calendar')) ? 'partial' : 'fresh') : 'unavailable') : 'not-connected', events:mergeCalendarPlans(plans) },
     reminders:remindersFor(personal,day,prefs.timezone), upcomingReminders:personal.filter(e=>e.startDate>day && e.startDate<=addDays(day,14,prefs.timezone)),
     finds:topCity([...cityEvents,...(sales||[]),...deduped],day), finance, deliveries:packages, directories:sources.directories, status, errors };
   await atomic('public/data/brief.json',brief);

@@ -152,3 +152,10 @@ export function calendarSnapshot(snapshot,input,day,now=new Date()){
   if(!item||!Number.isFinite(age)||age<0||age>26||item.windowStart>day||item.windowEnd<=addDays(day,13)||!Array.isArray(item.events))return null;
   return {events:item.events.filter(x=>x.allDay?x.endDate>day:x.endDate>=day),checkedAt:item.checkedAt};
 }
+
+export function mergeCalendarPlans(plans){
+ const seen=new Set();return plans.filter(e=>{
+  const key=[e.title.trim().toLowerCase(),new Date(e.start).toISOString(),new Date(e.end).toISOString(),e.location||''].join('|');
+  if(seen.has(key))return false;seen.add(key);return true;
+ }).sort((a,b)=>a.start.localeCompare(b.start)||Number(b.allDay)-Number(a.allDay));
+}

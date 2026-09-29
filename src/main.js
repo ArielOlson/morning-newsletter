@@ -36,8 +36,8 @@ function renderAgenda(){
   const next=c.events.filter(e=>e.startDate>day).slice(0,3);
   $('#upcoming-preview').innerHTML=next.length?`<h3 class="upcoming-heading">Coming up</h3>${next.map(e=>`<div class="upcoming-item"><time>${escape(dateLabel(e.startDate))}${e.allDay?'':` · ${escape(timeLabel(e.start))}`}</time><strong>${escape(e.title)}</strong>${e.location?`<span>${escape(e.location)}</span>`:''}</div>`).join('')}<a class="text-button" href="#week">Full two-week schedule ↗</a>`:'';
   const calendarSources=Object.entries(brief.status||{}).filter(([key])=>key.startsWith('calendar')).map(([,value])=>value);
-  const connected=calendarSources.find(x=>x.mode==='connected-account');
-  $('#calendar-source').textContent=connected?`Connected Google Calendar · Checked ${stamp(connected.updatedAt)}`:c.state==='fresh'?'Public calendar feed refreshed.':'';
+  $('#calendar-source').textContent=calendarSources.map((x,i)=>`Calendar ${i+1}: ${x.state==='fresh'?`checked ${stamp(x.updatedAt)}`:'unavailable'}`).join(' · ');
+
 }
 function renderWeather(){
   const w=brief.weather;

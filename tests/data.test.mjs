@@ -84,3 +84,5 @@ test('delivery scans retain separate parcels, flag stale data and expire old del
  const result=deliverySnapshot({checkedAt:'2026-09-28T05:00:00Z',shipments},now);assert.equal(result.state,'fresh');assert.deepEqual(result.shipments.map(x=>x.id),['one','two']);
  assert.equal(deliverySnapshot({checkedAt:'2026-09-26T05:00:00Z',shipments},now).state,'stale');assert.equal(deliverySnapshot(null,now).state,'unavailable');
 });
+
+test('two calendars merge shared events and sort by time',async()=>{const {mergeCalendarPlans}=await import('../scripts/lib.mjs');const e={id:'a',title:'Dinner',start:'2026-09-30T18:00:00-04:00',end:'2026-09-30T19:00:00-04:00',location:'Cafe'};assert.equal(mergeCalendarPlans([e,{...e,id:'b',start:'2026-09-30T22:00:00Z',end:'2026-09-30T23:00:00Z'}]).length,1);});
