@@ -21,7 +21,7 @@
     "autumn"
   ],
   "newsMaxAgeDays": 10,
-  "maxFinds": 8,
+  "maxFinds": 10,
   "excludeKeywords": [
     "amtrak",
     "flights",

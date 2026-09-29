@@ -48,10 +48,13 @@ function renderWeather(){
 function reminderHTML(e){return `<article class="reminder"><time>${escape(dateRange(e))}</time><div><h3>${escape(e.title)}</h3>${e.note?`<p>${escape(e.note)}</p>`:''}${safeURL(e.url)?`<a class="text-button" href="${escape(safeURL(e.url))}" ${external}>Details ↗</a>`:''}</div></article>`;}
 function renderReminders(){ $('#reminders-content').innerHTML=brief.reminders.length?brief.reminders.map(reminderHTML).join(''):'<p class="reminder-empty">No reminders due. Add a date or week to keep it in your morning brief.</p>'; }
 function findHTML(f){
-  const savedHere=saved.some(x=>x.id===f.id),url=safeURL(f.url);
-  const when=f.when||(f.startDate?dateRange(f):`Event date unconfirmed · Article published ${dateLabel(f.publishedAt.slice(0,10))}`);
-  return `<article class="find"><button class="save-button" data-save="${escape(f.id)}" aria-label="${savedHere?'Unsave':'Save'} ${escape(f.title)}" aria-pressed="${savedHere}">${savedHere?'♥':'♡'}</button><h3>${escape(f.title)}</h3><dl class="event-details"><dt>What</dt><dd>${escape(f.what||f.note||f.title)}</dd><dt>Where</dt><dd>${escape(f.where||'Location not confirmed')}</dd><dt>When</dt><dd>${escape(when)}</dd><dt>Cost</dt><dd>${escape(f.cost||'Not listed by the source')}</dd><dt>Link</dt><dd>${url?`<a href="${escape(url)}" ${external}>${escape(f.source||'Event details')} ↗</a>`:'Not available'}</dd></dl></article>`;
+ const selected=saved.some(x=>x.id===f.id),url=safeURL(f.url),photo=safeURL(f.image);
+ const when=f.when||(f.startDate?dateRange(f):'Choose a day');
+ return `<article class="find photo-card"><div class="card-photo">${photo?`<img src="${escape(photo)}" alt="${escape(f.imageAlt||f.title)}" loading="lazy" referrerpolicy="no-referrer">`:'<span class="photo-unavailable">Photo unavailable</span>'}<button class="save-button" data-save="${escape(f.id)}" aria-label="${selected?'Unsave':'Save'} ${escape(f.title)}" aria-pressed="${selected}">${selected?'♥':'♡'}</button></div><h3>${escape(f.title)}</h3><p class="card-date">${escape(when)}</p><p class="card-cost">${escape(f.cost||'Price not confirmed')}</p><p class="card-neighborhood">${escape(f.neighborhood||f.where||'Location not confirmed')}</p>${f.what?`<p class="card-note">${escape(f.what)}</p>`:''}${url?`<a class="text-button" href="${escape(url)}" ${external}>${escape(f.source||'Event details')} ↗</a>`:''}</article>`;
 }
+function wirePhotos(container){container.querySelectorAll('img').forEach(img=>img.addEventListener('error',()=>{img.hidden=true;const label=document.createElement('span');label.className='photo-unavailable';label.textContent='Photo unavailable';img.before(label);},{once:true}));}
+function wireCarousel(id){const row=document.getElementById(id);document.querySelectorAll(`[data-scroll="${id}"]`).forEach(b=>b.addEventListener('click',()=>row.scrollBy({left:Number(b.dataset.direction)*row.clientWidth*.85,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'})));}
+wireCarousel('finds-content');
 function wireSave(container){container.querySelectorAll('[data-save]').forEach(button=>button.addEventListener('click',()=>{
   const id=button.dataset.save,index=saved.findIndex(x=>x.id===id); const next=[...saved];
   if(index>=0)next.splice(index,1);else {const item=brief?.finds.find(x=>x.id===id);if(!item)return;next.push(item);}
@@ -59,7 +62,7 @@ function wireSave(container){container.querySelectorAll('[data-save]').forEach(b
   renderFinds();renderSaved();
 }));}
 function renderFinds(){if(!brief)return;
-  $('#finds-content').innerHTML=brief.finds.length?brief.finds.slice(0,3).map(findHTML).join(''):empty('No verified picks available.','NYC sources could not provide current events. Try the next edition.');wireSave($('#finds-content'));
+  $('#finds-content').innerHTML=brief.finds.length?brief.finds.slice(0,10).map(findHTML).join(''):empty('No verified picks available.','NYC sources could not provide current events. Try the next edition.');wireSave($('#finds-content'));wirePhotos($('#finds-content'));$('#city-count').textContent=`${brief.finds.length} events for the days ahead`; 
 }
 const stamp=value=>new Intl.DateTimeFormat('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit',timeZone:zone()}).format(new Date(value));
 function renderFinance(){

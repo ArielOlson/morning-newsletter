@@ -2,7 +2,7 @@ import { readFile, writeFile, mkdir, rename } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { resolve, dirname } from 'node:path';
 import { randomUUID } from 'node:crypto';
-import { dayInZone, addDays, calendarEvents, remindersFor, validateEvents, weatherSummary, parseFeed, parseSales, normalizeCalendarURL, parseFinance, topFinance, topCity, deliverySnapshot, calendarSnapshot, mergeCalendarPlans } from './lib.mjs';
+import { dayInZone, addDays, calendarEvents, remindersFor, validateEvents, weatherSummary, parseFeed, parseSales, normalizeCalendarURL, parseFinance, topFinance, topCity, deliverySnapshot, calendarSnapshot, mergeCalendarPlans, redSoxEvents } from './lib.mjs';
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 process.chdir(root);
 const readJSON = async (path, fallback) => { try { return JSON.parse(await readFile(path, 'utf8')); } catch(e) { if (e.code === 'ENOENT' && fallback !== undefined) return fallback; throw new Error(`Cannot read ${path}: check JSON syntax`); } };
@@ -24,6 +24,7 @@ async function main() {
   process.env.TZ = prefs.timezone;
   const now = new Date(), day = dayInZone(now, prefs.timezone);
   const sources = await readJSON('config/sources.json');
+  const interests=await readJSON('config/interests.local.json',{});
   const calendar = await readJSON('config/calendar.local.json', await readJSON('config/calendar.example.json'));
   if (process.env.ICAL_URLS) calendar.urls = JSON.parse(process.env.ICAL_URLS);
   if (!Array.isArray(calendar.urls) || calendar.urls.some(u => typeof u !== 'string' || !/^((https:\/\/)|(webcal:\/\/))/.test(u))) throw new Error('Calendar urls must be an array of HTTPS or webcal links');
@@ -48,6 +49,7 @@ async function main() {
     ...calendar.urls.map(readCalendar),
     ...sources.feeds.map((source,i)=>collect(`news${i}`, async()=>parseFeed(await download(source.url), source, prefs, now), null))];
   const [results, sales, financeResults] = await Promise.all([Promise.all(jobs), collect('sampleSales', async()=>parseSales(await download(sources.sampleSalesFeed),day,prefs.timezone), null), Promise.all((sources.financeFeeds||[]).map((source,i)=>collect(`finance${i}`,async()=>parseFinance(await download(source.url),source,now),null)))]);
+  const games=await collect('redSox',async()=>redSoxEvents(JSON.parse(await download(`https://statsapi.mlb.com/api/v1/schedule?sportId=1&teamId=111&startDate=${day}&endDate=${addDays(day,14)}`)),day,prefs.timezone),null);
   const finance=topFinance(financeResults.flatMap(x=>x||[]));
   const weather = results[0];
   const plans = results.slice(1,1+calendar.urls.length).flatMap(x=>x||[]);
@@ -58,7 +60,7 @@ async function main() {
   const brief = { version:1, day, generatedAt:now.toISOString(), name:prefs.name, timezone:prefs.timezone, location:prefs.location,
     weather, calendar: { connected:calendar.urls.length>0, sourceCount:calendar.urls.length, state:calendar.urls.length ? (plans.length || !errors.some(e=>e.startsWith('calendar')) ? (errors.some(e=>e.startsWith('calendar')) ? 'partial' : 'fresh') : 'unavailable') : 'not-connected', events:mergeCalendarPlans(plans) },
     reminders:remindersFor(personal,day,prefs.timezone), upcomingReminders:personal.filter(e=>e.startDate>day && e.startDate<=addDays(day,14,prefs.timezone)),
-    finds:topCity([...cityEvents,...(sales||[]),...deduped],day), finance, deliveries:packages, directories:sources.directories, status, errors };
+    finds:topCity([...cityEvents,...(games||[]),...(sales||[])],day,interests), finance, deliveries:packages, directories:sources.directories, status, errors };
   await atomic('public/data/brief.json',brief);
   // Private calendar details are intentionally excluded from logs and history.
   console.log(`Morning edit updated for ${day}. Weather: ${status.weather.state}. Calendar: ${brief.calendar.state}. NYC finds: ${brief.finds.length}.`);

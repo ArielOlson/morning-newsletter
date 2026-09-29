@@ -19,12 +19,12 @@ try{
     const title=await saves.first().getAttribute('aria-label');await saves.first().click();await page.getByRole('link',{name:/^Saved/}).click();await page.locator('#saved-content .find').waitFor();assert.match(await page.locator('#saved-content').innerText(),new RegExp(title.slice(5,20).replace(/[.*+?^${}()|[\]\\]/g,'\\$&')));await page.reload();await page.locator('#saved-content .find').waitFor();await page.locator('#saved-content .save-button').first().click();assert.match(await page.locator('#saved-content').innerText(),/Keep the good ones/);
   }
   await page.getByRole('link',{name:'Today',exact:true}).click();assert.equal(await page.locator('[data-filter]').count(),0);
-  assert.equal(await page.locator('#finds-content .find').count(),3);
-  assert.deepEqual(await page.locator('#finds-content .find').first().locator('dt').allTextContents(),['What','Where','When','Cost','Link']);
+  assert.equal(await page.locator('#finds-content .find').count(),10);
+  assert.equal(await page.locator('#finds-content .card-photo').count(),10);
   assert.equal(await page.locator('#finance-content .finance-item').count(),3);
   assert.ok(await page.locator('#deliveries-content .delivery-item').count()>0);
   assert.match(await page.locator('#deliveries-content').innerText(),/live carrier status unverified/);
-  assert.match(await page.locator('#calendar-source').innerText(),/Connected Google Calendar|Public calendar feed refreshed/);
+  assert.match(await page.locator('#calendar-source').innerText(),/Calendar 1: checked/);
   assert.ok(await page.locator('#upcoming-preview .upcoming-item').count()>0);
   await page.getByRole('button',{name:'+ Add a reminder'}).first().click();await page.getByLabel('What should you remember?').fill('Browser verification reminder');await page.getByLabel('A little context').fill('This test is removed automatically.');await page.getByRole('button',{name:'Save reminder ♡'}).click();await page.waitForFunction(()=>!document.querySelector('#reminder-dialog').open,{},{timeout:90000});assert.match(await page.locator('#reminders-content').innerText(),/Browser verification reminder/);assert.match(await readFile(eventPath,'utf8'),/Browser verification reminder/);
   await page.getByRole('link',{name:'Coming up',exact:true}).click();await page.locator('#week-view').waitFor();assert.match(await page.locator('#week-content').innerText(),/Browser verification reminder/);

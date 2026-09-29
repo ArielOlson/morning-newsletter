@@ -100,8 +100,8 @@ export function parseSales(xml, day, zone = 'America/New_York') {
     const url=safeURL(e.menu_url);
     if(e.event_market!=='NY'||!startDate||!endDate||endDate<day||startDate>addDays(day,14,zone)||!url||/cancel/i.test(e.event_status))return [];
     const rawImage=String(e.event_main_image||'');
-    return [{id:`260:${e.event_id}`,title:`${e.event_name} sample sale`,startDate,endDate,url,category:'Sample sales',kind:'event',source:'260 Sample Sale',image:safeURL(rawImage.startsWith('//')?`https:${rawImage}`:rawImage),note:`${e.event_location}. Check the source for daily opening hours and entry details.`}];
-  }).sort((a,b)=>a.startDate.localeCompare(b.startDate)).slice(0,6);
+    return [{id:`260:${e.event_id}`,title:`${e.event_name} sample sale`,startDate,endDate,url,category:'Sample sales',kind:'event',source:'260 Sample Sale',image:safeURL(rawImage.startsWith('//')?`https:${rawImage}`:rawImage),neighborhood:/NoMad|FLG/.test(e.event_location)?'NoMad':'Lafayette Street',where:e.event_location,cost:'Prices vary; admission not listed',note:`${e.event_location}. Check the source for daily opening hours and entry details.`}];
+  }).sort((a,b)=>a.startDate.localeCompare(b.startDate)).slice(0,20);
 }
 
 export function normalizeCalendarURL(value) {
@@ -135,8 +135,15 @@ export function topFinance(items){
   const selected=[],topics=new Set();for(const x of candidates){if(!topics.has(x.topic)){selected.push(x);topics.add(x.topic);}if(selected.length===3)break;}
   for(const x of candidates){if(selected.length===3)break;if(!selected.includes(x))selected.push(x);}return selected;
 }
-export function topCity(items,day){
-  const seen=new Set();return items.filter(x=>!x.endDate||x.endDate>=day).sort((a,b)=>(b.priority||0)-(a.priority||0)||(a.kind==='event'?0:1)-(b.kind==='event'?0:1)||(a.startDate||'9999').localeCompare(b.startDate||'9999')).filter(x=>{const key=x.url||x.id;if(seen.has(key))return false;seen.add(key);return true;}).slice(0,3).map(x=>({...x,what:x.what||x.note||x.title,where:x.where||x.location||'Location not confirmed',when:x.when||null,cost:x.cost||'Not listed by the source'}));
+export function topCity(items,day,interests={}){
+ const seen=new Set();const score=x=>(x.priority||0)+(x.tags?.includes('red-sox')?40:0)+(interests.artists?.some(a=>x.title.toLowerCase().includes(a.toLowerCase()))?50:0)+(interests.brands?.some(a=>x.title.toLowerCase().includes(a.toLowerCase()))?30:0);
+ return items.filter(x=>x.startDate&&(x.endDate||x.startDate)>=day&&safeURL(x.url)).sort((a,b)=>score(b)-score(a)||(a.startDate||'').localeCompare(b.startDate||'')).filter(x=>{const key=x.url||x.id;if(seen.has(key))return false;seen.add(key);return true;}).slice(0,10).map(x=>({...x,what:x.what||x.note||x.title,where:x.where||x.location||'Location not confirmed',neighborhood:x.neighborhood||x.where||'Neighborhood not confirmed',when:x.when||null,cost:x.cost||'Not listed by the source'}));
+}
+export function redSoxEvents(raw,day,zone='America/New_York'){
+ return (raw.dates||[]).flatMap(d=>(d.games||[]).filter(g=>[3313,3289].includes(g.venue?.id)&&g.status?.abstractGameState==='Preview').map(g=>{
+  const date=DateTime.fromISO(g.gameDate,{zone}),conditional=/Game 3/.test(g.description||'')&&g.gameType==='W';
+  return {id:`mlb:${g.gamePk}`,title:`Red Sox at ${g.teams.home.team.name.replace('New York ','')} · ${g.description||'MLB'}`,startDate:date.toISODate(),endDate:date.toISODate(),kind:'event',category:'Around town',tags:['red-sox'],source:'MLB',url:`https://www.mlb.com/gameday/${g.gamePk}`,where:g.venue.name,neighborhood:g.venue.id===3313?'Concourse, Bronx':'Flushing, Queens',when:`${date.toFormat('LLL d')} · ${g.status.startTimeTBD?'Time TBD':date.toFormat('h:mm a')} ET${conditional?' · If necessary':''}`,cost:'Ticket prices vary; check availability',image:g.venue.id===3313?'https://img.mlbstatic.com/mlb-images/image/private/t_16x9/t_w640/mlb/tcuphjigdobyalzmii8y.jpg':'',imageAlt:g.venue.name,what:conditional?'Potential deciding game; played only if the series needs it.':'A Red Sox game in New York.',checkedAt:new Date().toISOString()};
+ })).filter(x=>x.startDate>=day);
 }
 export function deliverySnapshot(snapshot,now=new Date()){
   const age=(now-new Date(snapshot?.checkedAt))/3600000;
