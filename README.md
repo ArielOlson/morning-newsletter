@@ -42,7 +42,7 @@ Private calendar links and snapshots are ignored by Git and blocked by the devel
 
 ## Deliveries
 
-The daily Codex task scans both configured Gmail accounts for shipping and package notices, merges updates by tracking number, and saves `config/deliveries.local.json`. The page shows status, expected dates when known, tracking links, source-email links, and the scan time. Split shipments remain separate. Pickup notices and subscription renewals are identified explicitly. Statuses are email-derived unless a successful official carrier check is recorded. Carrier tracking pages may block automated access; no tracking API credentials are required.
+The daily Codex task scans both configured Gmail accounts for shipping and package notices, merges updates by tracking number, and saves `config/deliveries.local.json`. Each package uses three compact rows: a bold merchant/item/status caption, qualification and tracking/email links, and the last update. Mark as received hides it in this browser in later editions; Show received provides undo. The same tracking number retains this choice even if the source email changes. Split shipments remain separate. Pickup notices and subscription renewals are identified explicitly. Statuses are email-derived unless a successful official carrier check is recorded. Carrier tracking pages may block automated access; no tracking API credentials are required.
 
 No email is sent, marked read, archived, or changed. Pickup PINs, addresses, and full email bodies are excluded. Connection IDs and private snapshots live in ignored `config/*.local.json`. The page’s **Refresh edition** button refreshes public sources and reuses the latest connector scan; it does not initiate a new Gmail scan. The daily task performs that scan. Snapshots older than 26 hours are visibly marked stale.
 
@@ -78,12 +78,12 @@ Tell Codex **“Add [X] to the newsletter for [date or week]”** in this projec
 - **Calendar:** Today and the next 14 days from public Apple/Google feeds or the connected Google snapshot.
 - **Reminders:** Date-aware entries in the events config files.
 - **NYC sample sales:** Organizer-provided names and date ranges from 260 Sample Sale’s public NYC event feed. Expired and non-NYC events are excluded.
-- **NYC discoveries:** Recent Secret NYC and 6sqft RSS headlines matched to your interests. These are explicitly labeled as article leads with publication dates, not confirmed event dates. Direct links lead to the original stories. Edit interests and exclusions in `config/preferences.json`, sources in `config/sources.json`.
-- **Finance:** Three recent CNBC/BBC Business stories, deduplicated across feeds and selected for topic variety. Each shows the headline, feed description, source time, and general context.
+- **NYC discoveries:** Organizer-verified dated events, 260 Sample Sale dates, and MLB’s official Red Sox schedule for NYC venues. RSS feeds provide research leads but undated articles are not used to fill the ten event slots.
+- **Finance:** Three substantive stories from Bloomberg, Financial Times, The Wall Street Journal, CNBC, and BBC Business, selected for relevance and publisher/topic variety. The daily task writes concise factual paraphrases and visible takeaways in private config/finance.local.json. Roundup/listicle teasers are excluded; summaries disclose when only a public feed excerpt was available.
 - **Deliveries:** Package status from the last successful connected Gmail scan, with direct tracking links.
 - **Curated events:** `config/nyc-events.json` can hold events with independently verified dates, category, source, and URL. The local Codex schedule can research these. The standalone GitHub workflow refreshes structured feeds only; it does not run Codex research.
 
-The NYC section contains the top three picks with What, Where, When, Cost, and Link visible, without category filters. Unknown fields are clearly labeled.
+The NYC section shows ten dated picks in a horizontal photo carousel. Every caption includes the event name, dates, cost, neighborhood, useful details, and source link. Favorite artists, Red Sox games in NYC, seasonal events, ordered-brand popups, and sample sales are prioritized. Photos come from organizers, with unavailable images labeled honestly. No category filters or extra click is required to read the details.
 
 Weather failure preserves an earlier forecast only for the **same day**, visibly marked as earlier. Calendar failures never display an empty day as if it were confirmed free. Failed news sources do not retain old leads. Every edition carries a date and refresh time. An older edition displays an explicit notice. Source timeouts and retries are bounded, and edition writes are atomic. A config error preserves the previous edition.
 
@@ -93,7 +93,7 @@ Saved discoveries live only in the current browser’s local storage. They do no
 
 The live site is **https://www.arielolson.com/morning-newsletter/**, deployed from **https://github.com/ArielOlson/morning-newsletter**.
 
-The existing Codex task runs at **4:10 a.m. America/New_York**, adjusting for daylight saving and aiming to finish before 5 a.m. It scans the connected calendar and shipping emails, refreshes weather and finance feeds, researches three NYC picks, builds, and pushes the finished edition to GitHub. See `docs/daily-refresh.md` for the runbook. The Mac must be awake, online, with Codex running and GitHub authenticated. This is a daily best-effort schedule, not continuous live tracking.
+The existing Codex task runs at **4:10 a.m. America/New_York**, adjusting for daylight saving and aiming to finish before 5 a.m. It scans the connected calendar and shipping emails, refreshes weather and finance feeds, prepares ten verified NYC picks and season-aware personal ideas, builds, and pushes the finished edition to GitHub. See `docs/daily-refresh.md` for the runbook. The Mac must be awake, online, with Codex running and GitHub authenticated. This is a daily best-effort schedule, not continuous live tracking.
 
 After preparing an edition:
 
@@ -106,7 +106,7 @@ pnpm publish:newsletter
 
 The publishing script uses the existing `gh` login and a reusable clone at `.cache/publish-repo`. It pulls `main` with fast-forward only, copies an explicit list of source files and `dist/`, commits, and pushes without force. It rejects old or unbuilt editions and stops if the remote project changed since the last publication, so those changes can be reconciled. Publication settings are in `config/publishing.json`.
 
-The active `.github/workflows/static.yml` deploys **only `dist/`** after a push to `main`. It does not regenerate the edition or overwrite connected-account data. Only the encrypted `dist/data/brief.enc.json` is committed so the website receives the full prepared edition behind a password. Private configs, connector IDs, raw email, the working `public/data/` copy, and test screenshots are excluded. Calendar and shipment information is available only after decrypting with the newsletter password.
+The active `.github/workflows/static.yml` deploys **only `dist/`** after a push to `main`. It does not regenerate the edition or overwrite connected-account data. Only encrypted editions and their archive index in `dist/data/` are committed so the website receives the full prepared edition behind a password. Private configs, connector IDs, raw email, the working `public/data/` copy, and test screenshots are excluded. Calendar and shipment information is available only after decrypting with the newsletter password.
 
 Each scheduled run must wait for its Pages deployment and run `pnpm verify:live` to decrypt the live `data/brief.enc.json` locally and verify that it matches the prepared edition. The old plaintext endpoint must return 404. A failed push or failed live verification is reported; it is never counted as success. If the Mac misses a run, the website keeps its previous edition and shows its date. GitHub Pages can cache updates briefly.
 
@@ -117,6 +117,8 @@ pnpm test
 pnpm build
 # With pnpm dev running and Google Chrome installed:
 pnpm test:browser
+pnpm test:features
+pnpm test:privacy
 # The requested Playwright CLI is also installed:
 pnpm exec playwright-cli open http://127.0.0.1:5173/ --browser=chrome
 ```

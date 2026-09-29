@@ -13,7 +13,7 @@ Personal editorial morning newsletter for Ariel. Strawberry pink, butter-yellow 
 - Cormorant Garamond 500/600 for the masthead and publication headings. Its personal letter-like character fits an actual newsletter. Italic in the same family for warm notes.
 - DM Sans 400/500/600 for dates, data, controls, and body text. Fonts bundled locally.
 - Panels 5px corners, dialogs 10px, buttons 24px. This is an intentional hierarchy, not mixed random rounding.
-- Horizontal content max 1240-1300px, gutters 48px desktop / 21px mobile. Agenda/weather ratio 1.45:1, single column below 768px. Discoveries use two editorial columns then one on phones.
+- Horizontal content max 1240-1300px, gutters 48px desktop / 21px mobile. Agenda/weather ratio 1.45:1, single column below 768px. Event and idea rows use horizontally scrolling photo cards: roughly three cards per desktop viewport and one main card plus a preview on phones.
 - One light paper theme: explicitly a print-emulating editorial publication, consistent in every section.
 
 ## Interaction & motion
@@ -26,7 +26,7 @@ No invented weather, meetings, reminders, or event dates. The issue date is alwa
 
 ## September 2026 reading-density revision
 
-Compact the greeting and illustration so useful content starts sooner. Use three full-width NYC entries with What/Where/When/Cost/Link definition lists; remove category labels and filters. Place the next three calendar plans inline, followed by finance headlines with descriptions and package status with visible dates. Keep the pink palette, artwork, serif headings, and small Three.js accent. Reduce decorative copy and avoid expand-to-read interactions. Clearly separate edition refresh time, connector scan time, and individual shipment status time.
+Compact the greeting and illustration so useful content starts sooner. Use ten photo-led NYC cards with name, dates, cost, neighborhood, details, and source links below each image; no category labels or filters. A separate matching carousel holds personal restaurant and activity ideas. Place the next three calendar plans inline, followed by finance headlines with descriptions and package status with visible dates. Keep the pink palette, artwork, serif headings, and small Three.js accent. Reduce decorative copy and avoid expand-to-read interactions. Clearly separate edition refresh time, connector scan time, and individual shipment status time. Packages use three semantic rows, wrapping naturally on phones. Keep Past editions beside About your edit, with an obvious return to the latest edition. Hearts, completed items, received packages, and opened links persist in the browser and are reflected when viewing past content.
 
 ## Site identity and link previews
 

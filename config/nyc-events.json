@@ -13,7 +13,10 @@
       "cost": "Item prices vary; up to 75% off. An admission charge is not specified.",
       "source": "260 Sample Sale",
       "url": "https://260samplesale.com/pages/events/reiss-london-flagship-ny",
-      "checkedAt": "2026-09-28T14:33:04.471Z"
+      "checkedAt": "2026-09-28T14:33:04.471Z",
+      "image": "https://virtual.260samplesale.com/cdn/shop/files/mainimage-reiss-london_9b7fc232-59d8-4265-a516-13ffc2050244.jpg?v=1789572442&width=500",
+      "imageAlt": "Reiss London organizer photo",
+      "neighborhood": "NoMad"
     },
     {
       "id": "nybg-dia-2026",
@@ -49,6 +52,24 @@
       "url": "https://bryantpark.org/activities/piano",
       "image": "https://bryantpark.org/images/cache/assets/uploads/images/meta/SingALong8.9.18creditAngelitoJusay_.9-1200x627.jpg",
       "imageAlt": "Bryant Park piano performance; photo by Angelito Jusay",
+      "checkedAt": "2026-09-29T03:24:00Z"
+    },
+    {
+      "id": "watermark-oktoberfest-2026",
+      "title": "Oktoberfest at Watermark",
+      "category": "Seasonal",
+      "priority": 10,
+      "startDate": "2026-09-10",
+      "endDate": "2026-10-31",
+      "what": "Waterfront Oktoberfest with German beer, food, and seasonal decorations. Reservations and paid packages are available.",
+      "where": "Watermark \u00b7 Pier 15, 78 South Street",
+      "neighborhood": "Seaport",
+      "when": "Sep 10\u2013Oct 31 \u00b7 check the organizer for daily hours",
+      "cost": "General admission is free; food, drinks, and packages cost extra.",
+      "source": "Watermark",
+      "url": "https://oktober-fest.nyc/get-your-tickets/",
+      "image": "https://oktober-fest.nyc/oktoberfest/wp-content/uploads/2024/06/oktoberfest-nyc-2023-at-watermark-beer-festival-05.jpg",
+      "imageAlt": "Watermark Oktoberfest in a previous season",
       "checkedAt": "2026-09-29T03:24:00Z"
     }
   ]

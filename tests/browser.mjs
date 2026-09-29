@@ -36,7 +36,7 @@ try{
   await page.route('**/data/brief.json*',async route=>{const fixture=JSON.parse(originalBrief);fixture.day='2001-01-01';fixture.weather=null;fixture.calendar={connected:true,state:'unavailable',events:[]};fixture.deliveries.state='stale';fixture.errors=['weather','calendar0'];await route.fulfill({json:fixture});});
   await page.reload();await page.locator('#notice').waitFor();assert.match(await page.locator('#notice').innerText(),/hasn’t arrived/);assert.match(await page.locator('#agenda-content').innerText(),/couldn’t refresh/);assert.match(await page.locator('#weather-content').innerText(),/couldn’t be refreshed/);
   assert.match(await page.locator('#deliveries-content').innerText(),/over 26 hours old/);
-  assert.deepEqual(errors,[]);console.log('Browser checks passed: desktop/mobile layout, calendar setup, saved items, three NYC picks with detail fields, finance, deliveries, reminder persistence, look-ahead, source failure, stale edition, private config protection, and cross-origin write protection.');
+  assert.deepEqual(errors,[]);console.log('Browser checks passed: desktop/mobile layout, calendar setup, saved items, ten NYC photo cards, finance, deliveries, reminder persistence, look-ahead, source failure, stale edition, private config protection, and cross-origin write protection.');
 }finally{
   if(originalEvents)await writeFile(eventPath,originalEvents);else await rm(eventPath,{force:true});
   if(originalBrief)await writeFile(briefPath,originalBrief);
