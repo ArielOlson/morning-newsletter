@@ -141,3 +141,7 @@ Documentation for operational assumptions:
 - https://github.com/jens-maus/node-ical
 - https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#schedule
 - https://learn.chatgpt.com/docs/automations?surface=app
+
+## Personal ideas
+
+`config/interests.local.json` stores preferences grounded in user messages and order confirmations. `config/ideas.local.json` holds undated restaurant/activity ideas with stable IDs, source links, photo URLs, and optional `seasonStart`/`seasonEnd` as MM-DD. They stay private and appear only in the encrypted edition. A `planWeekend` idea gets a suggested weekend date on Tuesdays only when both calendars are fresh and show no plans on that day. `preferredWeekday: 7` keeps Sunday-specific outings on Sunday. Suggestions are never calendar bookings.

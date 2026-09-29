@@ -1,0 +1,5 @@
+import test from 'node:test';import assert from 'node:assert/strict';import {selectIdeas} from '../scripts/ideas.mjs';
+const idea={id:'orchard',title:'Orchard',url:'https://example.com',what:'Go picking.',seasonStart:'09-01',seasonEnd:'10-31',planWeekend:true,preferredWeekday:7};
+const calendar={state:'fresh',sourceCount:2,events:[]};
+test('Tuesday suggests a free Sunday across both calendars; partial data never implies availability',()=>{assert.equal(selectIdeas([idea],'2026-09-29',calendar)[0].suggestedDate,'2026-10-04');assert.equal(selectIdeas([idea],'2026-09-29',{...calendar,state:'partial'})[0].suggestedDate,undefined);assert.equal(selectIdeas([idea],'2026-09-29',{...calendar,events:[{startDate:'2026-10-04',endDate:'2026-10-05',allDay:true}]}).length,0);});
+test('seasonal ideas stay in their window, year wrapping works, and Monday never asserts free weekend',()=>{assert.equal(selectIdeas([idea],'2026-11-01',calendar).length,0);assert.equal(selectIdeas([idea],'2026-09-28',calendar)[0].suggestedDate,undefined);assert.equal(selectIdeas([{...idea,seasonStart:'12-01',seasonEnd:'01-31'}],'2027-01-10',calendar).length,1);});

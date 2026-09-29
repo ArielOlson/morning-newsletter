@@ -54,13 +54,14 @@ function findHTML(f){
 }
 function wirePhotos(container){container.querySelectorAll('img').forEach(img=>img.addEventListener('error',()=>{img.hidden=true;const label=document.createElement('span');label.className='photo-unavailable';label.textContent='Photo unavailable';img.before(label);},{once:true}));}
 function wireCarousel(id){const row=document.getElementById(id);document.querySelectorAll(`[data-scroll="${id}"]`).forEach(b=>b.addEventListener('click',()=>row.scrollBy({left:Number(b.dataset.direction)*row.clientWidth*.85,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'})));}
-wireCarousel('finds-content');
+wireCarousel('finds-content');wireCarousel('ideas-content');
 function wireSave(container){container.querySelectorAll('[data-save]').forEach(button=>button.addEventListener('click',()=>{
   const id=button.dataset.save,index=saved.findIndex(x=>x.id===id); const next=[...saved];
-  if(index>=0)next.splice(index,1);else {const item=brief?.finds.find(x=>x.id===id);if(!item)return;next.push(item);}
+  if(index>=0)next.splice(index,1);else {const item=[...(brief?.finds||[]),...(brief?.ideas||[])].find(x=>x.id===id);if(!item)return;next.push(item);}
   try{localStorage.setItem('morning-edit-saved',JSON.stringify(next));saved=next;toast(index>=0?'Removed from your saved finds.':'Saved.');}catch{toast('This browser can’t save right now. Try allowing local storage.');return;}
-  renderFinds();renderSaved();
+  renderFinds();renderIdeas();renderSaved();
 }));}
+function renderIdeas(){if(!brief)return;$('#ideas-content').innerHTML=brief.ideas?.length?brief.ideas.map(findHTML).join(''):empty('Room for a little inspiration','Your saved restaurant and activity ideas will appear when the timing fits.');wireSave($('#ideas-content'));wirePhotos($('#ideas-content'));}
 function renderFinds(){if(!brief)return;
   $('#finds-content').innerHTML=brief.finds.length?brief.finds.slice(0,10).map(findHTML).join(''):empty('No verified picks available.','NYC sources could not provide current events. Try the next edition.');wireSave($('#finds-content'));wirePhotos($('#finds-content'));$('#city-count').textContent=`${brief.finds.length} events for the days ahead`; 
 }
@@ -91,7 +92,7 @@ function render(){
   if(stale)notices.push(`You’re reading the ${dateLabel(brief.day)} edition. Today’s edition hasn’t arrived yet; the forecast and plans below are for that date.`);
   if(brief.errors?.length)notices.push('Some sources couldn’t refresh. Check the availability notes below.');
   $('#notice').hidden=!notices.length;$('#notice').textContent=notices.join(' ');
-  renderAgenda();renderWeather();renderReminders();renderFinds();renderFinance();renderDeliveries();renderWeek();renderSaved();showView();
+  renderAgenda();renderWeather();renderReminders();renderFinds();renderIdeas();renderFinance();renderDeliveries();renderWeek();renderSaved();showView();
 }
 async function load(){
   if(protectedBuild&&!password)return false;
@@ -114,7 +115,7 @@ function lockNewsletter(message=''){
   if(!protectedBuild)return;
   password=null;brief=null;privacyGeneration++;clearTimeout(lockTimer);
   document.body.classList.add('locked');
-  for(const id of ['agenda-content','upcoming-preview','calendar-source','weather-content','reminders-content','finds-content','finance-content','deliveries-content','deliveries-source','week-content','saved-content'])$(`#${id}`).replaceChildren();
+  for(const id of ['agenda-content','upcoming-preview','calendar-source','weather-content','reminders-content','finds-content','ideas-content','finance-content','deliveries-content','deliveries-source','week-content','saved-content'])$(`#${id}`).replaceChildren();
   document.querySelectorAll('dialog[open]').forEach(d=>d.close());
   $('#unlock-password').value='';$('#unlock-status').textContent=message;$('#toast').hidden=true;
 }
