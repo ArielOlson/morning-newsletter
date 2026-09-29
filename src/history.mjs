@@ -1,0 +1,5 @@
+const key='morning-edit-history-v1';
+export async function historyId(kind,id){const bytes=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(`${kind}:${id}`));return Array.from(new Uint8Array(bytes),x=>x.toString(16).padStart(2,'0')).join('');}
+export function readHistory(storage=localStorage){try{const data=JSON.parse(storage.getItem(key)||'{}');return Object.fromEntries(['received','completed','clicked'].map(k=>[k,data[k]&&typeof data[k]==='object'&&!Array.isArray(data[k])?data[k]:{}]));}catch{return {received:{},completed:{},clicked:{}};}}
+export function changeHistory(kind,id,value,storage=localStorage){if(!['received','completed','clicked'].includes(kind))throw new Error('Unknown history type');const data=readHistory(storage);if(value)data[kind][id]=new Date().toISOString();else delete data[kind][id];storage.setItem(key,JSON.stringify(data));return data;}
+export const shipmentIdentity=p=>p.trackingNumber?`${(p.carrier||'').toLowerCase()}:${p.trackingNumber.replace(/\s/g,'').toUpperCase()}`:p.id;
