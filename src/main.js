@@ -1,5 +1,5 @@
 import './style.css';
-import { decrypt } from './crypto.mjs';
+import { decrypt, encrypt } from './crypto.mjs';
 import {historyId,readHistory,changeHistory,shipmentIdentity} from './history.mjs';
 let interactionHistory=readHistory(),showReceived=false;
 const shipmentKeys=new Map();
@@ -10,8 +10,16 @@ const escape = value => String(value ?? '').replace(/[&<>"']/g,c=>({'&':'&amp;',
 const safeURL = value => { try { const u = new URL(value); return u.protocol === 'https:' ? u.href : ''; } catch {return '';} };
 const external = 'target="_blank" rel="noopener noreferrer"';
 const base = import.meta.env.BASE_URL;
-let brief = null, saved = [], toastTimer;
-try { const value = JSON.parse(localStorage.getItem('morning-edit-saved') || '[]'); saved = Array.isArray(value) ? value.filter(x=>x && typeof x.id==='string' && typeof x.title==='string' && safeURL(x.url)).slice(0,100) : []; } catch {}
+let brief = null, saved = [], toastTimer, viewingArchive=false, savedLoaded=false;
+const reminderKeys=new Map(),ideaKeys=new Map();
+async function loadSaved(){
+ if(savedLoaded)return;const generation=privacyGeneration;
+ try{const raw=localStorage.getItem(protectedBuild?'morning-edit-saved-encrypted':'morning-edit-saved');let items=raw?(protectedBuild?JSON.parse(await decrypt(JSON.parse(raw),password)):JSON.parse(raw)):JSON.parse(localStorage.getItem('morning-edit-saved')||'[]');if(protectedBuild&&(generation!==privacyGeneration||!password))return;saved=Array.isArray(items)?items.filter(x=>x&&typeof x.id==='string'&&safeURL(x.url)).slice(0,100):[];
+ if(protectedBuild&&!raw&&saved.length){await persistSaved(saved);localStorage.removeItem('morning-edit-saved');}savedLoaded=true;
+ }catch{saved=[];savedLoaded=true;toast('Saved picks could not be read in this browser.');}
+}
+async function persistSaved(next){const generation=privacyGeneration;const encoded=protectedBuild?JSON.stringify(await encrypt(JSON.stringify(next),password)):JSON.stringify(next);if(protectedBuild&&(generation!==privacyGeneration||!password))throw Error('Locked');localStorage.setItem(protectedBuild?'morning-edit-saved-encrypted':'morning-edit-saved',encoded);}
+
 const zone = () => brief?.timezone || 'America/New_York';
 const localToday = () => new Intl.DateTimeFormat('en-CA',{ timeZone:zone(),year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
 const dateLabel = (day,options={month:'short',day:'numeric'}) => new Intl.DateTimeFormat('en-US',{...options,timeZone:'UTC'}).format(new Date(`${day}T12:00:00Z`));
@@ -48,25 +56,28 @@ function renderWeather(){
   const icon=w.code===0?'☀️':w.code<=3?'⛅':w.code>=95?'⛈️':[71,73,75,77,85,86].includes(w.code)?'❄️':w.code<=48?'🌫️':'🌧️';
   $('#weather-content').innerHTML=`<div class="weather-temp"><span class="temperature">${escape(w.high)}°</span><span class="weather-symbol" aria-hidden="true">${icon}</span></div><p class="weather-range">High ${escape(w.high)}° / Low ${escape(w.low)}° <span> · </span> ${escape(w.chance)}% chance of rain</p><h3 class="weather-condition">${escape(w.condition)}</h3><p class="weather-advice"><strong>${escape(w.advice)}</strong><br>${escape(w.clothing)}${w.uv>=6?' Sunscreen is a good idea, too.':''}</p><div class="hourly">${w.hours.map(h=>`<div><span>${+h.time.slice(11,13)%12||12} ${+h.time.slice(11,13)>=12?'PM':'AM'}</span><strong>${escape(h.temperature)}°</strong><span>${escape(h.rain)}% rain</span></div>`).join('')}</div><div class="weather-source"><span>${brief.status.weather.state==='stale'?'Earlier forecast':'Today’s forecast'}</span><a href="https://open-meteo.com/" ${external}>Open-Meteo ↗</a></div>`;
 }
-function reminderHTML(e){return `<article class="reminder"><time>${escape(dateRange(e))}</time><div><h3>${escape(e.title)}</h3>${e.note?`<p>${escape(e.note)}</p>`:''}${safeURL(e.url)?`<a class="text-button" href="${escape(safeURL(e.url))}" ${external}>Details ↗</a>`:''}</div></article>`;}
-function renderReminders(){ $('#reminders-content').innerHTML=brief.reminders.length?brief.reminders.map(reminderHTML).join(''):'<p class="reminder-empty">No reminders due. Add a date or week to keep it in your morning brief.</p>'; }
+function reminderHTML(e){const done=interactionHistory.completed[reminderKeys.get(e.id)];return `<article class="reminder"><time>${escape(dateRange(e))}</time><div><h3>${escape(e.title)}</h3><button class="text-button completion-button" data-complete="${escape(e.id)}" aria-pressed="${!!done}">${done?'Completed ✓ · undo':'Mark complete'}</button>${e.note?`<p>${escape(e.note)}</p>`:''}${safeURL(e.url)?`<a class="text-button" href="${escape(safeURL(e.url))}" ${external}>Details ↗</a>`:''}</div></article>`;}
+function wireCompletions(container){container.querySelectorAll('[data-complete]').forEach(b=>b.addEventListener('click',()=>{const key=reminderKeys.get(b.dataset.complete)||ideaKeys.get(b.dataset.complete);if(!key)return;try{interactionHistory=changeHistory('completed',key,!interactionHistory.completed[key]);renderReminders();renderIdeas();renderWeek();}catch{toast('Could not save completion in this browser.');}}));}
+function renderReminders(){const items=brief.reminders.filter(e=>viewingArchive||!interactionHistory.completed[reminderKeys.get(e.id)]);$('#reminders-content').innerHTML=items.length?items.map(reminderHTML).join(''):'<p class="reminder-empty">No reminders due. Completed reminders stay in past editions.</p>';wireCompletions($('#reminders-content'));}
+
 function findHTML(f){
  const selected=saved.some(x=>x.id===f.id),url=safeURL(f.url),photo=safeURL(f.image);
  const when=f.when||(f.startDate?dateRange(f):'Choose a day');
- return `<article class="find photo-card"><div class="card-photo">${photo?`<img src="${escape(photo)}" alt="${escape(f.imageAlt||f.title)}" loading="lazy" referrerpolicy="no-referrer">`:'<span class="photo-unavailable">Photo unavailable</span>'}<button class="save-button" data-save="${escape(f.id)}" aria-label="${selected?'Unsave':'Save'} ${escape(f.title)}" aria-pressed="${selected}">${selected?'♥':'♡'}</button></div><h3>${escape(f.title)}</h3><p class="card-date">${escape(when)}</p><p class="card-cost">${escape(f.cost||'Price not confirmed')}</p><p class="card-neighborhood">${escape(f.neighborhood||f.where||'Location not confirmed')}</p>${f.what?`<p class="card-note">${escape(f.what)}</p>`:''}${url?`<a class="text-button" href="${escape(url)}" ${external}>${escape(f.source||'Event details')} ↗</a>`:''}</article>`;
+ return `<article class="find photo-card"><div class="card-photo">${photo?`<img src="${escape(photo)}" alt="${escape(f.imageAlt||f.title)}" loading="lazy" referrerpolicy="no-referrer">`:'<span class="photo-unavailable">Photo unavailable</span>'}<button class="save-button" data-save="${escape(f.id)}" aria-label="${selected?'Unsave':'Save'} ${escape(f.title)}" aria-pressed="${selected}">${selected?'♥':'♡'}</button></div><h3>${escape(f.title)}</h3><p class="card-date">${escape(when)}</p><p class="card-cost">${escape(f.cost||'Price not confirmed')}</p><p class="card-neighborhood">${escape(f.neighborhood||f.where||'Location not confirmed')}</p>${f.what?`<p class="card-note">${escape(f.what)}</p>`:''}${url?`<a class="text-button" href="${escape(url)}" ${external}>${escape(f.source||'Event details')} ↗</a>`:''}${f.kind==='idea'?`<button class="text-button idea-complete" data-complete="${escape(f.id)}">${interactionHistory.completed[ideaKeys.get(f.id)]?'Done ✓ · undo':'Done this'}</button>`:''}</article>`;
 }
 function wirePhotos(container){container.querySelectorAll('img').forEach(img=>img.addEventListener('error',()=>{img.hidden=true;const label=document.createElement('span');label.className='photo-unavailable';label.textContent='Photo unavailable';img.before(label);},{once:true}));}
 function wireCarousel(id){const row=document.getElementById(id);document.querySelectorAll(`[data-scroll="${id}"]`).forEach(b=>b.addEventListener('click',()=>row.scrollBy({left:Number(b.dataset.direction)*row.clientWidth*.85,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'})));}
 wireCarousel('finds-content');wireCarousel('ideas-content');
-function wireSave(container){container.querySelectorAll('[data-save]').forEach(button=>button.addEventListener('click',()=>{
+function wireSave(container){container.querySelectorAll('[data-save]').forEach(button=>button.addEventListener('click',async()=>{
+  button.disabled=true;const generation=privacyGeneration;
   const id=button.dataset.save,index=saved.findIndex(x=>x.id===id); const next=[...saved];
   if(index>=0)next.splice(index,1);else {const item=[...(brief?.finds||[]),...(brief?.ideas||[])].find(x=>x.id===id);if(!item)return;next.push(item);}
-  try{localStorage.setItem('morning-edit-saved',JSON.stringify(next));saved=next;toast(index>=0?'Removed from your saved finds.':'Saved.');}catch{toast('This browser can’t save right now. Try allowing local storage.');return;}
+  try{await persistSaved(next);if(protectedBuild&&generation!==privacyGeneration)return;saved=next;toast(index>=0?'Removed from your saved finds.':'Saved.');}catch{toast('This browser can’t save right now. Try allowing local storage.');button.disabled=false;return;}
   renderFinds();renderIdeas();renderSaved();
 }));}
-function renderIdeas(){if(!brief)return;$('#ideas-content').innerHTML=brief.ideas?.length?brief.ideas.map(findHTML).join(''):empty('Room for a little inspiration','Your saved restaurant and activity ideas will appear when the timing fits.');wireSave($('#ideas-content'));wirePhotos($('#ideas-content'));}
+function renderIdeas(){if(!brief)return;const items=(brief.ideas||[]).filter(x=>viewingArchive||!interactionHistory.completed[ideaKeys.get(x.id)]);$('#ideas-content').innerHTML=items.length?items.map(findHTML).join(''):empty('Room for a little inspiration','Your saved restaurant and activity ideas will appear when the timing fits.');wireSave($('#ideas-content'));wirePhotos($('#ideas-content'));wireCompletions($('#ideas-content'));wireLinks($('#ideas-content'));}
 function renderFinds(){if(!brief)return;
-  $('#finds-content').innerHTML=brief.finds.length?brief.finds.slice(0,10).map(findHTML).join(''):empty('No verified picks available.','NYC sources could not provide current events. Try the next edition.');wireSave($('#finds-content'));wirePhotos($('#finds-content'));$('#city-count').textContent=`${brief.finds.length} events for the days ahead`; 
+  $('#finds-content').innerHTML=brief.finds.length?brief.finds.slice(0,10).map(findHTML).join(''):empty('No verified picks available.','NYC sources could not provide current events. Try the next edition.');wireSave($('#finds-content'));wirePhotos($('#finds-content'));wireLinks($('#finds-content'));$('#city-count').textContent=`${brief.finds.length} events for the days ahead`; 
 }
 const stamp=value=>new Intl.DateTimeFormat('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit',timeZone:zone()}).format(new Date(value));
 function renderFinance(){
@@ -79,35 +90,37 @@ function renderDeliveries(){
   const d=brief.deliveries||{state:'unavailable',shipments:[]};
   $('#deliveries-source').textContent=d.checkedAt?`Email scanned ${stamp(d.checkedAt)} · ${d.scope||'Connected Gmail'}. Status is from email unless carrier verification is shown.`:'Email scan unavailable.';
   if(d.state==='unavailable'){$('#deliveries-content').innerHTML=empty('Delivery scan unavailable','The next successful email scan will populate your package updates.');return;}
-  const visible=d.shipments.filter(p=>showReceived||!interactionHistory.received[shipmentKeys.get(p.id)]);
+  const visible=d.shipments.filter(p=>viewingArchive||showReceived||!interactionHistory.received[shipmentKeys.get(p.id)]);
   const labels={ordered:'Ordered',shipped:'Shipped',delivered:'Delivered',pickup:'Pickup notice',scheduled:'Scheduled',delayed:'Delayed','out-for-delivery':'Out for delivery','in-transit':'In transit'};
   $('#deliveries-content').innerHTML=(d.state==='stale'?'<p class="notice">The last email scan is over 26 hours old. These statuses may have changed.</p>':'')+(visible.length?visible.map(p=>`<article class="delivery-item"><div class="delivery-line-one"><h3>${[p.merchant,p.itemName,p.caption||p.detail,p.expectedDate?`${p.expectedLabel||'Expected'} ${dateLabel(p.expectedDate)}`:'',labels[p.status]||p.status].filter(Boolean).map(escape).join(' <span aria-hidden="true">|</span> ')}</h3><button class="text-button received-button" data-received="${escape(p.id)}">${interactionHistory.received[shipmentKeys.get(p.id)]?'Received ✓ · undo':'Mark as received'}</button></div><div class="delivery-line-two">${[p.note?`<span>${escape(p.note)}</span>`:'',!p.carrierCheckedAt?'<span>Email update; live carrier status unverified.</span>':'',safeURL(p.trackingURL)?`<a href="${escape(safeURL(p.trackingURL))}" ${external}>Tracking ↗</a>`:'',safeURL(p.emailURL)?`<a href="${escape(safeURL(p.emailURL))}" ${external}>Email ↗</a>`:''].filter(Boolean).join('<span class="separator" aria-hidden="true">|</span>')}</div><p class="find-meta delivery-line-three">Last update ${escape(stamp(p.updatedAt))}${p.carrierCheckedAt?` · Carrier checked ${escape(stamp(p.carrierCheckedAt))}`:''}</p></article>`).join(''):empty('No packages to collect',d.shipments.length?'Received packages are hidden in this browser.':'The latest scan found no active shipments or recent delivery notices.'));
   $('#deliveries-content').querySelectorAll('[data-received]').forEach(b=>b.addEventListener('click',()=>{const key=shipmentKeys.get(b.dataset.received);if(!key)return;try{interactionHistory=changeHistory('received',key,!interactionHistory.received[key]);renderDeliveries();toast('Delivery preference saved in this browser.');}catch{toast('Could not save. Allow browser storage and try again.');}}));
 }
-function renderSaved(){ $('#saved-count').textContent=saved.length?`(${saved.length})`:''; $('#saved-content').innerHTML=saved.length?saved.map(findHTML).join(''):empty('Keep the good ones.','Tap the heart on any NYC discovery to save it here. Your list stays in this browser.');wireSave($('#saved-content')); }
+function renderSaved(){ $('#saved-count').textContent=saved.length?`(${saved.length})`:''; $('#saved-content').innerHTML=saved.length?saved.map(findHTML).join(''):empty('Keep the good ones.','Tap the heart on any NYC discovery to save it here. Your list stays in this browser.');wireSave($('#saved-content'));wirePhotos($('#saved-content'));wireLinks($('#saved-content')); }
 function renderWeek(){
-  const plans=brief.calendar.events;const reminders=[...new Map([...brief.reminders,...brief.upcomingReminders].map(e=>[e.id,e])).values()];
+  const plans=brief.calendar.events;const reminders=[...new Map([...brief.reminders,...brief.upcomingReminders].map(e=>[e.id,e])).values()].filter(e=>viewingArchive||!interactionHistory.completed[reminderKeys.get(e.id)]);
   const groups=new Map();
   for(const item of [...plans.map(x=>({...x,type:'plan'})),...reminders.map(x=>({...x,type:'reminder'}))]){const d=item.startDate<brief.day?brief.day:item.startDate;if(!groups.has(d))groups.set(d,[]);groups.get(d).push(item);}
-  $('#week-content').innerHTML=(!brief.calendar.connected?'<p class="notice">Connect Apple or Google Calendar to include your upcoming plans here.</p>':brief.calendar.state!=='fresh'?'<p class="notice">Some calendar plans are unavailable. Check your calendar for your full schedule.</p>':'')+(groups.size?[...groups.entries()].sort(([a],[b])=>a.localeCompare(b)).map(([day,items])=>`<section class="week-day"><h3>${escape(dateLabel(day,{weekday:'long',month:'short',day:'numeric'}))}</h3>${items.map(e=>e.type==='plan'?planHTML(e):reminderHTML(e)).join('')}</section>`).join(''):empty('A fresh page ahead.','Your next two weeks of calendar plans and reminders will appear here.'));
+  $('#week-content').innerHTML=(!brief.calendar.connected?'<p class="notice">Connect Apple or Google Calendar to include your upcoming plans here.</p>':brief.calendar.state!=='fresh'?'<p class="notice">Some calendar plans are unavailable. Check your calendar for your full schedule.</p>':'')+(groups.size?[...groups.entries()].sort(([a],[b])=>a.localeCompare(b)).map(([day,items])=>`<section class="week-day"><h3>${escape(dateLabel(day,{weekday:'long',month:'short',day:'numeric'}))}</h3>${items.map(e=>e.type==='plan'?planHTML(e):reminderHTML(e)).join('')}</section>`).join(''):empty('A fresh page ahead.','Your next two weeks of calendar plans and reminders will appear here.'));wireCompletions($('#week-content'));
 }
 function render(){
   $('#edition-date').textContent=dateLabel(brief.day,{weekday:'long',month:'long',day:'numeric',year:'numeric'}).toUpperCase();
   $('#greeting').innerHTML=`Good morning,<br><span>${escape(brief.name)}.</span>`;
   $('#freshness').textContent=`Your ${dateLabel(brief.day)} edit · Updated ${timeLabel(brief.generatedAt)}`;
   const stale=brief.day!==localToday();let notices=[];
-  if(stale)notices.push(`You’re reading the ${dateLabel(brief.day)} edition. Today’s edition hasn’t arrived yet; the forecast and plans below are for that date.`);
+  $('#archive-banner').hidden=!viewingArchive;$('#archive-label').textContent=viewingArchive?`Past edition · ${dateLabel(brief.day)}. Your saved and completed marks are current.`:'';
+  if(stale&&!viewingArchive)notices.push(`You’re reading the ${dateLabel(brief.day)} edition. Today’s edition hasn’t arrived yet; the forecast and plans below are for that date.`);
   if(brief.errors?.length)notices.push('Some sources couldn’t refresh. Check the availability notes below.');
   $('#notice').hidden=!notices.length;$('#notice').textContent=notices.join(' ');
-  renderAgenda();renderWeather();renderReminders();renderFinds();renderIdeas();renderFinance();renderDeliveries();renderWeek();renderSaved();showView();
+  renderAgenda();renderWeather();renderReminders();renderFinds();renderIdeas();renderFinance();renderDeliveries();renderWeek();renderSaved();showView();wireLinks($('.page'));
 }
-async function load(){
+async function load(archiveDay=null){
+  if(viewingArchive&&!archiveDay)return true;
   if(protectedBuild&&!password)return false;
   const generation=privacyGeneration;
-  try{const r=await fetch(`${base}data/${protectedBuild?'brief.enc.json':'brief.json'}?t=${Date.now()}`,{cache:'no-store'});if(!r.ok)throw new Error();const raw=await r.json();const data=protectedBuild?JSON.parse(await decrypt(raw,password)):raw;if(data.version!==1||!data.day||!data.calendar)throw new Error();if(protectedBuild&&(generation!==privacyGeneration||!password))return false;for(const p of data.deliveries?.shipments||[])shipmentKeys.set(p.id,await historyId('shipment',shipmentIdentity(p)));if(protectedBuild&&(generation!==privacyGeneration||!password))return false;brief=data;render();return true;}
+  try{const file=archiveDay?`editions/${archiveDay}.${protectedBuild?'enc.json':'json'}`:protectedBuild?'brief.enc.json':'brief.json';const r=await fetch(`${base}data/${file}?t=${Date.now()}`,{cache:'no-store'});if(!r.ok)throw new Error();const raw=await r.json();const data=protectedBuild?JSON.parse(await decrypt(raw,password)):raw;if(data.version!==1||!data.day||!data.calendar)throw new Error();if(protectedBuild&&(generation!==privacyGeneration||!password))return false;await loadSaved();for(const item of [...(data.reminders||[]),...(data.upcomingReminders||[])])reminderKeys.set(item.id,await historyId('reminder',item.id));for(const item of data.ideas||[])ideaKeys.set(item.id,await historyId('idea',item.id));for(const p of data.deliveries?.shipments||[])shipmentKeys.set(p.id,await historyId('shipment',shipmentIdentity(p)));if(protectedBuild&&(generation!==privacyGeneration||!password))return false;brief=data;viewingArchive=!!archiveDay;render();return true;}
   catch{if(protectedBuild&&!brief)return false;if(brief){toast('Couldn’t load a newer edition. Your previous one is still here.');return false;}$('#edition-date').textContent=dateLabel(localToday(),{weekday:'long',month:'long',day:'numeric',year:'numeric'}).toUpperCase();$('#freshness').textContent='Your first edition is waiting to be refreshed.';$('#agenda-content').innerHTML=empty('Let’s make this your morning.','Connect your calendar in settings, then refresh your first edition.','<button class="button connect-calendar">Set up my morning ↗</button>');$('#agenda-content').classList.remove('loading-block');$('.connect-calendar')?.addEventListener('click',showSettings);$('#weather-content').innerHTML='<p class="weather-advice">Your fresh New York forecast will appear after the first refresh.</p>';$('#reminders-content').innerHTML='<p class="reminder-empty">Your date-aware reminders will live here.</p>';$('#finds-content').innerHTML=empty('New York has good things in store.','Fresh discoveries will arrive with your first edition.');renderSaved();showView();return false;}
 }
-$('#refresh-button').addEventListener('click',async()=>{const b=$('#refresh-button');b.disabled=true;b.textContent='Freshening up…';try{const r=await fetch(`${base}__local/refresh`,{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'});if(r.ok){await load();toast('Edition refreshed. Email and connected calendar use the latest saved scan.');}else {await load();toast('Showing the latest published edition. New data refreshes on schedule.');}}catch{await load();}finally{b.disabled=false;b.textContent='Refresh edition ↻';}});
+$('#refresh-button').addEventListener('click',async()=>{viewingArchive=false;const b=$('#refresh-button');b.disabled=true;b.textContent='Freshening up…';try{const r=await fetch(`${base}__local/refresh`,{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'});if(r.ok){await load();toast('Edition refreshed. Email and connected calendar use the latest saved scan.');}else {await load();toast('Showing the latest published edition. New data refreshes on schedule.');}}catch{await load();}finally{b.disabled=false;b.textContent='Refresh edition ↻';}});
 document.querySelectorAll('.add-reminder').forEach(b=>b.addEventListener('click',()=>{$('#form-status').textContent='';$('#reminder-form').elements.startDate.value=localToday();$('#reminder-dialog').showModal();}));
 $('#reminder-form').addEventListener('submit',async e=>{
   e.preventDefault();const form=e.currentTarget,values=Object.fromEntries(new FormData(form));
@@ -120,9 +133,9 @@ $('#reminder-form').addEventListener('submit',async e=>{
 });
 function lockNewsletter(message=''){
   if(!protectedBuild)return;
-  password=null;brief=null;privacyGeneration++;clearTimeout(lockTimer);
+  password=null;brief=null;saved=[];savedLoaded=false;viewingArchive=false;reminderKeys.clear();ideaKeys.clear();shipmentKeys.clear();privacyGeneration++;clearTimeout(lockTimer);
   document.body.classList.add('locked');
-  for(const id of ['agenda-content','upcoming-preview','calendar-source','weather-content','reminders-content','finds-content','ideas-content','finance-content','deliveries-content','deliveries-source','week-content','saved-content'])$(`#${id}`).replaceChildren();
+  for(const id of ['agenda-content','upcoming-preview','calendar-source','weather-content','reminders-content','finds-content','ideas-content','finance-content','deliveries-content','deliveries-source','week-content','saved-content','archive-list','archive-label'])$(`#${id}`).replaceChildren();
   document.querySelectorAll('dialog[open]').forEach(d=>d.close());
   $('#unlock-password').value='';$('#unlock-status').textContent=message;$('#toast').hidden=true;
 }
@@ -145,3 +158,20 @@ if(!protectedBuild){document.body.classList.remove('locked');showView();await lo
 document.addEventListener('visibilitychange',()=>{if(!document.hidden){if(protectedBuild&&brief&&Date.now()-lastActivity>=15*60*1000)lockNewsletter('Locked after 15 minutes of inactivity.');else load();}});
 setInterval(()=>{if(!document.hidden)load();},5*60*1000);
 import('./heart.js').then(({mountHeart})=>mountHeart($('#heart-scene'))).catch(()=>{});
+
+async function wireLinks(container){
+ for(const a of container.querySelectorAll('a[target="_blank"]')){
+  if(a.dataset.historyBound)continue;a.dataset.historyBound='true';const key=await historyId('link',a.href);
+  a.dataset.visited=String(!!interactionHistory.clicked[key]);
+  a.addEventListener('click',()=>{try{interactionHistory=changeHistory('clicked',key,true);a.dataset.visited='true';}catch{toast('Link history could not be saved in this browser.');}});
+ }
+}
+$('#past-editions-button').addEventListener('click',async()=>{
+ const generation=privacyGeneration;$('#archive-dialog').showModal();$('#archive-list').textContent='Loading editions…';
+ try{const r=await fetch(`${base}data/archive.${protectedBuild?'enc.json':'json'}?t=${Date.now()}`,{cache:'no-store'});if(!r.ok)throw Error();const raw=await r.json(),index=protectedBuild?JSON.parse(await decrypt(raw,password)):raw;if(generation!==privacyGeneration)return;
+  const entries=index.editions.filter(x=>/^\d{4}-\d{2}-\d{2}$/.test(x.day)&&x.file===`editions/${x.day}.enc.json`);
+  $('#archive-list').innerHTML=entries.map(x=>`<button class="archive-choice" data-edition="${x.day}">${escape(dateLabel(x.day,{weekday:'long',month:'long',day:'numeric',year:'numeric'}))}</button>`).join('')||'<p>No past editions yet.</p>';
+  $('#archive-list').querySelectorAll('[data-edition]').forEach(b=>b.addEventListener('click',async()=>{b.disabled=true;const ok=await load(b.dataset.edition);if(ok){$('#archive-dialog').close();location.hash='today';window.scrollTo({top:0,behavior:'instant'});}else{b.disabled=false;toast('Could not open that edition. Please try again.');}}));
+ }catch{if(generation===privacyGeneration)$('#archive-list').textContent='Past editions are unavailable. Please try again shortly.';}
+});
+$('#latest-edition').addEventListener('click',async()=>{viewingArchive=false;await load();});

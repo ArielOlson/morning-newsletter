@@ -21,5 +21,15 @@ assert.equal(html.includes(password),false,'Password must never appear in HTML')
 const assets=[...html.matchAll(/(?:src|href)="([^"#]+)"/g)].map(x=>x[1]).filter(x=>x.startsWith('./assets/')||x.startsWith('assets/'));
 assert.ok(assets.length>=3,'Expected local script, styles, and icons');
 for(const path of new Set(assets))assert.equal((await request(path)).status,200,`Asset must load: ${path}`);
+const ar=await request('data/archive.enc.json');assert.equal(ar.status,200);
+const liveIndex=JSON.parse(await decrypt(await ar.json(),password));
+const localIndex=JSON.parse(await decrypt(JSON.parse(await readFile('dist/data/archive.enc.json','utf8')),password));
+assert.deepEqual(liveIndex,localIndex,'Live archive index must match');
+for(const entry of liveIndex.editions){
+ assert.match(entry.day,/^\d{4}-\d{2}-\d{2}$/);assert.equal(entry.file,`editions/${entry.day}.enc.json`);
+ const r=await request('data/'+entry.file);assert.equal(r.status,200);
+ assert.equal(await decrypt(await r.json(),password),await decrypt(JSON.parse(await readFile('dist/data/'+entry.file,'utf8')),password));
+ assert.equal((await request(`data/editions/${entry.day}.json`)).status,404);
+}
 const edition=JSON.parse(prepared);
 console.log(`Verified encrypted live edition: ${edition.day}, generated ${edition.generatedAt}; plaintext endpoint absent and page assets load.`);

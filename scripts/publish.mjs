@@ -19,7 +19,7 @@ let passwordBytes;
 async function checkTree(path){
  for(const entry of await readdir(path,{withFileTypes:true})){
   const full=resolve(path,entry.name),rel=relative(root,full);
-  if(entry.isSymbolicLink()||privatePath(rel))throw new Error(`Refusing unexpected private file or symlink in publication: ${rel}`);
+  if(entry.isSymbolicLink()||privatePath(rel)||(rel.startsWith('dist/data/')&&entry.isFile()&&!rel.endsWith('.enc.json')))throw new Error(`Refusing unexpected private file or symlink in publication: ${rel}`);
   if(entry.isDirectory())await checkTree(full);
   else if((await readFile(full)).includes(passwordBytes))throw new Error(`Refusing a file containing the newsletter password: ${rel}`);
  }

@@ -145,3 +145,9 @@ Documentation for operational assumptions:
 ## Personal ideas
 
 `config/interests.local.json` stores preferences grounded in user messages and order confirmations. `config/ideas.local.json` holds undated restaurant/activity ideas with stable IDs, source links, photo URLs, and optional `seasonStart`/`seasonEnd` as MM-DD. They stay private and appear only in the encrypted edition. A `planWeekend` idea gets a suggested weekend date on Tuesdays only when both calendars are fresh and show no plans on that day. `preferredWeekday: 7` keeps Sunday-specific outings on Sunday. Suggestions are never calendar bookings.
+
+## Past editions and browser history
+
+Past editions appears beside About your edit. Each date keeps the final prepared edition for that day; later builds on the same day update that date. The index and every historical edition are encrypted. Builds preserve earlier encrypted editions in dist and private local copies in .cache/editions. Current code can render older edition schemas.
+
+Received packages, completed reminders/ideas, and opened links are remembered by hashed identifiers in this browser only. Reloads and new editions preserve these choices. Past editions retain their original content and display your current completion/received marks and hearts; they are not frozen snapshots of your clicking history. Show received allows undo; past editions allow undo of completed items. Clearing browser storage resets these choices, and they do not synchronize between devices. On the hosted site, saved card details are encrypted in browser storage.
