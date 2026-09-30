@@ -58,3 +58,8 @@ Ariel explicitly authorized updating `ArielOlson/morning-newsletter` on GitHub a
 6. Stay quiet after routine success. Notify Ariel only when a missed refresh, failed deployment, stale personal data, or blocked GitHub access needs action. Preserve the last successful deployed website on failure.
 
 GitHub's workflow deploys the committed build only; it cannot read the local Codex connectors. Do not restore a separate scheduled public-feed workflow that could overwrite the complete edition with an empty calendar or missing delivery data. To update source code outside this workspace, reconcile it here before the next scheduled publication.
+
+
+## Daily NYC variety
+
+Keep ten dated NYC picks, with at most three repeated from the previous New York calendar day. Research at least seven new options daily; compare stable IDs and canonical source URLs with the encrypted prior-day archive, never with an earlier refresh of the same day. Set `discovery: true` on three or four verified cultural or other broader discoveries outside the requested priority categories, chosen with Ariel’s interests in mind; leave it false/absent for favorite artists, Red Sox games, seasonal events, purchased-brand popups and sample sales. This is an internal editorial marker, not a displayed category or a claim of a stated preference. Research a varied pool before refreshing. Keep IDs stable, including multi-day events, rather than renaming repeats. The selector enforces a maximum of three repeats and four discoveries and seeks three or four discoveries among ten picks. A shortage is recorded in `status.city` and `errors`; research additional verified options before publication rather than relaxing the repeat cap or inventing events.

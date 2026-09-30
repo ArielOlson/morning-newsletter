@@ -145,10 +145,33 @@ export function topFinance(items){
  }
  return selected;
 }
-export function topCity(items,day,interests={}){
- const seen=new Set();const score=x=>(x.priority||0)+(x.tags?.includes('red-sox')?40:0)+(interests.artists?.some(a=>x.title.toLowerCase().includes(a.toLowerCase()))?50:0)+(interests.brands?.some(a=>x.title.toLowerCase().includes(a.toLowerCase()))?30:0);
- return items.filter(x=>x.startDate&&(x.endDate||x.startDate)>=day&&safeURL(x.url)).sort((a,b)=>score(b)-score(a)||(a.startDate||'').localeCompare(b.startDate||'')).filter(x=>{const key=x.url||x.id;if(seen.has(key))return false;seen.add(key);return true;}).slice(0,10).map(x=>({...x,what:x.what||x.note||x.title,where:x.where||x.location||'Location not confirmed',neighborhood:x.neighborhood||x.where||'Neighborhood not confirmed',when:x.when||null,cost:x.cost||'Not listed by the source'}));
+export function cityKeys(item){
+ const keys=item.id?[`id:${item.id}`]:[];
+ if(safeURL(item.url)){const u=new URL(item.url);u.hash='';for(const key of [...u.searchParams.keys()])if(/^utm_|^(fbclid|gclid)$/i.test(key))u.searchParams.delete(key);u.searchParams.sort();keys.push(`url:${u.href.replace(/\/$/,'')}`);}
+ return keys;
 }
+export function selectCity(items,day,interests={},previous=[]){
+ const seen=new Set(),prior=new Set(previous.flatMap(cityKeys));
+ const score=x=>(x.priority||0)+(x.tags?.includes('red-sox')?40:0)+(interests.artists?.some(a=>x.title.toLowerCase().includes(a.toLowerCase()))?50:0)+(interests.brands?.some(a=>x.title.toLowerCase().includes(a.toLowerCase()))?30:0);
+ const candidates=items.filter(x=>x.startDate&&x.startDate<=addDays(day,14)&&(x.endDate||x.startDate)>=day&&safeURL(x.url)).sort((a,b)=>score(b)-score(a)||a.startDate.localeCompare(b.startDate)).filter(x=>{const keys=cityKeys(x);if(keys.some(k=>seen.has(k)))return false;keys.forEach(k=>seen.add(k));return true;});
+ // Search the small quota space so a high-ranked repeat cannot crowd out
+ // the only combination that provides ten picks and three or four discoveries.
+ let states=new Map([['0:0:0',{picks:[],repeats:0,discoveries:0,score:0}]]);
+ for(const [rank,item] of candidates.entries()){
+  const repeat=cityKeys(item).some(k=>prior.has(k))?1:0,discovery=item.discovery===true?1:0;
+  const next=new Map(states);
+  for(const state of states.values()){
+   const n=state.picks.length+1,r=state.repeats+repeat,d=state.discoveries+discovery;if(n>10||r>3||d>4)continue;
+   const value={picks:[...state.picks,item],repeats:r,discoveries:d,score:state.score+candidates.length-rank},key=`${n}:${r}:${d}`;
+   if(!next.has(key)||value.score>next.get(key).score)next.set(key,value);
+  }
+  states=next;
+ }
+ const best=[...states.values()].sort((a,b)=>b.picks.length-a.picks.length||(b.discoveries>=3)-(a.discoveries>=3)||b.score-a.score)[0];
+ const issues=[];if(best.picks.length<10)issues.push(`Only ${best.picks.length} verified events fit today's rotation; more new picks are needed.`);if(best.discoveries<3)issues.push('Research at least three broader discoveries outside the requested priority categories.');
+ return {items:best.picks.map(x=>({...x,what:x.what||x.note||x.title,where:x.where||x.location||'Location not confirmed',neighborhood:x.neighborhood||x.where||'Neighborhood not confirmed',when:x.when||null,cost:x.cost||'Not listed by the source'})),repeats:best.repeats,discoveryCount:best.discoveries,issues};
+}
+export function topCity(items,day,interests={},previous=[]){return selectCity(items,day,interests,previous).items;}
 export function redSoxEvents(raw,day,zone='America/New_York'){
  return (raw.dates||[]).flatMap(d=>(d.games||[]).filter(g=>[3313,3289].includes(g.venue?.id)&&g.status?.abstractGameState==='Preview').map(g=>{
   const date=DateTime.fromISO(g.gameDate,{zone}),conditional=/Game 3/.test(g.description||'')&&g.gameType==='W';
