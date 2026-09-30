@@ -69,6 +69,8 @@ async function main() {
     reminders:remindersFor(personal,day,prefs.timezone), upcomingReminders:personal.filter(e=>e.startDate>day && e.startDate<=addDays(day,14,prefs.timezone)),
     finds:city.items, finance, deliveries:packages, directories:sources.directories, status, errors };
   brief.ideas=selectIdeas((await readJSON('config/ideas.local.json',{ideas:[]})).ideas,day,brief.calendar,prefs.timezone);
+  status.ideas={state:brief.ideas.length===5?'fresh':'partial',count:brief.ideas.length};
+  if(brief.ideas.length<5)errors.push('ideas');
   await atomic('public/data/brief.json',brief);
   // Private calendar details are intentionally excluded from logs and history.
   console.log(`Morning edit updated for ${day}. Weather: ${status.weather.state}. Calendar: ${brief.calendar.state}. NYC finds: ${brief.finds.length}.`);

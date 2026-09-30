@@ -14,6 +14,7 @@ try{
  const unlock=async()=>{await page.locator('#unlock-password').fill(password);await page.locator('#unlock-form button').click();await page.locator('.page').waitFor({state:'visible'});};
  await page.goto(base+'?features='+Date.now());await unlock();
  assert.equal(await page.locator('#finds-content .find').count(),10);
+ assert.equal(brief.ideas.length,5,'Daily edition has five free-time ideas');
  assert.equal(await page.locator('#ideas-content .find').count(),brief.ideas.length);
  assert.match(await page.locator('#calendar-source').innerText(),/Calendar 1: checked.*Calendar 2: checked/);
  const heart=page.locator('#finds-content [data-save]').first(),id=await heart.getAttribute('data-save');
@@ -56,10 +57,12 @@ try{
  // Scroll each photo into view so lazy loading is checked across the entire rail.
  const photos=rail.locator('img');assert.equal(await photos.count(),10);
  for(const photo of await photos.all()){await photo.scrollIntoViewIfNeeded();await photo.evaluate(img=>img.complete?Promise.resolve():new Promise(resolve=>{img.addEventListener('load',resolve,{once:true});img.addEventListener('error',resolve,{once:true});setTimeout(resolve,12000);}));assert.equal(await photo.evaluate(img=>img.naturalWidth>0),true,'Event photo loads');}
+ const ideaPhotos=page.locator('#ideas-content img');assert.equal(await ideaPhotos.count(),5);
+ for(const photo of await ideaPhotos.all()){await photo.scrollIntoViewIfNeeded();await photo.evaluate(img=>img.complete?Promise.resolve():new Promise(resolve=>{img.addEventListener('load',resolve,{once:true});img.addEventListener('error',resolve,{once:true});setTimeout(resolve,12000);}));assert.equal(await photo.evaluate(img=>img.naturalWidth>0),true,'Free-time idea photo loads');}
  await rail.evaluate(e=>e.scrollLeft=0);await page.evaluate(()=>document.fonts.ready);
  await page.screenshot({path:'test-results/features-desktop.png',fullPage:true});
  await page.setViewportSize({width:390,height:844});await page.screenshot({path:'test-results/features-mobile.png',fullPage:true});
  const storage=await page.evaluate(()=>JSON.stringify({...localStorage}));assert.equal(storage.includes(password),false);assert.equal(storage.includes(shipment),false);assert.equal(storage.includes(brief.ideas[0].title),false);
  assert.deepEqual(errors,[]);
- console.log('Verified ten loaded event photos, both calendars, responsive scrolling, persistent encrypted hearts, received packages and undo, completed ideas, link history, and encrypted archive navigation.');
+ console.log('Verified ten event photos and five free-time photos, both calendars, responsive scrolling, persistent encrypted hearts, received packages and undo, completed ideas, link history, and encrypted archive navigation.');
 }finally{await browser.close();await new Promise(resolve=>server?server.httpServer.close(resolve):resolve());}
