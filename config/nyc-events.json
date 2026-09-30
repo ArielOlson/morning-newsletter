@@ -13,7 +13,7 @@
       "cost": "Item prices vary; up to 75% off. An admission charge is not specified.",
       "source": "260 Sample Sale",
       "url": "https://260samplesale.com/pages/events/reiss-london-flagship-ny",
-      "checkedAt": "2026-09-29T08:15:53.510198+00:00",
+      "checkedAt": "2026-09-30T08:47:12.332023+00:00",
       "image": "https://virtual.260samplesale.com/cdn/shop/files/mainimage-reiss-london_9b7fc232-59d8-4265-a516-13ffc2050244.jpg?v=1789572442&width=500",
       "imageAlt": "Reiss London organizer photo",
       "neighborhood": "NoMad"
@@ -22,7 +22,7 @@
       "id": "nybg-dia-2026",
       "title": "Día de los Muertos at NYBG",
       "category": "Seasonal",
-      "priority": 9,
+      "priority": -1,
       "startDate": "2026-10-03",
       "endDate": "2026-11-02",
       "what": "Opening weekend of NYBG’s seasonal celebration: marigolds, a community ofrenda, live Mexican folk music, and hands-on paper and flower crafts.",
@@ -34,7 +34,8 @@
       "checkedAt": "2026-09-29T03:24:00Z",
       "image": "https://www.nybg.org/content/uploads/2026/07/iStock-1438560015-edit-1.1-800x800.jpg",
       "neighborhood": "Bronx Park",
-      "imageAlt": "NYBG seasonal ofrenda display"
+      "imageAlt": "NYBG seasonal ofrenda display",
+      "verificationNote": "Organizer page returned 403 on both checks Sep 30; retain original checkedAt and prefer currently verifiable picks."
     },
     {
       "id": "bryant-piano-final-week-2026",
@@ -43,16 +44,16 @@
       "priority": 10,
       "startDate": "2026-09-28",
       "endDate": "2026-10-01",
-      "what": "Lunchtime ragtime and jazz outdoors: Charlie Judkins Sep 29–30; Terry Waldo’s Gotham City Band Oct 1.",
+      "what": "Charlie Judkins plays ragtime and jazz today. Terry Waldo’s Gotham City Band closes the season Oct 1.",
       "where": "Bryant Park Upper Terrace",
       "neighborhood": "Midtown",
-      "when": "Sep 29–Oct 1 · 12:30–2:30 p.m.",
+      "when": "Sep 30–Oct 1 · 12:30–2:30 p.m.",
       "cost": "Free park performance",
       "source": "Bryant Park",
       "url": "https://bryantpark.org/activities/piano",
       "image": "https://bryantpark.org/images/cache/assets/uploads/images/meta/SingALong8.9.18creditAngelitoJusay_.9-1200x627.jpg",
       "imageAlt": "Bryant Park piano performance; photo by Angelito Jusay",
-      "checkedAt": "2026-09-29T08:15:53.510198+00:00"
+      "checkedAt": "2026-09-30T08:47:12.332023+00:00"
     },
     {
       "id": "watermark-oktoberfest-2026",
@@ -70,7 +71,7 @@
       "url": "https://oktober-fest.nyc/get-your-tickets/",
       "image": "https://oktober-fest.nyc/oktoberfest/wp-content/uploads/2024/06/oktoberfest-nyc-2023-at-watermark-beer-festival-05.jpg",
       "imageAlt": "Watermark Oktoberfest in a previous season",
-      "checkedAt": "2026-09-29T08:15:53.510198+00:00"
+      "checkedAt": "2026-09-30T08:47:12.332023+00:00"
     },
     {
       "id": "260:09/29/2026-Boll&Branch, (NoMad) NY-10/04/2026",
@@ -109,7 +110,7 @@
       "when": "Sep 30–Oct 4 · Wed–Sat 11 a.m.–7 p.m.; Sun 11 a.m.–5 p.m.",
       "what": "Five-day clothing sale at the Lafayette location.",
       "priority": 0,
-      "checkedAt": "2026-09-29T08:16:34.362Z",
+      "checkedAt": "2026-09-30T08:47:12.332023+00:00",
       "imageAlt": "Another Tomorrow sample sale organizer photograph"
     },
     {
@@ -131,6 +132,46 @@
       "priority": 0,
       "checkedAt": "2026-09-29T08:16:34.362Z",
       "imageAlt": "Janessa Leoné sample sale organizer photograph"
+    },
+    {
+      "id": "260:09/30/2026-Scanlan Theodore, (LaFA) NY-10/04/2026",
+      "title": "Scanlan Theodore sample sale",
+      "startDate": "2026-09-30",
+      "endDate": "2026-10-04",
+      "url": "https://260samplesale.com/pages/events/scanlan-theodore-lafa-ny",
+      "category": "Sample sales",
+      "kind": "event",
+      "source": "260 Sample Sale",
+      "image": "https://virtual.260samplesale.com/cdn/shop/files/Scanlan_Theodore_Online_DropDown.jpg?v=1789561871&width=500",
+      "neighborhood": "SoHo",
+      "where": "148 Lafayette Street",
+      "cost": "Up to 70% off; individual prices vary. Admission charge not specified.",
+      "note": "NYC (LaFA). Check the source for daily opening hours and entry details.",
+      "when": "Sep 30–Oct 4 · Wed–Sat 11 a.m.–7 p.m.; Sun 11 a.m.–5 p.m.",
+      "what": "Five-day clothing sale at the Lafayette location.",
+      "priority": 0,
+      "checkedAt": "2026-09-30T08:47:12.332Z",
+      "imageAlt": "Scanlan Theodore sample sale organizer photograph"
+    },
+    {
+      "id": "260:10/06/2026-Eberjey, (NoMad) NY-10/11/2026",
+      "title": "Eberjey sample sale",
+      "startDate": "2026-10-06",
+      "endDate": "2026-10-11",
+      "url": "https://260samplesale.com/pages/events/eberjey-nomad-ny",
+      "category": "Sample sales",
+      "kind": "event",
+      "source": "260 Sample Sale",
+      "image": "https://virtual.260samplesale.com/cdn/shop/files/mainimage-Eberjay_a400afae-497d-49c4-974a-b49c055d21f1.jpg?v=1790088137&width=500",
+      "neighborhood": "NoMad",
+      "where": "260 Fifth Avenue",
+      "cost": "Prices vary; admission charge not specified.",
+      "note": "NYC (NoMad). Check the source for daily opening hours and entry details.",
+      "when": "Oct 6–11 · Tue–Sat 11 a.m.–7 p.m.; Sun 11 a.m.–5 p.m.",
+      "what": "Six-day Eberjey sale at the NoMad location.",
+      "priority": 0,
+      "checkedAt": "2026-09-30T08:47:12.332Z",
+      "imageAlt": "Eberjey sample sale organizer photograph"
     }
   ]
 }
