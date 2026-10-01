@@ -33,7 +33,7 @@ document.querySelectorAll('.close-dialog,.close-settings').forEach(button=>butto
 document.querySelectorAll('dialog').forEach(dialog=>dialog.addEventListener('click',e=>{ if(e.target===dialog){ const r=dialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom) dialog.close(); } }));
 function showView(){ const view = ['week','saved'].includes(location.hash.slice(1)) ? location.hash.slice(1) : 'today'; ['today','week','saved'].forEach(x=>{$(`#${x}-view`).hidden=x!==view; const link=$(`[data-view="${x}"]`); if(x===view)link.setAttribute('aria-current','page');else link.removeAttribute('aria-current');}); if(view==='saved')renderSaved(); }
 window.addEventListener('hashchange',showView);
-function planHTML(e){ return `<article class="plan"><time>${e.allDay?'All day':escape(timeLabel(e.start))}${!e.allDay && e.end!==e.start ? `<br><span class="small-label">to ${escape(timeLabel(e.end))}</span>`:''}</time><div class="plan-main"><h3>${escape(e.title)}</h3>${e.location?`<p>${escape(e.location)}</p>`:''}${e.note?`<p>${escape(e.note)}</p>`:''}${e.recurring?'<p>Repeats</p>':''}</div></article>`; }
+function planHTML(e){ return `<article class="plan"><time>${e.allDay?'All day':escape(timeLabel(e.start))}${!e.allDay && e.end!==e.start ? `<br><span class="small-label">to ${escape(timeLabel(e.end))}</span>`:''}</time><div class="plan-main"><h3>${escape(e.title)}</h3>${e.location?`<p>${escape(e.location)}</p>`:''}${e.note?`<p>${escape(e.note)}</p>`:''}${e.calendarLabel?`<p class="small-label">${escape(e.calendarLabel)}</p>`:''}${e.recurring?'<p>Repeats</p>':''}</div></article>`; }
 function eventOnDay(e,day){return e.startDate<=day && (e.allDay ? e.endDate>day : e.endDate>=day);}
 function renderAgenda(){
   const c=brief.calendar,day=brief.day;
@@ -47,7 +47,7 @@ function renderAgenda(){
   const next=c.events.filter(e=>e.startDate>day).slice(0,3);
   $('#upcoming-preview').innerHTML=next.length?`<h3 class="upcoming-heading">Coming up</h3>${next.map(e=>`<div class="upcoming-item"><time>${escape(dateLabel(e.startDate))}${e.allDay?'':` · ${escape(timeLabel(e.start))}`}</time><strong>${escape(e.title)}</strong>${e.location?`<span>${escape(e.location)}</span>`:''}</div>`).join('')}<a class="text-button" href="#week">Full two-week schedule ↗</a>`:'';
   const calendarSources=Object.entries(brief.status||{}).filter(([key])=>key.startsWith('calendar')).sort(([a],[b])=>a.localeCompare(b,undefined,{numeric:true})).map(([,value])=>value);
-  $('#calendar-source').textContent=calendarSources.map((x,i)=>`Calendar ${i+1}: ${x.state==='fresh'?`checked ${stamp(x.updatedAt)}`:'unavailable'}`).join(' · ');
+  $('#calendar-source').textContent=calendarSources.map((x,i)=>`Calendar ${i+1}: ${x.state==='fresh'?`checked ${stamp(x.updatedAt)}`:'unavailable'}${x.label?` (${x.label})`:''}`).join(' · ');
 
 }
 function renderWeather(){

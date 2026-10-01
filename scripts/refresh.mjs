@@ -1,8 +1,9 @@
+import {readCalendarSource} from './calendar-source.mjs';
 import { readFile, writeFile, mkdir, rename } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { resolve, dirname } from 'node:path';
 import { randomUUID } from 'node:crypto';
-import { dayInZone, addDays, calendarEvents, remindersFor, validateEvents, weatherSummary, parseFeed, parseSales, normalizeCalendarURL, parseFinance, topFinance, curatedFinance, deliverySnapshot, calendarSnapshot, mergeCalendarPlans, redSoxEvents } from './lib.mjs';
+import { dayInZone, addDays, remindersFor, validateEvents, weatherSummary, parseFeed, parseSales, parseFinance, topFinance, curatedFinance, deliverySnapshot, mergeCalendarPlans, redSoxEvents } from './lib.mjs';
 import {selectIdeas} from './ideas.mjs';
 import {selectCity} from './lib.mjs';
 import {previousCityEdition} from './city-history.mjs';
@@ -46,8 +47,10 @@ async function main() {
     temperature_unit:'fahrenheit', wind_speed_unit:'mph', forecast_days:'2',
     daily:'weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,uv_index_max,wind_speed_10m_max', hourly:'temperature_2m,precipitation_probability' }).toString();
   async function readCalendar(input,i){
-    try { const events=calendarEvents(await download(normalizeCalendarURL(input)),day,prefs.timezone,Math.min(90,Math.max(1,calendar.lookAheadDays||14)),calendar.includeDescriptions);status[`calendar${i}`]={state:'fresh',updatedAt:now.toISOString(),mode:'public-feed'};return events; }
-    catch { const snapshot=calendarSnapshot(linkedCalendar,input,day,now);if(snapshot){status[`calendar${i}`]={state:'fresh',updatedAt:snapshot.checkedAt,mode:'connected-account',publicFeedAvailable:false};return snapshot.events;}errors.push(`calendar${i}`);status[`calendar${i}`]={state:'unavailable',updatedAt:null};return []; }
+    const result=await readCalendarSource({input,snapshot:linkedCalendar,day,now,zone:prefs.timezone,lookAheadDays:Math.min(90,Math.max(1,calendar.lookAheadDays||14)),includeDescriptions:calendar.includeDescriptions,label:calendar.labels?.[i],download});
+    status[`calendar${i}`]=result.status;
+    if(result.status.state!=='fresh')errors.push(`calendar${i}`);
+    return result.events;
   }
   const jobs = [collect('weather', async()=> weatherSummary(JSON.parse(await download(forecastURL)), prefs, day), old.weather?.day === day ? old.weather : null),
     ...calendar.urls.map(readCalendar),

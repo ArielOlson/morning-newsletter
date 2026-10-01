@@ -187,15 +187,15 @@ export function deliverySnapshot(snapshot,now=new Date()){
   });
   return {state:age>26?'stale':'fresh',checkedAt:snapshot.checkedAt,shipments,scope:snapshot.scope||'Connected email accounts'};
 }
-export function calendarSnapshot(snapshot,input,day,now=new Date()){
+export function calendarSnapshot(snapshot,input,day,now=new Date(),lookAheadDays=14){
   const item=snapshot?.calendars?.find(x=>x.input===input),age=(now-new Date(item?.checkedAt))/3600000;
-  if(!item||!Number.isFinite(age)||age<0||age>26||item.windowStart>day||item.windowEnd<=addDays(day,13)||!Array.isArray(item.events))return null;
-  return {events:item.events.filter(x=>x.allDay?x.endDate>day:x.endDate>=day),checkedAt:item.checkedAt};
+  if(!item||!Number.isFinite(age)||age<0||age>26||item.windowStart>day||item.windowEnd<addDays(day,lookAheadDays)||!Array.isArray(item.events))return null;
+  return {events:item.events.filter(x=>x.startDate<addDays(day,lookAheadDays)&&(x.allDay?x.endDate>day:x.endDate>=day)),checkedAt:item.checkedAt};
 }
 
 export function mergeCalendarPlans(plans){
  const seen=new Set();return plans.filter(e=>{
   const key=[e.title.trim().toLowerCase(),new Date(e.start).toISOString(),new Date(e.end).toISOString(),e.location||''].join('|');
   if(seen.has(key))return false;seen.add(key);return true;
- }).sort((a,b)=>a.start.localeCompare(b.start)||Number(b.allDay)-Number(a.allDay));
+ }).sort((a,b)=>Date.parse(a.start)-Date.parse(b.start)||Number(b.allDay)-Number(a.allDay));
 }
