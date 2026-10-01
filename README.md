@@ -48,7 +48,7 @@ No email is sent, marked read, archived, or changed. Pickup PINs, addresses, and
 
 ## Add something to the newsletter
 
-Use **Add a reminder** on the local page. It writes to `config/events.local.json` and refreshes the edition. On a hosted static site, add reminders through the config file instead; the page explains this when saving is unavailable.
+Use **Add a reminder** on the website from your phone or computer. Hosted reminders are encrypted with the newsletter password and saved in that browser. They appear on their reminder dates in future editions on the same device, with persistent completion marks. Open the form to edit or delete any saved reminder. They do not sync across browsers/devices, enter GitHub, or become part of published past editions; clearing browser storage removes them. For reminders shared across devices, ask Codex to add them to the newsletter. The local Mac editor still writes to `config/events.local.json` and refreshes the edition.
 
 Alternatively, edit `config/events.json` for items you are comfortable committing, or `config/events.local.json` for private items. Both use this structure:
 

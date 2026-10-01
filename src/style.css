@@ -25,3 +25,7 @@
 .delivery-item{padding:15px 0}.delivery-line-one{display:flex;gap:16px;align-items:baseline;justify-content:space-between;margin-bottom:6px}.delivery-line-one h3{font:600 14px/1.65 var(--sans);margin:0}.delivery-line-one h3 span{color:var(--line);margin:0 4px}.delivery-line-one button{font-size:12px;white-space:nowrap;flex-shrink:0}.delivery-line-two{display:flex;flex-wrap:wrap;gap:3px 8px;font-size:12px;line-height:1.65;color:var(--muted);margin-bottom:5px}.delivery-line-two a{color:var(--rose)}.delivery-item .delivery-line-three{font-size:10px;margin:0}.delivery-line-two .separator{color:var(--line)}@media(max-width:767px){.delivery-line-one{flex-wrap:wrap;gap:3px}.delivery-line-one h3{font-size:13px}}
 
 .archive-choice{display:block;width:100%;text-align:left;padding:16px 4px;border:0;border-top:1px solid var(--line);background:none;color:var(--rose)}a[data-visited="true"]:after{content:' · opened';font-size:10px;color:var(--muted)}.idea-complete{display:block;margin-top:12px!important}.completion-button{font-size:11px;margin:5px 0 10px}#archive-banner{display:flex;align-items:center;gap:16px;flex-wrap:wrap}.edition-line{flex-wrap:wrap}
+
+#device-reminders-panel { margin-top: 1.5rem; border-top: 1px solid var(--line, #eacbd2); padding-top: 1rem; }
+.device-note { padding: .75rem 0; border-bottom: 1px solid var(--line, #eacbd2); overflow-wrap: anywhere; }
+.device-note p { margin: .25rem 0; }

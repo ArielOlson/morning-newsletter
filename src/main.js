@@ -1,3 +1,4 @@
+import {readDeviceReminders,changeDeviceReminders,deviceRemindersFor,deviceRemindersKey,validateDeviceReminder} from './device-reminders.mjs';
 import './style.css';
 import { decrypt, encrypt } from './crypto.mjs';
 import {historyId,readHistory,changeHistory,shipmentIdentity} from './history.mjs';
@@ -12,6 +13,25 @@ const external = 'target="_blank" rel="noopener noreferrer"';
 const base = import.meta.env.BASE_URL;
 let brief = null, saved = [], toastTimer, viewingArchive=false, savedLoaded=false;
 const reminderKeys=new Map(),ideaKeys=new Map();
+let deviceReminders=[],editingReminderId=null;
+function reminderData(){
+ const local=protectedBuild&&!viewingArchive?deviceRemindersFor(deviceReminders,brief.day):{reminders:[],upcomingReminders:[]};
+ return {reminders:[...brief.reminders,...local.reminders],upcomingReminders:[...brief.upcomingReminders,...local.upcomingReminders]};
+}
+async function loadDeviceNotes(){
+ if(!protectedBuild)return;
+ const generation=privacyGeneration;
+ try{const items=await readDeviceReminders(password);if(generation!==privacyGeneration||!password)return;deviceReminders=items;for(const item of items)reminderKeys.set(item.id,await historyId('reminder',item.id));}
+ catch{toast('Saved reminders could not be read. Your stored copy has been kept.');}
+}
+function renderDeviceNotes(){
+ const panel=$('#device-reminders-panel');panel.hidden=!protectedBuild;
+ $('#device-reminders-list').innerHTML=deviceReminders.length?deviceReminders.slice().sort((a,b)=>a.startDate.localeCompare(b.startDate)).map(e=>`<article class="device-note"><strong>${escape(e.title)}</strong><p>${escape(dateRange(e))}${interactionHistory.completed[reminderKeys.get(e.id)]?' · Completed':''}</p><div><button class="text-button" data-toggle-reminder="${escape(e.id)}">${interactionHistory.completed[reminderKeys.get(e.id)]?'Undo complete':'Mark complete'}</button> · <button class="text-button" data-edit-reminder="${escape(e.id)}">Edit</button> · <button class="text-button" data-delete-reminder="${escape(e.id)}">Delete</button></div></article>`).join(''):'<p>No reminders saved in this browser yet.</p>';
+ $('#device-reminders-list').querySelectorAll('[data-toggle-reminder]').forEach(b=>b.addEventListener('click',()=>{const key=reminderKeys.get(b.dataset.toggleReminder);try{interactionHistory=changeHistory('completed',key,!interactionHistory.completed[key]);renderDeviceNotes();renderReminders();renderWeek();}catch{$('#form-status').textContent='Could not save completion in this browser.';}}));
+ $('#device-reminders-list').querySelectorAll('[data-edit-reminder]').forEach(b=>b.addEventListener('click',()=>{const item=deviceReminders.find(x=>x.id===b.dataset.editReminder);if(!item)return;editingReminderId=item.id;const form=$('#reminder-form');for(const name of ['title','startDate','endDate','remindDaysBefore','note'])form.elements[name].value=item[name]??'';$('#form-status').textContent='Editing your saved reminder.';form.elements.title.focus();}));
+ $('#device-reminders-list').querySelectorAll('[data-delete-reminder]').forEach(b=>b.addEventListener('click',async()=>{b.disabled=true;const generation=privacyGeneration;try{const items=await changeDeviceReminders(password,items=>items.filter(x=>x.id!==b.dataset.deleteReminder),{isCurrent:()=>generation===privacyGeneration&&!!password});deviceReminders=items;if(editingReminderId===b.dataset.deleteReminder){editingReminderId=null;$('#reminder-form').reset();}renderDeviceNotes();renderReminders();renderWeek();$('#form-status').textContent='Reminder deleted from this browser.';}catch{$('#form-status').textContent='Could not delete. Your saved reminders are unchanged.';b.disabled=false;}}));
+}
+window.addEventListener('storage',async event=>{if(event.key===deviceRemindersKey&&password&&brief){await loadDeviceNotes();if(!brief)return;renderReminders();renderWeek();if($('#reminder-dialog').open)renderDeviceNotes();}});
 async function loadSaved(){
  if(savedLoaded)return;const generation=privacyGeneration;
  try{const raw=localStorage.getItem(protectedBuild?'morning-edit-saved-encrypted':'morning-edit-saved');let items=raw?(protectedBuild?JSON.parse(await decrypt(JSON.parse(raw),password)):JSON.parse(raw)):JSON.parse(localStorage.getItem('morning-edit-saved')||'[]');if(protectedBuild&&(generation!==privacyGeneration||!password))return;saved=Array.isArray(items)?items.filter(x=>x&&typeof x.id==='string'&&safeURL(x.url)).slice(0,100):[];
@@ -33,7 +53,7 @@ document.querySelectorAll('.close-dialog,.close-settings').forEach(button=>butto
 document.querySelectorAll('dialog').forEach(dialog=>dialog.addEventListener('click',e=>{ if(e.target===dialog){ const r=dialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom) dialog.close(); } }));
 function showView(){ const view = ['week','saved'].includes(location.hash.slice(1)) ? location.hash.slice(1) : 'today'; ['today','week','saved'].forEach(x=>{$(`#${x}-view`).hidden=x!==view; const link=$(`[data-view="${x}"]`); if(x===view)link.setAttribute('aria-current','page');else link.removeAttribute('aria-current');}); if(view==='saved')renderSaved(); }
 window.addEventListener('hashchange',showView);
-function planHTML(e){ return `<article class="plan"><time>${e.allDay?'All day':escape(timeLabel(e.start))}${!e.allDay && e.end!==e.start ? `<br><span class="small-label">to ${escape(timeLabel(e.end))}</span>`:''}</time><div class="plan-main"><h3>${escape(e.title)}</h3>${e.location?`<p>${escape(e.location)}</p>`:''}${e.note?`<p>${escape(e.note)}</p>`:''}${e.calendarLabel?`<p class="small-label">${escape(e.calendarLabel)}</p>`:''}${e.recurring?'<p>Repeats</p>':''}</div></article>`; }
+function planHTML(e){ return `<article class="plan"><time>${e.allDay?'All day':escape(timeLabel(e.start))}${!e.allDay && e.end!==e.start ? `<br><span class="small-label">to ${escape(timeLabel(e.end))}</span>`:''}</time><div class="plan-main"><h3>${escape(e.title)}</h3>${e.location?`<p>${escape(e.location)}</p>`:''}${e.deviceOnly?'<p class="small-label">Saved in this browser</p>':''}${e.note?`<p>${escape(e.note)}</p>`:''}${e.calendarLabel?`<p class="small-label">${escape(e.calendarLabel)}</p>`:''}${e.recurring?'<p>Repeats</p>':''}</div></article>`; }
 function eventOnDay(e,day){return e.startDate<=day && (e.allDay ? e.endDate>day : e.endDate>=day);}
 function renderAgenda(){
   const c=brief.calendar,day=brief.day;
@@ -56,9 +76,9 @@ function renderWeather(){
   const icon=w.code===0?'☀️':w.code<=3?'⛅':w.code>=95?'⛈️':[71,73,75,77,85,86].includes(w.code)?'❄️':w.code<=48?'🌫️':'🌧️';
   $('#weather-content').innerHTML=`<div class="weather-temp"><span class="temperature">${escape(w.high)}°</span><span class="weather-symbol" aria-hidden="true">${icon}</span></div><p class="weather-range">High ${escape(w.high)}° / Low ${escape(w.low)}° <span> · </span> ${escape(w.chance)}% chance of rain</p><h3 class="weather-condition">${escape(w.condition)}</h3><p class="weather-advice"><strong>${escape(w.advice)}</strong><br>${escape(w.clothing)}${w.uv>=6?' Sunscreen is a good idea, too.':''}</p><div class="hourly">${w.hours.map(h=>`<div><span>${+h.time.slice(11,13)%12||12} ${+h.time.slice(11,13)>=12?'PM':'AM'}</span><strong>${escape(h.temperature)}°</strong><span>${escape(h.rain)}% rain</span></div>`).join('')}</div><div class="weather-source"><span>${brief.status.weather.state==='stale'?'Earlier forecast':'Today’s forecast'}</span><a href="https://open-meteo.com/" ${external}>Open-Meteo ↗</a></div>`;
 }
-function reminderHTML(e){const done=interactionHistory.completed[reminderKeys.get(e.id)];return `<article class="reminder"><time>${escape(dateRange(e))}</time><div><h3>${escape(e.title)}</h3><button class="text-button completion-button" data-complete="${escape(e.id)}" aria-pressed="${!!done}">${done?'Completed ✓ · undo':'Mark complete'}</button>${e.note?`<p>${escape(e.note)}</p>`:''}${safeURL(e.url)?`<a class="text-button" href="${escape(safeURL(e.url))}" ${external}>Details ↗</a>`:''}</div></article>`;}
+function reminderHTML(e){const done=interactionHistory.completed[reminderKeys.get(e.id)];return `<article class="reminder"><time>${escape(dateRange(e))}</time><div><h3>${escape(e.title)}</h3><button class="text-button completion-button" data-complete="${escape(e.id)}" aria-pressed="${!!done}">${done?'Completed ✓ · undo':'Mark complete'}</button>${e.deviceOnly?'<p class="small-label">Saved in this browser</p>':''}${e.note?`<p>${escape(e.note)}</p>`:''}${safeURL(e.url)?`<a class="text-button" href="${escape(safeURL(e.url))}" ${external}>Details ↗</a>`:''}</div></article>`;}
 function wireCompletions(container){container.querySelectorAll('[data-complete]').forEach(b=>b.addEventListener('click',()=>{const key=reminderKeys.get(b.dataset.complete)||ideaKeys.get(b.dataset.complete);if(!key)return;try{interactionHistory=changeHistory('completed',key,!interactionHistory.completed[key]);renderReminders();renderIdeas();renderWeek();renderSaved();}catch{toast('Could not save completion in this browser.');}}));}
-function renderReminders(){const items=brief.reminders.filter(e=>viewingArchive||!interactionHistory.completed[reminderKeys.get(e.id)]);$('#reminders-content').innerHTML=items.length?items.map(reminderHTML).join(''):'<p class="reminder-empty">No reminders due. Completed reminders stay in past editions.</p>';wireCompletions($('#reminders-content'));}
+function renderReminders(){const items=reminderData().reminders.filter(e=>viewingArchive||!interactionHistory.completed[reminderKeys.get(e.id)]);$('#reminders-content').innerHTML=items.length?items.map(reminderHTML).join(''):'<p class="reminder-empty">No reminders due. Completed reminders stay in past editions.</p>';wireCompletions($('#reminders-content'));}
 
 function findHTML(f){
  const selected=saved.some(x=>x.id===f.id),url=safeURL(f.url),photo=safeURL(f.image);
@@ -98,7 +118,7 @@ function renderDeliveries(){
 }
 function renderSaved(){ $('#saved-count').textContent=saved.length?`(${saved.length})`:''; $('#saved-content').innerHTML=saved.length?saved.map(findHTML).join(''):empty('Keep the good ones.','Tap the heart on any NYC discovery to save it here. Your list stays in this browser.');wireSave($('#saved-content'));wirePhotos($('#saved-content'));wireCompletions($('#saved-content'));wireLinks($('#saved-content')); }
 function renderWeek(){
-  const plans=brief.calendar.events;const reminders=[...new Map([...brief.reminders,...brief.upcomingReminders].map(e=>[e.id,e])).values()].filter(e=>viewingArchive||!interactionHistory.completed[reminderKeys.get(e.id)]);
+  const plans=brief.calendar.events;const reminders=[...new Map([...reminderData().reminders,...reminderData().upcomingReminders].map(e=>[e.id,e])).values()].filter(e=>viewingArchive||!interactionHistory.completed[reminderKeys.get(e.id)]);
   const groups=new Map();
   for(const item of [...plans.map(x=>({...x,type:'plan'})),...reminders.map(x=>({...x,type:'reminder'}))]){const d=item.startDate<brief.day?brief.day:item.startDate;if(!groups.has(d))groups.set(d,[]);groups.get(d).push(item);}
   $('#week-content').innerHTML=(!brief.calendar.connected?'<p class="notice">Connect Apple or Google Calendar to include your upcoming plans here.</p>':brief.calendar.state!=='fresh'?'<p class="notice">Some calendar plans are unavailable. Check your calendar for your full schedule.</p>':'')+(groups.size?[...groups.entries()].sort(([a],[b])=>a.localeCompare(b)).map(([day,items])=>`<section class="week-day"><h3>${escape(dateLabel(day,{weekday:'long',month:'short',day:'numeric'}))}</h3>${items.map(e=>e.type==='plan'?planHTML(e):reminderHTML(e)).join('')}</section>`).join(''):empty('A fresh page ahead.','Your next two weeks of calendar plans and reminders will appear here.'));wireCompletions($('#week-content'));
@@ -118,23 +138,31 @@ async function load(archiveDay=null){
   if(viewingArchive&&!archiveDay)return true;
   if(protectedBuild&&!password)return false;
   const generation=privacyGeneration;
-  try{const file=archiveDay?`editions/${archiveDay}.${protectedBuild?'enc.json':'json'}`:protectedBuild?'brief.enc.json':'brief.json';const r=await fetch(`${base}data/${file}?t=${Date.now()}`,{cache:'no-store'});if(!r.ok)throw new Error();const raw=await r.json();const data=protectedBuild?JSON.parse(await decrypt(raw,password)):raw;if(data.version!==1||!data.day||!data.calendar)throw new Error();if(protectedBuild&&(generation!==privacyGeneration||!password))return false;await loadSaved();for(const item of [...(data.reminders||[]),...(data.upcomingReminders||[])])reminderKeys.set(item.id,await historyId('reminder',item.id));for(const item of data.ideas||[])ideaKeys.set(item.id,await historyId('idea',item.id));for(const p of data.deliveries?.shipments||[])shipmentKeys.set(p.id,await historyId('shipment',shipmentIdentity(p)));if(protectedBuild&&(generation!==privacyGeneration||!password))return false;brief=data;viewingArchive=!!archiveDay;render();return true;}
+  try{const file=archiveDay?`editions/${archiveDay}.${protectedBuild?'enc.json':'json'}`:protectedBuild?'brief.enc.json':'brief.json';const r=await fetch(`${base}data/${file}?t=${Date.now()}`,{cache:'no-store'});if(!r.ok)throw new Error();const raw=await r.json();const data=protectedBuild?JSON.parse(await decrypt(raw,password)):raw;if(data.version!==1||!data.day||!data.calendar)throw new Error();if(protectedBuild&&(generation!==privacyGeneration||!password))return false;await loadSaved();await loadDeviceNotes();for(const item of [...(data.reminders||[]),...(data.upcomingReminders||[])])reminderKeys.set(item.id,await historyId('reminder',item.id));for(const item of data.ideas||[])ideaKeys.set(item.id,await historyId('idea',item.id));for(const p of data.deliveries?.shipments||[])shipmentKeys.set(p.id,await historyId('shipment',shipmentIdentity(p)));if(protectedBuild&&(generation!==privacyGeneration||!password))return false;brief=data;viewingArchive=!!archiveDay;render();return true;}
   catch{if(protectedBuild&&!brief)return false;if(brief){toast('Couldn’t load a newer edition. Your previous one is still here.');return false;}$('#edition-date').textContent=dateLabel(localToday(),{weekday:'long',month:'long',day:'numeric',year:'numeric'}).toUpperCase();$('#freshness').textContent='Your first edition is waiting to be refreshed.';$('#agenda-content').innerHTML=empty('Let’s make this your morning.','Connect your calendar in settings, then refresh your first edition.','<button class="button connect-calendar">Set up my morning ↗</button>');$('#agenda-content').classList.remove('loading-block');$('.connect-calendar')?.addEventListener('click',showSettings);$('#weather-content').innerHTML='<p class="weather-advice">Your fresh New York forecast will appear after the first refresh.</p>';$('#reminders-content').innerHTML='<p class="reminder-empty">Your date-aware reminders will live here.</p>';$('#finds-content').innerHTML=empty('New York has good things in store.','Fresh discoveries will arrive with your first edition.');renderSaved();showView();return false;}
 }
 $('#refresh-button').addEventListener('click',async()=>{viewingArchive=false;const b=$('#refresh-button');b.disabled=true;b.textContent='Freshening up…';try{const r=await fetch(`${base}__local/refresh`,{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'});if(r.ok){await load();toast('Edition refreshed. Email and connected calendar use the latest saved scan.');}else {await load();toast('Showing the latest published edition. New data refreshes on schedule.');}}catch{await load();}finally{b.disabled=false;b.textContent='Refresh edition ↻';}});
-document.querySelectorAll('.add-reminder').forEach(b=>b.addEventListener('click',()=>{$('#form-status').textContent='';$('#reminder-form').elements.startDate.value=localToday();$('#reminder-dialog').showModal();}));
+document.querySelectorAll('.add-reminder').forEach(b=>b.addEventListener('click',()=>{$('#form-status').textContent='';editingReminderId=null;$('#reminder-form').reset();$('#reminder-form').elements.startDate.value=localToday();$('#reminder-storage-note').textContent=protectedBuild?'Saved privately in this browser on this device. Reminders carry into future daily editions here, but do not sync between devices. Clearing browser data removes them.':'Saved to your private events config on this Mac.';renderDeviceNotes();$('#reminder-dialog').showModal();}));
 $('#reminder-form').addEventListener('submit',async e=>{
   e.preventDefault();const form=e.currentTarget,values=Object.fromEntries(new FormData(form));
   if(values.endDate && values.endDate<values.startDate){$('#form-status').textContent='The last day needs to be on or after the first day.';return;}
-  const item={...values,id:crypto.randomUUID(),remindDaysBefore:Number(values.remindDaysBefore),category:'personal'};if(!item.endDate)delete item.endDate;
+  const item={...values,id:editingReminderId||crypto.randomUUID(),remindDaysBefore:Number(values.remindDaysBefore),category:'personal'};if(!item.endDate)delete item.endDate;
   const button=form.querySelector('[type=submit]');button.disabled=true;$('#form-status').textContent='Saving your reminder…';
-  try{const response=await fetch(`${base}__local/events`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(item)});if(!response.ok)throw new Error();$('#reminder-dialog').close();form.reset();await load();toast('A note to future you, saved.');}
-  catch{$('#form-status').textContent='Saving is available in the local editor. On a hosted site, add this reminder to config/events.local.json and publish the update.';}
+  try{
+   if(protectedBuild){
+    const generation=privacyGeneration;validateDeviceReminder(item);
+    deviceReminders=await changeDeviceReminders(password,items=>[...items.filter(x=>x.id!==item.id),item],{isCurrent:()=>generation===privacyGeneration&&!!password});
+    reminderKeys.set(item.id,await historyId('reminder',item.id));
+    if(generation!==privacyGeneration||!brief)return;
+    $('#reminder-dialog').close();form.reset();renderReminders();renderWeek();toast('Reminder saved in this browser for future editions.');return;
+   }
+   const response=await fetch(`${base}__local/events`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(item)});if(!response.ok)throw new Error();$('#reminder-dialog').close();form.reset();await load();toast('A note to future you, saved.');}
+  catch{$('#form-status').textContent='Could not save your reminder. Check that this browser allows storage, unlock the newsletter if needed, and try again. Your existing reminders have been kept.';}
   finally{button.disabled=false;}
 });
 function lockNewsletter(message=''){
   if(!protectedBuild)return;
-  password=null;brief=null;saved=[];savedLoaded=false;viewingArchive=false;reminderKeys.clear();ideaKeys.clear();shipmentKeys.clear();privacyGeneration++;clearTimeout(lockTimer);
+  password=null;brief=null;saved=[];deviceReminders=[];editingReminderId=null;$('#reminder-form').reset();$('#form-status').textContent='';$('#device-reminders-list').replaceChildren();savedLoaded=false;viewingArchive=false;reminderKeys.clear();ideaKeys.clear();shipmentKeys.clear();privacyGeneration++;clearTimeout(lockTimer);
   document.body.classList.add('locked');
   for(const id of ['agenda-content','upcoming-preview','calendar-source','weather-content','reminders-content','finds-content','ideas-content','finance-content','deliveries-content','deliveries-source','week-content','saved-content','archive-list','archive-label'])$(`#${id}`).replaceChildren();
   document.querySelectorAll('dialog[open]').forEach(d=>d.close());
