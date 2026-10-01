@@ -10,10 +10,14 @@ export function validateDeviceReminder(item){
  return {...item,title:item.title.trim(),category:'personal',deviceOnly:true};
 }
 export async function readDeviceReminders(password,storage=localStorage){
- const raw=storage.getItem(deviceRemindersKey);if(!raw)return [];
- const data=JSON.parse(await decrypt(JSON.parse(raw),password));
- if(data.version!==1||!Array.isArray(data.events))throw Error('Unreadable reminders');
- return data.events.map(validateDeviceReminder);
+ let raw;
+ try{raw=storage.getItem(deviceRemindersKey);}catch{throw Object.assign(new Error('Browser storage unavailable'),{code:'storage-unavailable'});}
+ if(!raw)return [];
+ try{
+  const data=JSON.parse(await decrypt(JSON.parse(raw),password));
+  if(data.version!==1||!Array.isArray(data.events))throw Error('Unreadable reminders');
+  return data.events.map(validateDeviceReminder);
+ }catch{throw Object.assign(new Error('Saved reminders unreadable'),{code:'saved-data-unreadable'});}
 }
 export async function changeDeviceReminders(password,change,{storage=localStorage,isCurrent=()=>true,locks=globalThis.navigator?.locks}={}){
  const run=async()=>{
@@ -29,7 +33,14 @@ export async function changeDeviceReminders(password,change,{storage=localStorag
 }
 export function deviceRemindersFor(events,day){
  return {
-  reminders:events.filter(e=>day>=shift(e.startDate,-e.remindDaysBefore)&&day<=(e.endDate||e.startDate)),
+  reminders:events.filter(e=>day>=shift(e.startDate,-e.remindDaysBefore)),
   upcomingReminders:events.filter(e=>e.startDate>day&&e.startDate<=shift(day,14))
  };
+}
+
+export function reminderSaveMessage(error){
+ if(error?.code==='saved-data-unreadable')return 'Could not save: this browser’s saved reminders could not be opened. The stored copy has been kept. Do not clear browser data; please report “saved reminders unreadable” so it can be recovered.';
+ if(error?.name==='QuotaExceededError')return 'Could not save: this browser has no storage space available for reminders. Your existing reminders and this draft have been kept.';
+ if(error?.code==='storage-unavailable'||error?.name==='SecurityError')return 'Could not save: Safari is blocking this website from storing reminders. Your draft is still here. Check website storage permissions and try again.';
+ return 'Could not save your reminder. Your draft and existing reminders have been kept. Unlock the newsletter if needed, then try again.';
 }

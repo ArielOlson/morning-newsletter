@@ -1,23 +1,25 @@
-import {chromium} from '@playwright/test';
+import {chromium,webkit,devices} from '@playwright/test';
 import {preview} from 'vite';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {encrypt} from '../src/crypto.mjs';
 const {password}=JSON.parse(await readFile('config/security.local.json','utf8'));
 const brief=JSON.parse(await readFile('public/data/brief.json','utf8'));
-const server=await preview({preview:{host:'127.0.0.1',port:4177,strictPort:true}});
-const browser=await chromium.launch({channel:'chrome',headless:true});
+const base=process.env.REMINDER_TEST_URL||'http://127.0.0.1:4177/';
+const server=process.env.REMINDER_TEST_URL?null:await preview({preview:{host:'127.0.0.1',port:4177,strictPort:true}});
+const safari=process.env.REMINDER_TEST_BROWSER==='webkit';
+const browser=await (safari?webkit.launch({headless:true}):chromium.launch({channel:'chrome',headless:true}));
 try{
- const page=await browser.newPage({viewport:{width:390,height:844}}),errors=[],writes=[];
+ const page=await browser.newPage(safari?devices['iPhone 13']:{viewport:{width:390,height:844}}),errors=[],writes=[];
  page.on('pageerror',e=>errors.push(e.message));page.on('request',r=>{if(r.method()==='POST')writes.push(r.url());});
  const unlock=async()=>{await page.locator('#unlock-password').fill(password);await page.locator('#unlock-form button').click();await page.locator('.page').waitFor({state:'visible'});};
- await page.goto('http://127.0.0.1:4177/');await unlock();
+ await page.goto(base+'?reminder-test='+Date.now());await unlock();
  const open=async()=>{await page.locator('.add-reminder').first().click();await page.locator('#reminder-dialog').waitFor({state:'visible'});};
  const form=page.locator('#reminder-form');const title='Phone reminder verification',note='A private phone-only note';
  await open();await form.locator('[name=title]').fill(title);await form.locator('[name=startDate]').fill(brief.day);await form.locator('[name=note]').fill(note);await form.locator('[type=submit]').click();await page.locator('#reminder-dialog').waitFor({state:'hidden'});
  assert.ok((await page.locator('#reminders-content').innerText()).includes(title));
  const persisted=await page.evaluate(()=>JSON.stringify({...localStorage}));assert.ok(!persisted.includes(title));assert.ok(!persisted.includes(note));assert.ok(!persisted.includes(password));assert.deepEqual(writes,[]);
- await page.reload();await unlock();assert.ok((await page.locator('#reminders-content').innerText()).includes(title));
+ await page.locator('#refresh-button').click();await page.waitForURL(url=>url.searchParams.has('refresh'));await unlock();assert.ok((await page.locator('#reminders-content').innerText()).includes(title));
  await open();await page.locator('[data-edit-reminder]').click();
  const tomorrow=new Date(Date.parse(brief.day+'T12:00:00Z')+86400000).toISOString().slice(0,10);
  await form.locator('[name=startDate]').fill(tomorrow);await form.locator('[name=remindDaysBefore]').selectOption('0');await form.locator('[type=submit]').click();await page.locator('#reminder-dialog').waitFor({state:'hidden'});
@@ -39,4 +41,4 @@ try{
  await page.locator('#reminder-dialog .close-dialog').click();await page.locator('#lock-button').click();
  assert.equal(await form.locator('[name=title]').inputValue(),'');assert.equal(await page.locator('#device-reminders-list').textContent(),'');
  assert.deepEqual(errors,[]);console.log('Verified phone reminder creation, encrypted storage, editing, future editions, completion persistence, deletion, storage failure, and clearing on lock.');
-}finally{await browser.close();await new Promise(resolve=>server.httpServer.close(resolve));}
+}finally{await browser.close();await new Promise(resolve=>server?server.httpServer.close(resolve):resolve());}

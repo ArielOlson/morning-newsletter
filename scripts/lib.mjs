@@ -23,8 +23,8 @@ export function validateEvents(events) {
   return events;
 }
 export function remindersFor(events, day, zone = 'America/New_York') {
-  return validateEvents(events).filter(e => day >= addDays(e.startDate, -(e.remindDaysBefore ?? 7), zone) && day <= (e.endDate || e.startDate))
-    .map(e => ({ ...e, status: day < e.startDate ? 'upcoming' : 'today' })).sort((a,b) => a.startDate.localeCompare(b.startDate));
+  return validateEvents(events).filter(e => day >= addDays(e.startDate, -(e.remindDaysBefore ?? 7), zone))
+    .map(e => ({ ...e, status: day < e.startDate ? 'upcoming' : day > (e.endDate || e.startDate) ? 'overdue' : 'today' })).sort((a,b) => a.startDate.localeCompare(b.startDate));
 }
 const localDay = d => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
 export function calendarEvents(text, day, zone, lookAheadDays = 14, includeDescriptions = false) {

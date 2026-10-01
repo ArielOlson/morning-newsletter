@@ -10,7 +10,7 @@ test('New York dates and reminders are inclusive across daylight saving',()=>{
   assert.equal(remindersFor(events,'2026-10-30').length,0);
   assert.equal(remindersFor(events,'2026-10-31')[0].status,'upcoming');
   assert.equal(remindersFor(events,'2026-11-08')[0].status,'today');
-  assert.equal(remindersFor(events,'2026-11-09').length,0);
+  assert.equal(remindersFor(events,'2026-11-09')[0].status,'overdue');
 });
 test('bad dates, reversed ranges, duplicate IDs and unsafe URLs fail validation',()=>{
   for(const e of [{startDate:'2026-02-30'},{startDate:'2026-10-03',endDate:'2026-10-02'},{startDate:'2026-10-03',url:'javascript:alert(1)'},{startDate:'2026-10-03',remindDaysBefore:-1}])assert.throws(()=>validateEvents([{id:'x',title:'Test',...e}]));

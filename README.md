@@ -68,7 +68,7 @@ Alternatively, edit `config/events.json` for items you are comfortable committin
 }
 ```
 
-Dates are `YYYY-MM-DD` in New York. `endDate` is inclusive; omit it for a one-day item. A week is a first and last date. `remindDaysBefore` defaults to 7. Expired reminders disappear automatically, while upcoming reminders appear in the two-week view. IDs must be unique across event files. Optional `url` must be HTTPS. More examples are in `config/events.example.json`; examples are never loaded as real plans.
+Dates are `YYYY-MM-DD` in New York. `endDate` is inclusive; omit it for a one-day item. A week is a first and last date. `remindDaysBefore` defaults to 7. Reminders start appearing at their lead time and remain visible after their date until marked complete. Upcoming reminders also appear in the two-week view. IDs must be unique across event files. Optional `url` must be HTTPS. More examples are in `config/events.example.json`; examples are never loaded as real plans.
 
 Tell Codex **“Add [X] to the newsletter for [date or week]”** in this project. `AGENTS.md` records how to save it to the same private config, so future editions pick it up.
 
@@ -163,3 +163,7 @@ Keep ten dated NYC picks, with at most three repeated from the previous New York
 ## Five free-time ideas
 
 Prepare five season-appropriate restaurant/activity ideas each day, prioritizing Ariel’s explicit wishes and filling the remaining slots with researched suggestions likely to suit her interests. Prefer activities available most days (theater, comedy, live music, museums, walks) for the suggestion slots. Mark assistant suggestions `suggested: true`; the selector labels them “Suggested for you.” Never turn a suggestion into a remembered personal wish. Keep a surplus of verified suggestions in ignored `config/ideas.local.json` so seasonal exclusions and busy Tuesday weekend checks still leave five. Set `availableThrough` for a closing production; remove expired suggestions from consideration. Keep exact closures, performance schedules, costs/minimums and actual checkedAt dates honest. Preserve existing wish IDs and browser completion behavior. The five-card limit applies before browser-local completed items are hidden. Check `status.ideas` and replenish the pool if fewer than five qualify.
+
+### Phone reminder troubleshooting
+
+On the hosted site, Refresh edition reloads the complete website with a fresh URL while keeping encrypted reminders in browser storage. Do not clear Safari website data to fix a reminder error: that would remove browser-only reminders. The form distinguishes unreadable saved data, blocked storage and quota errors without erasing the stored copy. Tests can run against WebKit with `REMINDER_TEST_BROWSER=webkit node tests/reminders-browser.mjs`; this is an iPhone-profile browser-engine test, not a physical iOS-device test. Cross-device reminder sync is not configured.
