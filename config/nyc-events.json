@@ -4,7 +4,7 @@
       "id": "reiss-2026-09",
       "title": "Reiss London sample sale",
       "category": "Sample sales",
-      "priority": 10,
+      "priority": 25,
       "startDate": "2026-09-29",
       "endDate": "2026-10-04",
       "what": "Six days of discounted Reiss clothing, with the organizer advertising reductions up to 75%.",
@@ -13,7 +13,7 @@
       "cost": "Item prices vary; up to 75% off. An admission charge is not specified.",
       "source": "260 Sample Sale",
       "url": "https://260samplesale.com/pages/events/reiss-london-flagship-ny",
-      "checkedAt": "2026-09-30T08:47:12.332023+00:00",
+      "checkedAt": "2026-10-01T13:05:40.543Z",
       "image": "https://virtual.260samplesale.com/cdn/shop/files/mainimage-reiss-london_9b7fc232-59d8-4265-a516-13ffc2050244.jpg?v=1789572442&width=500",
       "imageAlt": "Reiss London organizer photo",
       "neighborhood": "NoMad"
@@ -22,7 +22,7 @@
       "id": "nybg-dia-2026",
       "title": "Día de los Muertos at NYBG",
       "category": "Seasonal",
-      "priority": -1,
+      "priority": -10,
       "startDate": "2026-10-03",
       "endDate": "2026-11-02",
       "what": "Opening weekend of NYBG’s seasonal celebration: marigolds, a community ofrenda, live Mexican folk music, and hands-on paper and flower crafts.",
@@ -39,27 +39,28 @@
     },
     {
       "id": "bryant-piano-final-week-2026",
-      "title": "Bryant Park piano · final week",
+      "title": "Bryant Park piano · season finale",
       "category": "Around town",
-      "priority": 10,
+      "priority": 30,
       "startDate": "2026-09-28",
       "endDate": "2026-10-01",
-      "what": "Charlie Judkins plays ragtime and jazz today. Terry Waldo’s Gotham City Band closes the season Oct 1.",
-      "where": "Bryant Park Upper Terrace",
+      "what": "Terry Waldo’s Gotham City Band closes the piano season with ragtime and early jazz beside the library.",
+      "where": "Bryant Park Upper Terrace · by the William Cullen Bryant statue",
       "neighborhood": "Midtown",
-      "when": "Sep 30–Oct 1 · 12:30–2:30 p.m.",
+      "when": "Today, Oct 1 · 12:30–2:30 p.m.",
       "cost": "Free park performance",
       "source": "Bryant Park",
-      "url": "https://bryantpark.org/activities/piano",
+      "url": "https://bryantpark.org/calendar/event/piano/2026-10-01",
       "image": "https://bryantpark.org/images/cache/assets/uploads/images/meta/SingALong8.9.18creditAngelitoJusay_.9-1200x627.jpg",
       "imageAlt": "Bryant Park piano performance; photo by Angelito Jusay",
-      "checkedAt": "2026-09-30T08:47:12.332023+00:00"
+      "checkedAt": "2026-10-01T13:05:40.543Z",
+      "discovery": true
     },
     {
       "id": "watermark-oktoberfest-2026",
       "title": "Oktoberfest at Watermark",
       "category": "Seasonal",
-      "priority": 10,
+      "priority": 15,
       "startDate": "2026-09-10",
       "endDate": "2026-10-31",
       "what": "Waterfront Oktoberfest with German beer, food, and seasonal decorations. Reservations and paid packages are available.",
@@ -71,7 +72,7 @@
       "url": "https://oktober-fest.nyc/get-your-tickets/",
       "image": "https://oktober-fest.nyc/oktoberfest/wp-content/uploads/2024/06/oktoberfest-nyc-2023-at-watermark-beer-festival-05.jpg",
       "imageAlt": "Watermark Oktoberfest in a previous season",
-      "checkedAt": "2026-09-30T08:47:12.332023+00:00"
+      "checkedAt": "2026-10-01T13:05:40.543Z"
     },
     {
       "id": "260:09/29/2026-Boll&Branch, (NoMad) NY-10/04/2026",
@@ -89,7 +90,7 @@
       "note": "NYC (NoMad). Check the source for daily opening hours and entry details.",
       "when": "Sep 29–Oct 4 · Tue–Sat 10 a.m.–7 p.m.; Sun 10 a.m.–5 p.m.",
       "what": "Bedding and home textiles at the organizer’s NoMad sale. The page heading and event feed identify Boll & Branch; confirm with the store because one description line names another brand.",
-      "priority": 0,
+      "priority": -10,
       "checkedAt": "2026-09-29T08:16:34.361Z",
       "imageAlt": "Boll & Branch sample sale organizer photograph"
     },
@@ -109,8 +110,8 @@
       "note": "NYC (LaFA). Check the source for daily opening hours and entry details.",
       "when": "Sep 30–Oct 4 · Wed–Sat 11 a.m.–7 p.m.; Sun 11 a.m.–5 p.m.",
       "what": "Five-day clothing sale at the Lafayette location.",
-      "priority": 0,
-      "checkedAt": "2026-09-30T08:47:12.332023+00:00",
+      "priority": 25,
+      "checkedAt": "2026-10-01T13:05:40.543Z",
       "imageAlt": "Another Tomorrow sample sale organizer photograph"
     },
     {
@@ -129,8 +130,8 @@
       "note": "NYC (LaFA). Check the source for daily opening hours and entry details.",
       "when": "Sep 30–Oct 4 · Wed–Sat 11 a.m.–7 p.m.; Sun 11 a.m.–5 p.m.",
       "what": "Five-day sale at the Lafayette location.",
-      "priority": 0,
-      "checkedAt": "2026-09-29T08:16:34.362Z",
+      "priority": 25,
+      "checkedAt": "2026-10-01T13:05:40.543Z",
       "imageAlt": "Janessa Leoné sample sale organizer photograph"
     },
     {
@@ -149,8 +150,8 @@
       "note": "NYC (LaFA). Check the source for daily opening hours and entry details.",
       "when": "Sep 30–Oct 4 · Wed–Sat 11 a.m.–7 p.m.; Sun 11 a.m.–5 p.m.",
       "what": "Five-day clothing sale at the Lafayette location.",
-      "priority": 0,
-      "checkedAt": "2026-09-30T08:47:12.332Z",
+      "priority": 10,
+      "checkedAt": "2026-10-01T13:06:41.804283+00:00",
       "imageAlt": "Scanlan Theodore sample sale organizer photograph"
     },
     {
@@ -169,28 +170,9 @@
       "note": "NYC (NoMad). Check the source for daily opening hours and entry details.",
       "when": "Oct 6–11 · Tue–Sat 11 a.m.–7 p.m.; Sun 11 a.m.–5 p.m.",
       "what": "Six-day Eberjey sale at the NoMad location.",
-      "priority": 0,
+      "priority": -10,
       "checkedAt": "2026-09-30T08:47:12.332Z",
       "imageAlt": "Eberjey sample sale organizer photograph"
-    },
-    {
-      "id": "mcny-free-wednesdays-2026",
-      "title": "Free late-night museum Wednesday",
-      "startDate": "2026-09-30",
-      "endDate": "2026-09-30",
-      "what": "A suggested culture detour: explore the city-history galleries after work, including the restored Alice in Wonderland murals and a handmade miniature NYC. The pop-up bar runs 5–9 p.m.; drinks and snacks are extra.",
-      "where": "Museum of the City of New York · 1220 Fifth Avenue at 103rd Street",
-      "neighborhood": "East Harlem / Museum Mile",
-      "when": "Wed, Sep 30 · 5–9 p.m.",
-      "cost": "Free museum admission; refreshments extra",
-      "source": "Museum of the City of New York",
-      "url": "https://www.mcny.org/free-late-night-wednesdays",
-      "image": "https://www.mcny.org/sites/default/files/MuseumMile_byFilipWolak_0206_7079.jpg",
-      "imageAlt": "Visitors on the museum staircase; photo by Filip Wolak",
-      "category": "Around town",
-      "discovery": true,
-      "priority": 12,
-      "checkedAt": "2026-09-30T12:18:45.139Z"
     },
     {
       "id": "nyff-behemoth-2026",
@@ -208,8 +190,8 @@
       "imageAlt": "Behemoth! official film still from Film at Lincoln Center",
       "category": "Around town",
       "discovery": true,
-      "priority": 12,
-      "checkedAt": "2026-09-30T12:18:45.139Z"
+      "priority": 15,
+      "checkedAt": "2026-10-01T13:05:40.543Z"
     },
     {
       "id": "whitney-lichtenstein-2026",
@@ -228,7 +210,7 @@
       "supportingURL": "https://whitney.org/visit",
       "category": "Around town",
       "discovery": true,
-      "priority": 12,
+      "priority": -10,
       "checkedAt": "2026-09-30T12:18:45.139Z"
     },
     {
@@ -248,7 +230,8 @@
       "when": "Oct 6–11 · Tue–Sat 11 a.m.–7 p.m.; Sun 10 a.m.–5 p.m.",
       "what": "Six-day sale at the Fifth Avenue flagship; check the organizer for stock and entry updates.",
       "imageAlt": "Generation Love sample sale organizer photograph",
-      "checkedAt": "2026-09-30T12:18:45.139Z"
+      "checkedAt": "2026-09-30T12:18:45.139Z",
+      "priority": -10
     },
     {
       "id": "260:10/06/2026-LoveShackFancy, (Flagship) NY-10/11/2026",
@@ -267,7 +250,66 @@
       "when": "Oct 6–11 · Tue–Sat 11 a.m.–7 p.m.; Sun 10 a.m.–5 p.m.",
       "what": "Six-day sale at the Fifth Avenue flagship; check the organizer for stock and entry updates.",
       "imageAlt": "LoveShackFancy sample sale organizer photograph",
-      "checkedAt": "2026-09-30T12:18:45.139Z"
+      "checkedAt": "2026-09-30T12:18:45.139Z",
+      "priority": -10
+    },
+    {
+      "id": "260:10/06/2026-RAILS, (NoMad) NY-10/11/2026",
+      "title": "RAILS sample sale",
+      "startDate": "2026-10-06",
+      "endDate": "2026-10-11",
+      "url": "https://260samplesale.com/pages/events/rails-nomad-ny",
+      "category": "Sample sales",
+      "kind": "event",
+      "source": "260 Sample Sale",
+      "image": "https://virtual.260samplesale.com/cdn/shop/files/RAILS_TEMP_4253d7fa-938e-4547-95f5-6625a2c4b553.jpg?v=1790083953&width=500",
+      "neighborhood": "NoMad",
+      "where": "260 Fifth Avenue",
+      "cost": "Item prices vary; admission charge not listed.",
+      "note": "NYC (NoMad). Check the source for daily opening hours and entry details.",
+      "priority": 25,
+      "what": "A six-day RAILS clothing sample sale at the organizer’s NoMad store.",
+      "when": "Oct 6–11 · Tue–Sat 11 a.m.–7 p.m.; Sun 11 a.m.–5 p.m.",
+      "checkedAt": "2026-10-01T13:05:40.543Z",
+      "imageAlt": "RAILS organizer photograph"
+    },
+    {
+      "id": "mcny-another-wonderland-2026",
+      "title": "Another Wonderland at MCNY",
+      "category": "Around town",
+      "discovery": true,
+      "priority": 25,
+      "startDate": "2026-06-06",
+      "endDate": "2026-10-12",
+      "what": "See a restored 16-panel mural that brings Alice in Wonderland into 1930s New York. A broader art suggestion, with less than two weeks left to visit.",
+      "where": "Museum of the City of New York · 1220 Fifth Avenue at 103rd Street",
+      "neighborhood": "East Harlem / Museum Mile",
+      "when": "Through Oct 12 · Mon–Fri 10 a.m.–5 p.m.; weekends 10 a.m.–6 p.m.; Wednesdays until 9 p.m.",
+      "cost": "Adults $23; NYC residents pay what they can with ID. Wednesdays free at the ticket counter.",
+      "url": "https://www.mcny.org/exhibition/another-wonderland",
+      "source": "Museum of the City of New York",
+      "image": "https://www.mcny.org/sites/default/files/styles/1488x480/public/AnotherWonderland-Banner_0.jpg?h=8e3006ae&itok=OHzBBzwV",
+      "imageAlt": "Alice in Wonderland mural by Abram August Champanier, from the museum’s exhibition page",
+      "checkedAt": "2026-10-01T13:05:40.543Z"
+    },
+    {
+      "id": "nycc-2026",
+      "title": "New York Comic Con",
+      "category": "Around town",
+      "discovery": true,
+      "priority": 25,
+      "startDate": "2026-10-08",
+      "endDate": "2026-10-11",
+      "what": "A broader pop-culture outing: explore Artist Alley, costumes, panels, and exhibitors. Choose a day and check its pass availability before planning around a guest or session.",
+      "where": "Javits Center · 429 11th Avenue",
+      "neighborhood": "Hudson Yards",
+      "when": "Oct 8–11 · hours and panel schedules vary by day",
+      "cost": "Paid passes; current prices and availability must be checked on the official ticket page.",
+      "url": "https://www.newyorkcomiccon.com/en-us.html",
+      "source": "New York Comic Con",
+      "image": "https://www.newyorkcomiccon.com/content/dam/sitebuilder/rna/new-york-comic-con/2026/img/homepage/this-is-nycc-8.jpg/_jcr_content/renditions/original.image_file.375.375.file/885442077/this-is-nycc-8.jpg",
+      "imageAlt": "New York Comic Con organizer photograph",
+      "checkedAt": "2026-10-01T13:05:40.543Z"
     }
   ]
 }
