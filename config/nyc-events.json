@@ -13,7 +13,7 @@
       "cost": "Item prices vary; up to 75% off. An admission charge is not specified.",
       "source": "260 Sample Sale",
       "url": "https://260samplesale.com/pages/events/reiss-london-flagship-ny",
-      "checkedAt": "2026-10-01T13:05:40.543Z",
+      "checkedAt": "2026-10-02T12:37:55.521Z",
       "image": "https://virtual.260samplesale.com/cdn/shop/files/mainimage-reiss-london_9b7fc232-59d8-4265-a516-13ffc2050244.jpg?v=1789572442&width=500",
       "imageAlt": "Reiss London organizer photo",
       "neighborhood": "NoMad"
@@ -38,29 +38,10 @@
       "verificationNote": "Organizer page returned 403 on both checks Sep 30; retain original checkedAt and prefer currently verifiable picks."
     },
     {
-      "id": "bryant-piano-final-week-2026",
-      "title": "Bryant Park piano · season finale",
-      "category": "Around town",
-      "priority": 30,
-      "startDate": "2026-09-28",
-      "endDate": "2026-10-01",
-      "what": "Terry Waldo’s Gotham City Band closes the piano season with ragtime and early jazz beside the library.",
-      "where": "Bryant Park Upper Terrace · by the William Cullen Bryant statue",
-      "neighborhood": "Midtown",
-      "when": "Today, Oct 1 · 12:30–2:30 p.m.",
-      "cost": "Free park performance",
-      "source": "Bryant Park",
-      "url": "https://bryantpark.org/calendar/event/piano/2026-10-01",
-      "image": "https://bryantpark.org/images/cache/assets/uploads/images/meta/SingALong8.9.18creditAngelitoJusay_.9-1200x627.jpg",
-      "imageAlt": "Bryant Park piano performance; photo by Angelito Jusay",
-      "checkedAt": "2026-10-01T13:05:40.543Z",
-      "discovery": true
-    },
-    {
       "id": "watermark-oktoberfest-2026",
       "title": "Oktoberfest at Watermark",
       "category": "Seasonal",
-      "priority": 15,
+      "priority": 25,
       "startDate": "2026-09-10",
       "endDate": "2026-10-31",
       "what": "Waterfront Oktoberfest with German beer, food, and seasonal decorations. Reservations and paid packages are available.",
@@ -72,7 +53,7 @@
       "url": "https://oktober-fest.nyc/get-your-tickets/",
       "image": "https://oktober-fest.nyc/oktoberfest/wp-content/uploads/2024/06/oktoberfest-nyc-2023-at-watermark-beer-festival-05.jpg",
       "imageAlt": "Watermark Oktoberfest in a previous season",
-      "checkedAt": "2026-10-01T13:05:40.543Z"
+      "checkedAt": "2026-10-02T12:37:55.521Z"
     },
     {
       "id": "260:09/29/2026-Boll&Branch, (NoMad) NY-10/04/2026",
@@ -110,7 +91,7 @@
       "note": "NYC (LaFA). Check the source for daily opening hours and entry details.",
       "when": "Sep 30–Oct 4 · Wed–Sat 11 a.m.–7 p.m.; Sun 11 a.m.–5 p.m.",
       "what": "Five-day clothing sale at the Lafayette location.",
-      "priority": 25,
+      "priority": -10,
       "checkedAt": "2026-10-01T13:05:40.543Z",
       "imageAlt": "Another Tomorrow sample sale organizer photograph"
     },
@@ -130,7 +111,7 @@
       "note": "NYC (LaFA). Check the source for daily opening hours and entry details.",
       "when": "Sep 30–Oct 4 · Wed–Sat 11 a.m.–7 p.m.; Sun 11 a.m.–5 p.m.",
       "what": "Five-day sale at the Lafayette location.",
-      "priority": 25,
+      "priority": -10,
       "checkedAt": "2026-10-01T13:05:40.543Z",
       "imageAlt": "Janessa Leoné sample sale organizer photograph"
     },
@@ -150,7 +131,7 @@
       "note": "NYC (LaFA). Check the source for daily opening hours and entry details.",
       "when": "Sep 30–Oct 4 · Wed–Sat 11 a.m.–7 p.m.; Sun 11 a.m.–5 p.m.",
       "what": "Five-day clothing sale at the Lafayette location.",
-      "priority": 10,
+      "priority": -10,
       "checkedAt": "2026-10-01T13:06:41.804283+00:00",
       "imageAlt": "Scanlan Theodore sample sale organizer photograph"
     },
@@ -170,8 +151,8 @@
       "note": "NYC (NoMad). Check the source for daily opening hours and entry details.",
       "when": "Oct 6–11 · Tue–Sat 11 a.m.–7 p.m.; Sun 11 a.m.–5 p.m.",
       "what": "Six-day Eberjey sale at the NoMad location.",
-      "priority": -10,
-      "checkedAt": "2026-09-30T08:47:12.332Z",
+      "priority": 25,
+      "checkedAt": "2026-10-02T12:37:55.521Z",
       "imageAlt": "Eberjey sample sale organizer photograph"
     },
     {
@@ -190,7 +171,7 @@
       "imageAlt": "Behemoth! official film still from Film at Lincoln Center",
       "category": "Around town",
       "discovery": true,
-      "priority": 15,
+      "priority": -10,
       "checkedAt": "2026-10-01T13:05:40.543Z"
     },
     {
@@ -198,7 +179,7 @@
       "title": "Roy Lichtenstein: Like New",
       "startDate": "2026-10-11",
       "endDate": "2027-05-10",
-      "what": "A colorful art suggestion for a future downtown afternoon: about 130 works trace Lichtenstein’s experiments with comics, advertising and Pop art. Public opening is Oct 11; Oct 8–10 previews are for members.",
+      "what": "The Whitney’s Lichtenstein retrospective brings together iconic and less familiar Pop artworks, including recreations of four murals. Public opening is Oct 11; Oct 8–10 previews are for members.",
       "where": "Whitney Museum · 99 Gansevoort Street",
       "neighborhood": "Meatpacking District",
       "when": "Oct 11, 2026–May 10, 2027 · closed Tuesdays; Fridays open until 10 p.m.",
@@ -210,8 +191,8 @@
       "supportingURL": "https://whitney.org/visit",
       "category": "Around town",
       "discovery": true,
-      "priority": -10,
-      "checkedAt": "2026-09-30T12:18:45.139Z"
+      "priority": 25,
+      "checkedAt": "2026-10-02T12:37:55.521Z"
     },
     {
       "id": "260:10/06/2026-Generation Love, (Flagship) NY-10/11/2026",
@@ -230,8 +211,8 @@
       "when": "Oct 6–11 · Tue–Sat 11 a.m.–7 p.m.; Sun 10 a.m.–5 p.m.",
       "what": "Six-day sale at the Fifth Avenue flagship; check the organizer for stock and entry updates.",
       "imageAlt": "Generation Love sample sale organizer photograph",
-      "checkedAt": "2026-09-30T12:18:45.139Z",
-      "priority": -10
+      "checkedAt": "2026-10-02T12:37:55.521Z",
+      "priority": 25
     },
     {
       "id": "260:10/06/2026-LoveShackFancy, (Flagship) NY-10/11/2026",
@@ -250,8 +231,8 @@
       "when": "Oct 6–11 · Tue–Sat 11 a.m.–7 p.m.; Sun 10 a.m.–5 p.m.",
       "what": "Six-day sale at the Fifth Avenue flagship; check the organizer for stock and entry updates.",
       "imageAlt": "LoveShackFancy sample sale organizer photograph",
-      "checkedAt": "2026-09-30T12:18:45.139Z",
-      "priority": -10
+      "checkedAt": "2026-10-02T12:37:55.521Z",
+      "priority": 25
     },
     {
       "id": "260:10/06/2026-RAILS, (NoMad) NY-10/11/2026",
@@ -267,7 +248,7 @@
       "where": "260 Fifth Avenue",
       "cost": "Item prices vary; admission charge not listed.",
       "note": "NYC (NoMad). Check the source for daily opening hours and entry details.",
-      "priority": 25,
+      "priority": -10,
       "what": "A six-day RAILS clothing sample sale at the organizer’s NoMad store.",
       "when": "Oct 6–11 · Tue–Sat 11 a.m.–7 p.m.; Sun 11 a.m.–5 p.m.",
       "checkedAt": "2026-10-01T13:05:40.543Z",
@@ -278,7 +259,7 @@
       "title": "Another Wonderland at MCNY",
       "category": "Around town",
       "discovery": true,
-      "priority": 25,
+      "priority": -10,
       "startDate": "2026-06-06",
       "endDate": "2026-10-12",
       "what": "See a restored 16-panel mural that brings Alice in Wonderland into 1930s New York. A broader art suggestion, with less than two weeks left to visit.",
@@ -309,7 +290,65 @@
       "source": "New York Comic Con",
       "image": "https://www.newyorkcomiccon.com/content/dam/sitebuilder/rna/new-york-comic-con/2026/img/homepage/this-is-nycc-8.jpg/_jcr_content/renditions/original.image_file.375.375.file/885442077/this-is-nycc-8.jpg",
       "imageAlt": "New York Comic Con organizer photograph",
-      "checkedAt": "2026-10-01T13:05:40.543Z"
+      "checkedAt": "2026-10-02T12:37:55.521Z"
+    },
+    {
+      "id": "260:10/06/2026-Proenza Schouler, (LaFA) NY-10/11/2026",
+      "title": "Proenza Schouler sample sale",
+      "category": "Sample sales",
+      "priority": 25,
+      "startDate": "2026-10-07",
+      "endDate": "2026-10-11",
+      "what": "Five days at the Lafayette location, with the organizer advertising discounts up to 70%. The detailed event page lists a Wednesday opening, later than the feed’s Oct 6 date.",
+      "where": "260 Sample Sale · 148 Lafayette Street",
+      "when": "Oct 7–11 · Wed 10 a.m.–7 p.m.; Thu–Sat 11 a.m.–7 p.m.; Sun 10 a.m.–5 p.m.",
+      "cost": "Up to 70% off; prices vary. Admission charge not specified.",
+      "neighborhood": "SoHo",
+      "source": "260 Sample Sale",
+      "url": "https://260samplesale.com/pages/events/proenza-schouler-lafa-ny",
+      "image": "https://virtual.260samplesale.com/cdn/shop/files/Proenza_Schuler_LA_DropDown_8e12118d-bbd8-4d70-b203-d8e7ed847ac4.jpg?v=1790603157&width=500",
+      "imageAlt": "Proenza Schouler organizer photograph",
+      "checkedAt": "2026-10-02T12:37:55.521Z"
+    },
+    {
+      "id": "moma-surrealist-book-2026",
+      "title": "The Surrealist Book: Tomorrow Lives in Mirrors",
+      "category": "Around town",
+      "discovery": true,
+      "priority": 25,
+      "startDate": "2026-10-04",
+      "endDate": "2027-01-23",
+      "what": "Opening Sunday: rare artists’ books, collage-filled sketchbooks and sculptural bindings by Surrealist artists including Dalí, Cahun and Unica Zürn. Member previews Oct 1–3; public access starts Oct 4.",
+      "where": "MoMA · Floor 3 · 11 West 53rd Street",
+      "when": "Oct 4, 2026–Jan 23, 2027 · 10:30 a.m.–5:30 p.m.; Fridays until 8:30 p.m.",
+      "cost": "Adult admission $30; special exhibitions included. NY State residents can reserve free Friday evening tickets.",
+      "neighborhood": "Midtown",
+      "source": "MoMA",
+      "url": "https://www.moma.org/calendar/exhibitions/5918",
+      "supportingURL": "https://www.moma.org/visit/",
+      "image": "https://www.moma.org/d/assets/W1siZiIsIjIwMjYvMDUvMjEvOHBkOHZmcjdrM19adXJuX09yYWNsZV9hbmRfU3BlY3RhY2xlX0hfU0laRUQuanBnIl0sWyJwIiwiY29udmVydCIsIi1xdWFsaXR5IDkwIC1yZXNpemUgMjAwMHg2NjdeIC1ncmF2aXR5IFNvdXRoIC1jcm9wIDIwMDB4NjY3KzArODAiXV0/Zurn_Oracle-and-Spectacle_H_SIZED.jpg?sha=7d5815443ce3ea9b",
+      "imageAlt": "Unica Zürn, Oracle and Spectacle, Book IV, 1960. MoMA; gift of Helen and Sam Zell. Photo: Ben Blackwell. © Verlag Brinkmann & Bose, Berlin.",
+      "checkedAt": "2026-10-02T12:37:55.521Z"
+    },
+    {
+      "id": "moma-peggy-weil-core-memory-2026",
+      "title": "Last weekend: Peggy Weil’s Core Memory",
+      "category": "Around town",
+      "discovery": true,
+      "priority": 30,
+      "startDate": "2026-03-07",
+      "endDate": "2026-10-04",
+      "what": "Two immersive films turn polar ice and California rock cores into portraits of deep time on MoMA’s 24-foot lobby screen. This is the final weekend before the installation closes Sunday.",
+      "where": "MoMA · Garden Lobby, Floor 1 · 11 West 53rd Street",
+      "when": "Through Oct 4 · Fri 10:30 a.m.–8:30 p.m.; Sat–Sun 10:30 a.m.–5:30 p.m.",
+      "cost": "Museum adult admission $30. NY State residents can reserve free tickets for Friday 5:30–8:30 p.m.",
+      "neighborhood": "Midtown",
+      "source": "MoMA",
+      "url": "https://www.moma.org/calendar/exhibitions/5890",
+      "supportingURL": "https://press.moma.org/exhibition/peggy-weil-core-memory/",
+      "image": "https://www.moma.org/d/assets/W1siZiIsIjIwMjYvMDIvMDYvN2M1aTl6NmVwOV9QZWdneV9XZWlsX2hlcm9fMi5qcGciXSxbInAiLCJjb252ZXJ0IiwiLXF1YWxpdHkgOTAgLXJlc2l6ZSAyMDAweDY2N14gLWdyYXZpdHkgQ2VudGVyIC1jcm9wIDIwMDB4NjY3KzArMCJdXQ/Peggy_Weil-hero_2.jpg?sha=9dea7e9b6222b052",
+      "imageAlt": "Peggy Weil, 88 Cores, 2017. Digital video with score by Celia Hollander; still courtesy of the artist.",
+      "checkedAt": "2026-10-02T12:37:55.521Z"
     }
   ]
 }
