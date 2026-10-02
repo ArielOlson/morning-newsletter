@@ -23,7 +23,7 @@ try{
  await heart.click();await page.waitForFunction(id=>document.querySelector(`[data-save="${id}"]`).getAttribute('aria-pressed')==='true',id);
  const received=page.locator('[data-received]').first(),shipment=await received.getAttribute('data-received');
  const before=await page.locator('.delivery-item').count();await received.click();
- assert.equal(await page.locator('.delivery-item').count(),before-1);
+ await page.waitForFunction(n=>document.querySelectorAll('.delivery-item').length===n,before-1);
  await page.locator('#received-toggle').click();assert.match(await page.locator(`[data-received="${shipment}"]`).innerText(),/Received/);
  assert.equal(await page.locator('.delivery-item').first().locator(':scope > *').count(),3);
  await page.locator('#received-toggle').click();
@@ -45,6 +45,7 @@ try{
  assert.match(await page.locator(`#ideas-content [data-complete="${ideaId}"]`).innerText(),/Done/);
  await page.locator(`#ideas-content [data-complete="${ideaId}"]`).click();
  await page.locator(`[data-received="${shipment}"]`).click();
+ await page.waitForFunction(id=>document.querySelector(`[data-received="${id}"]`)?.textContent==='Received',shipment);
  await page.locator('#past-editions-button').click();
  await page.locator('[data-edition]').first().waitFor();
  assert.ok(await page.locator('[data-edition]').count()>=2);

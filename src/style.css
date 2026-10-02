@@ -29,3 +29,5 @@
 #device-reminders-panel { margin-top: 1.5rem; border-top: 1px solid var(--line, #eacbd2); padding-top: 1rem; }
 .device-note { padding: .75rem 0; border-bottom: 1px solid var(--line, #eacbd2); overflow-wrap: anywhere; }
 .device-note p { margin: .25rem 0; }
+
+.package-section{margin-top:20px}.package-section>h3{font:600 23px/1.2 var(--serif);color:var(--rose);margin:0 0 8px}.package-section>h3 span{font:400 12px var(--sans);color:var(--muted);margin-left:8px}.package-empty{font-size:13px;color:var(--muted);padding:12px 0;border-top:1px solid var(--line);margin:0}.delivery-line-one h4{font-size:14px;font-weight:600;line-height:1.6;margin:0;flex:1;min-width:0}.package-actions{display:flex;flex-wrap:wrap;gap:8px;flex-shrink:0}.package-button{padding:8px 12px;min-height:40px;border:1px solid var(--line);border-radius:5px;white-space:nowrap}.package-button:disabled{opacity:.55;cursor:wait}@media(max-width:767px){.package-actions{width:100%;justify-content:flex-start}.package-button{min-height:44px}.delivery-line-one{flex-wrap:wrap}.delivery-line-one h4{flex-basis:100%}}

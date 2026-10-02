@@ -42,7 +42,7 @@ Private calendar links and snapshots are ignored by Git and blocked by the devel
 
 ## Deliveries
 
-The daily Codex task scans both configured Gmail accounts for shipping and package notices, merges updates by tracking number, and saves `config/deliveries.local.json`. Each package uses three compact rows: a bold merchant/item/status caption, qualification and tracking/email links, and the last update. Mark as received hides it in this browser in later editions; Show received provides undo. The same tracking number retains this choice even if the source email changes. Split shipments remain separate. Pickup notices and subscription renewals are identified explicitly. Statuses are email-derived unless a successful official carrier check is recorded. Carrier tracking pages may block automated access; no tracking API credentials are required.
+The daily Codex task scans both configured Gmail accounts for shipping and package notices, merges updates by tracking number, and saves `config/deliveries.local.json`. Each package uses three compact rows: a bold merchant/item/status caption, qualification and tracking/email links, and the last update. Received hides it in this browser in later editions; Show received & refunded provides undo. The same tracking number retains this choice even if the source email changes. Split shipments remain separate. Pickup notices and subscription renewals are identified explicitly. Statuses are email-derived unless a successful official carrier check is recorded. Carrier tracking pages may block automated access; no tracking API credentials are required.
 
 No email is sent, marked read, archived, or changed. Pickup PINs, addresses, and full email bodies are excluded. Connection IDs and private snapshots live in ignored `config/*.local.json`. The page’s **Refresh edition** button refreshes public sources and reuses the latest connector scan; it does not initiate a new Gmail scan. The daily task performs that scan. Snapshots older than 26 hours are visibly marked stale.
 
@@ -172,3 +172,10 @@ On the hosted site, Refresh edition reloads the complete website with a fresh UR
 ## Daily seasonal artwork
 
 Generate a new seasonal NYC header illustration each day using the built-in image-generation tool. Follow [docs/artwork.md](docs/artwork.md) for the dated asset and manifest workflow, generation failures, and archive preservation. Keep the pink editorial style and the main subject legible in the mobile crop. Never overwrite old artwork or include personal data in prompts or images. Verify status.artwork after refresh and the matching current/archive artwork after publication.
+
+
+## Package choices
+
+Packages have three sections: Incoming (Received or Return), Returns (Sent Back), and Refunds (Refunded). Choices move packages immediately and persist into later editions in the same browser. Received and Refunded hide finished packages; Show received & refunded provides undo. Returns remain until Sent Back; refunds remain until Refunded. These buttons record Ariel’s choices only; they do not initiate a merchant return, send mail, or confirm a bank refund.
+
+The browser retains a minimal encrypted package snapshot with each choice, so returns and pending refunds survive after the email feed stops including the parcel. Preserve carrier/tracking identities and legacy received marks. Never infer a manual choice from an email status. Archive views retain the current choice for parcels present in that edition, without adding newer parcels to old editions. Storage is encrypted with the newsletter password and cleared from page memory on lock. Choices do not sync across devices, and clearing browser data deletes them. Password migrations must include this saved package ledger.

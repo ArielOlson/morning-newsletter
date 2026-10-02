@@ -21,3 +21,10 @@ Earlier visitors or third-party caches may retain previously public data; making
 ## Daily checks
 
 Build through `pnpm build` only. It excludes plaintext `public/data/` from Vite, encrypts the current edition, the archive index, and every historical edition under dist/data. The publisher verifies that decryption exactly matches the current local edition and rejects plaintext build data. `pnpm verify:live` checks the deployed encrypted payload locally without printing personal data, compares the complete encrypted archive too, verifies plaintext edition URLs return 404, and checks page assets. Use `pnpm test:privacy` to test the lock screen locally; set `PRIVACY_TEST_URL=https://www.arielolson.com/morning-newsletter/` to test the live site.
+
+
+## Package choices
+
+Packages have three sections: Incoming (Received or Return), Returns (Sent Back), and Refunds (Refunded). Choices move packages immediately and persist into later editions in the same browser. Received and Refunded hide finished packages; Show received & refunded provides undo. Returns remain until Sent Back; refunds remain until Refunded. These buttons record Ariel’s choices only; they do not initiate a merchant return, send mail, or confirm a bank refund.
+
+The browser retains a minimal encrypted package snapshot with each choice, so returns and pending refunds survive after the email feed stops including the parcel. Preserve carrier/tracking identities and legacy received marks. Never infer a manual choice from an email status. Archive views retain the current choice for parcels present in that edition, without adding newer parcels to old editions. Storage is encrypted with the newsletter password and cleared from page memory on lock. Choices do not sync across devices, and clearing browser data deletes them. Password migrations must include this saved package ledger.

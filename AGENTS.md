@@ -38,3 +38,10 @@ Read every entry in ignored connections.googleCalendars using its configured cal
 ## Daily seasonal artwork
 
 Generate a new seasonal NYC header illustration each day using the built-in image-generation tool. Follow [docs/artwork.md](docs/artwork.md) for the dated asset and manifest workflow, generation failures, and archive preservation. Keep the pink editorial style and the main subject legible in the mobile crop. Never overwrite old artwork or include personal data in prompts or images. Verify status.artwork after refresh and the matching current/archive artwork after publication.
+
+
+## Package choices
+
+Packages have three sections: Incoming (Received or Return), Returns (Sent Back), and Refunds (Refunded). Choices move packages immediately and persist into later editions in the same browser. Received and Refunded hide finished packages; Show received & refunded provides undo. Returns remain until Sent Back; refunds remain until Refunded. These buttons record Ariel’s choices only; they do not initiate a merchant return, send mail, or confirm a bank refund.
+
+The browser retains a minimal encrypted package snapshot with each choice, so returns and pending refunds survive after the email feed stops including the parcel. Preserve carrier/tracking identities and legacy received marks. Never infer a manual choice from an email status. Archive views retain the current choice for parcels present in that edition, without adding newer parcels to old editions. Storage is encrypted with the newsletter password and cleared from page memory on lock. Choices do not sync across devices, and clearing browser data deletes them. Password migrations must include this saved package ledger.
