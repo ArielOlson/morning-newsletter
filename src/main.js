@@ -2,6 +2,7 @@ import {readDeviceReminders,changeDeviceReminders,deviceRemindersFor,deviceRemin
 import './style.css';
 import { decrypt, encrypt } from './crypto.mjs';
 import {historyId,readHistory,changeHistory,shipmentIdentity} from './history.mjs';
+import {artworkForEdition} from './artwork.mjs';
 let interactionHistory=readHistory(),showReceived=false;
 const shipmentKeys=new Map();
 const protectedBuild=import.meta.env.PROD;
@@ -124,6 +125,8 @@ function renderWeek(){
   $('#week-content').innerHTML=(!brief.calendar.connected?'<p class="notice">Connect Apple or Google Calendar to include your upcoming plans here.</p>':brief.calendar.state!=='fresh'?'<p class="notice">Some calendar plans are unavailable. Check your calendar for your full schedule.</p>':'')+(groups.size?[...groups.entries()].sort(([a],[b])=>a.localeCompare(b)).map(([day,items])=>`<section class="week-day"><h3>${escape(dateLabel(day,{weekday:'long',month:'short',day:'numeric'}))}</h3>${items.map(e=>e.type==='plan'?planHTML(e):reminderHTML(e)).join('')}</section>`).join(''):empty('A fresh page ahead.','Your next two weeks of calendar plans and reminders will appear here.'));wireCompletions($('#week-content'));
 }
 function render(){
+  const art=artworkForEdition(brief.artwork),hero=$('.hero-art img');
+  hero.src=base+art.src;hero.alt=art.alt;hero.width=art.width||1536;hero.height=art.height||1024;
   $('#edition-date').textContent=dateLabel(brief.day,{weekday:'long',month:'long',day:'numeric',year:'numeric'}).toUpperCase();
   $('#greeting').innerHTML=`Good morning,<br><span>${escape(brief.name)}.</span>`;
   $('#freshness').textContent=`Your ${dateLabel(brief.day)} edit · Updated ${timeLabel(brief.generatedAt)}`;
@@ -131,6 +134,7 @@ function render(){
   $('#archive-banner').hidden=!viewingArchive;$('#archive-label').textContent=viewingArchive?`Past edition · ${dateLabel(brief.day)}. Your saved and completed marks are current.`:'';
   if(stale&&!viewingArchive)notices.push(`You’re reading the ${dateLabel(brief.day)} edition. Today’s edition hasn’t arrived yet; the forecast and plans below are for that date.`);
   if(brief.errors?.length)notices.push('Some sources couldn’t refresh. Check the availability notes below.');
+  if(brief.status?.artwork&&brief.status.artwork.state!=='fresh'&&!viewingArchive)notices.push('Today’s illustration is unavailable; the previous artwork is shown.');
   $('#notice').hidden=!notices.length;$('#notice').textContent=notices.join(' ');
   renderAgenda();renderWeather();renderReminders();renderFinds();renderIdeas();renderFinance();renderDeliveries();renderWeek();renderSaved();showView();wireLinks($('.page'));
 }

@@ -1,0 +1,15 @@
+{
+  "artworks": [
+    {
+      "day": "2026-10-02",
+      "src": "assets/artwork/2026-10-02-autumn-window.png",
+      "alt": "Early autumn in a pink New York window nook, with coffee, an apple, a cream pumpkin and golden leaves.",
+      "width": 1536,
+      "height": 1024,
+      "season": "autumn",
+      "generatedAt": "2026-10-02T13:32:47Z",
+      "prompt": "Use case: illustration-story. Generate a NEW landscape 3:2 editorial watercolor/gouache illustration for the small top-right artwork of Ariel's pink New York morning newsletter, dated October 2, early autumn. Use the reference image only for its warm hand-painted paper texture, delicate pink/butter-yellow palette and cozy NYC atmosphere; change the composition so this is a distinct daily illustration. Scene: a blush-pink NYC brownstone window nook, a butter-yellow cup of coffee, a small cream pumpkin, a red autumn apple and a little vase of russet and golden autumn leaves on a pink gingham cloth; beyond the window, charming brownstones and gently turning trees. Early autumn, not snowy winter, not spring tulips, no Halloween faces. Compose a compact, balanced still life with the cup, pumpkin and autumn leaves near the center so it remains legible in a small square mobile crop. Soft warm daylight, painterly brush texture, elegant and cute rather than cartoonish. Fully painted opaque background, edge-to-edge image, no lettering, no numbers, no logos, no border, no people or personal identifying details. This is decorative seasonal artwork, not an image of an actual event or a claim about today's weather.",
+      "tool": "Built-in image generation"
+    }
+  ]
+}

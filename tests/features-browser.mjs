@@ -13,6 +13,8 @@ try{
  page.on('pageerror',e=>errors.push(e.message));
  const unlock=async()=>{await page.locator('#unlock-password').fill(password);await page.locator('#unlock-form button').click();await page.locator('.page').waitFor({state:'visible'});};
  await page.goto(base+'?features='+Date.now());await unlock();
+ const checkArtwork=async src=>{const art=page.locator('.hero-art img');await art.evaluate(img=>img.complete?Promise.resolve():new Promise(resolve=>{img.addEventListener('load',resolve,{once:true});img.addEventListener('error',resolve,{once:true});setTimeout(resolve,12000);}));assert.ok((await art.getAttribute('src')).endsWith(src));assert.ok(await art.evaluate(img=>img.naturalWidth>0),'Edition artwork loads');};
+ await checkArtwork(brief.artwork?.src||'assets/morning.png');
  assert.equal(await page.locator('#finds-content .find').count(),10);
  assert.equal(brief.ideas.length,10,'Daily edition has ten free-time ideas');
  assert.equal(await page.locator('#ideas-content .find').count(),brief.ideas.length);
@@ -47,7 +49,10 @@ try{
  await page.locator('[data-edition]').first().waitFor();
  assert.ok(await page.locator('[data-edition]').count()>=2);
  await page.locator('[data-edition]').last().click();await page.locator('#archive-dialog').waitFor({state:'hidden'});
+ // The earliest archived edition predates daily artwork and retains its original picture.
+ await checkArtwork('assets/morning.png');
  await page.locator('#latest-edition').click();await page.locator('#archive-banner').waitFor({state:'hidden'});
+ await checkArtwork(brief.artwork?.src||'assets/morning.png');
  assert.equal(await page.locator('.delivery-item').count(),before);
  assert.equal(await page.locator('#ideas-content .find').count(),brief.ideas.length);
  for(const width of [390,768,1440]){await page.setViewportSize({width,height:1000});assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true,`No page overflow at ${width}`);}

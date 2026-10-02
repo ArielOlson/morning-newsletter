@@ -33,3 +33,8 @@ Prepare ten season-appropriate restaurant/activity ideas each day, prioritizing 
 ## Calendar completeness
 
 Read every entry in ignored connections.googleCalendars using its configured calendarId and inputIndex; do not hardcode primary or limit scans to two. Include both account primary calendars plus Work and Skating Lessons, scanning each shared calendar only once. Use the configured lookAheadDays (currently 15: today plus fourteen days), paginate fully, and retain actual per-calendar checkedAt values. Prefer complete fresh connected snapshots to public feeds; use public feeds only as fallback. Verify today’s events and every named calendar status before publishing. Calendar labels and event details belong only in the encrypted edition, never tracked configuration.
+
+
+## Daily seasonal artwork
+
+Generate a new seasonal NYC header illustration each day using the built-in image-generation tool. Follow [docs/artwork.md](docs/artwork.md) for the dated asset and manifest workflow, generation failures, and archive preservation. Keep the pink editorial style and the main subject legible in the mobile crop. Never overwrite old artwork or include personal data in prompts or images. Verify status.artwork after refresh and the matching current/archive artwork after publication.

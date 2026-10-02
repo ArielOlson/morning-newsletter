@@ -167,3 +167,8 @@ Prepare ten season-appropriate restaurant/activity ideas each day, prioritizing 
 ### Phone reminder troubleshooting
 
 On the hosted site, Refresh edition reloads the complete website with a fresh URL while keeping encrypted reminders in browser storage. Do not clear Safari website data to fix a reminder error: that would remove browser-only reminders. The form distinguishes unreadable saved data, blocked storage and quota errors without erasing the stored copy. Tests can run against WebKit with `REMINDER_TEST_BROWSER=webkit node tests/reminders-browser.mjs`; this is an iPhone-profile browser-engine test, not a physical iOS-device test. Cross-device reminder sync is not configured.
+
+
+## Daily seasonal artwork
+
+Generate a new seasonal NYC header illustration each day using the built-in image-generation tool. Follow [docs/artwork.md](docs/artwork.md) for the dated asset and manifest workflow, generation failures, and archive preservation. Keep the pink editorial style and the main subject legible in the mobile crop. Never overwrite old artwork or include personal data in prompts or images. Verify status.artwork after refresh and the matching current/archive artwork after publication.

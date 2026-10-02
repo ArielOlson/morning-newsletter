@@ -35,3 +35,8 @@ Browser tab icons (SVG, ICO, and PNG), the Apple touch icon, and the 512px shari
 ## Private edition
 
 Production opens on a compact pink password screen using the existing serif and monogram. No personal content is present before successful decryption. Keep Apple Passwords autofill compatible, provide a Lock button, and lock after 15 minutes of inactivity or a reload. Do not call this native passkey authentication. The public local-development preview remains bound to loopback only.
+
+
+## Daily seasonal header
+
+A fresh 3:2 painted NYC vignette follows the New York season each day, while keeping the existing pink and butter-yellow palette, compact header frame, and square mobile crop. Center the main still-life subjects. Every edition stores its own dated artwork path and descriptive alt text; old editions retain their original pictures. See docs/artwork.md.

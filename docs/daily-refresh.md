@@ -68,3 +68,8 @@ Keep ten dated NYC picks, with no events repeated from the previous New York cal
 ## Ten free-time ideas
 
 Prepare ten season-appropriate restaurant/activity ideas each day, prioritizing Ariel’s explicit wishes and filling the remaining slots with researched suggestions likely to suit her interests. Prefer activities available most days (theater, comedy, live music, museums, walks) for the suggestion slots. Mark assistant suggestions `suggested: true`; the selector labels them “Suggested for you.” Never turn a suggestion into a remembered personal wish. Keep a surplus of verified suggestions in ignored `config/ideas.local.json` so seasonal exclusions and busy Tuesday weekend checks still leave ten. Set `availableThrough` for a closing production; remove expired suggestions from consideration. Keep exact closures, performance schedules, costs/minimums and actual checkedAt dates honest. Preserve existing wish IDs and browser completion behavior. The ten-card limit applies before browser-local completed items are hidden. Check `status.ideas` and replenish the pool if fewer than ten qualify.
+
+
+## Daily seasonal artwork
+
+Generate a new seasonal NYC header illustration each day using the built-in image-generation tool. Follow [artwork.md](artwork.md) for the dated asset and manifest workflow, generation failures, and archive preservation. Keep the pink editorial style and the main subject legible in the mobile crop. Never overwrite old artwork or include personal data in prompts or images. Verify status.artwork after refresh and the matching current/archive artwork after publication.

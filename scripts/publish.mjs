@@ -12,7 +12,7 @@ const config=JSON.parse(await readFile(resolve(root,'config/publishing.json'),'u
 const run=(program,args,cwd=checkout)=>execFileSync(program,program==='git'?['-c','credential.https://github.com.helper=!gh auth git-credential',...args]:args,{cwd,encoding:'utf8',stdio:['ignore','pipe','pipe'],timeout:120000}).trim();
 const optionalJSON=async path=>{try{return JSON.parse(await readFile(path,'utf8'));}catch(e){if(e.code==='ENOENT')return null;throw e;}};
 // Deliberate publication boundary: local snapshots and connection settings never enter Git.
-const paths=['.gitignore','.node-version','.github/workflows/static.yml','AGENTS.md','DESIGN.md','README.md','index.html','package.json','pnpm-lock.yaml','pnpm-workspace.yaml','vite.config.js','src','scripts','tests','docs','public/assets','config/calendar.example.json','config/events.example.json','config/events.json','config/nyc-events.json','config/preferences.json','config/sources.json','config/publishing.json','dist'];
+const paths=['.gitignore','.node-version','.github/workflows/static.yml','AGENTS.md','DESIGN.md','README.md','index.html','package.json','pnpm-lock.yaml','pnpm-workspace.yaml','vite.config.js','src','scripts','tests','docs','public/assets','config/calendar.example.json','config/events.example.json','config/events.json','config/nyc-events.json','config/artwork.json','config/preferences.json','config/sources.json','config/publishing.json','dist'];
 const managed=path=>paths.some(p=>path===p||path.startsWith(`${p}/`));
 const privatePath=path=>/(^|\/)\.env[^/]*$|(^|\/)config\/.*\.local\.json$|(^|\/)test-results\/|^public\/data\//.test(path);
 let passwordBytes;
