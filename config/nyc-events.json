@@ -22,7 +22,7 @@
       "id": "nybg-dia-2026",
       "title": "Día de los Muertos at NYBG",
       "category": "Seasonal",
-      "priority": -10,
+      "priority": 30,
       "startDate": "2026-10-03",
       "endDate": "2026-11-02",
       "what": "Opening weekend of NYBG’s seasonal celebration: marigolds, a community ofrenda, live Mexican folk music, and hands-on paper and flower crafts.",
@@ -31,11 +31,10 @@
       "cost": "Check NYBG admission for your date; event-specific pricing was not confirmed.",
       "source": "New York Botanical Garden",
       "url": "https://www.nybg.org/event/dia-de-los-muertos/",
-      "checkedAt": "2026-09-29T03:24:00Z",
+      "checkedAt": "2026-10-02T13:23:18.589795+00:00",
       "image": "https://www.nybg.org/content/uploads/2026/07/iStock-1438560015-edit-1.1-800x800.jpg",
       "neighborhood": "Bronx Park",
-      "imageAlt": "NYBG seasonal ofrenda display",
-      "verificationNote": "Organizer page returned 403 on both checks Sep 30; retain original checkedAt and prefer currently verifiable picks."
+      "imageAlt": "NYBG seasonal ofrenda display"
     },
     {
       "id": "watermark-oktoberfest-2026",
@@ -349,6 +348,44 @@
       "image": "https://www.moma.org/d/assets/W1siZiIsIjIwMjYvMDIvMDYvN2M1aTl6NmVwOV9QZWdneV9XZWlsX2hlcm9fMi5qcGciXSxbInAiLCJjb252ZXJ0IiwiLXF1YWxpdHkgOTAgLXJlc2l6ZSAyMDAweDY2N14gLWdyYXZpdHkgQ2VudGVyIC1jcm9wIDIwMDB4NjY3KzArMCJdXQ/Peggy_Weil-hero_2.jpg?sha=9dea7e9b6222b052",
       "imageAlt": "Peggy Weil, 88 Cores, 2017. Digital video with score by Celia Hollander; still courtesy of the artist.",
       "checkedAt": "2026-10-02T12:37:55.521Z"
+    },
+    {
+      "id": "260:10/06/2026-Brodie Cashmere, (Flagship) NY-10/11/2026",
+      "title": "Brodie Cashmere sample sale",
+      "startDate": "2026-10-06",
+      "endDate": "2026-10-11",
+      "category": "Sample sales",
+      "priority": 25,
+      "what": "Six days of discounted cashmere at the Fifth Avenue flagship. The organizer lists savings up to 80%; stock and individual prices vary.",
+      "where": "260 Sample Sale flagship · 261 Fifth Avenue",
+      "neighborhood": "NoMad",
+      "when": "Oct 6–11 · Tue–Sat 11 a.m.–7 p.m.; Sun 10 a.m.–5 p.m.",
+      "cost": "Up to 80% off; admission charge not specified.",
+      "source": "260 Sample Sale",
+      "url": "https://260samplesale.com/pages/events/brodie-cashmere-flagship-ny",
+      "image": "https://virtual.260samplesale.com/cdn/shop/files/mainimage-brodie-cashmere_2.jpg?v=1771003825&width=500",
+      "imageAlt": "Brodie Cashmere organizer photograph",
+      "checkedAt": "2026-10-02T13:23:18.589795+00:00"
+    },
+    {
+      "id": "moma-sarah-michelson-nowhere-2026",
+      "title": "Sarah Michelson: nowhere",
+      "startDate": "2026-09-15",
+      "endDate": "2026-10-11",
+      "category": "Around town",
+      "discovery": true,
+      "priority": 25,
+      "what": "A dance performance woven into MoMA’s daily life, with Michelson and a rotating group of dancers using the atrium as their workspace. Fridays feature an open gathering rather than the usual performance; no separate advance registration is required.",
+      "where": "MoMA · Floor 2 atrium · 11 West 53rd Street",
+      "neighborhood": "Midtown",
+      "when": "Through Oct 11 · performance Sat–Thu during museum hours; Friday gatherings have separate hours—check the event page.",
+      "cost": "Included with museum admission; adults $30. NY State residents can reserve free Friday evening admission.",
+      "source": "MoMA",
+      "url": "https://www.moma.org/calendar/exhibitions/5928",
+      "supportingURL": "https://press.moma.org/film-media/sarah-michelson-nowhere/",
+      "image": "https://www.moma.org/d/assets/W1siZiIsIjIwMjYvMDcvMjIvYXkyc3kxeHl4X1NhcmFoX01pY2hlbHNvbl9fbm93aGVyZV8yLmpwZyJdLFsicCIsImNvbnZlcnQiLCItcXVhbGl0eSA5MCAtcmVzaXplIDIwMDB4NjY3XiAtZ3Jhdml0eSBDZW50ZXIgLWNyb3AgMjAwMHg2NjcrMCswIl1d/Sarah%20Michelson_%20nowhere_2.jpg?sha=f8f0d00de2003288",
+      "imageAlt": "Sarah Michelson, nowhere, 2026. Courtesy the artist.",
+      "checkedAt": "2026-10-02T13:23:18.589795+00:00"
     }
   ]
 }

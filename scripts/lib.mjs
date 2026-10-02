@@ -154,14 +154,14 @@ export function selectCity(items,day,interests={},previous=[]){
  const seen=new Set(),prior=new Set(previous.flatMap(cityKeys));
  const score=x=>(x.priority||0)+(x.tags?.includes('red-sox')?40:0)+(interests.artists?.some(a=>x.title.toLowerCase().includes(a.toLowerCase()))?50:0)+(interests.brands?.some(a=>x.title.toLowerCase().includes(a.toLowerCase()))?30:0);
  const candidates=items.filter(x=>x.startDate&&x.startDate<=addDays(day,14)&&(x.endDate||x.startDate)>=day&&safeURL(x.url)).sort((a,b)=>score(b)-score(a)||a.startDate.localeCompare(b.startDate)).filter(x=>{const keys=cityKeys(x);if(keys.some(k=>seen.has(k)))return false;keys.forEach(k=>seen.add(k));return true;});
- // Search the small quota space so a high-ranked repeat cannot crowd out
- // the only combination that provides ten picks and three or four discoveries.
+ // Yesterday’s events are excluded even if highly ranked or still running.
+ // Search the quota space for ten picks with three or four discoveries.
  let states=new Map([['0:0:0',{picks:[],repeats:0,discoveries:0,score:0}]]);
  for(const [rank,item] of candidates.entries()){
   const repeat=cityKeys(item).some(k=>prior.has(k))?1:0,discovery=item.discovery===true?1:0;
   const next=new Map(states);
   for(const state of states.values()){
-   const n=state.picks.length+1,r=state.repeats+repeat,d=state.discoveries+discovery;if(n>10||r>3||d>4)continue;
+   const n=state.picks.length+1,r=state.repeats+repeat,d=state.discoveries+discovery;if(n>10||r>0||d>4)continue;
    const value={picks:[...state.picks,item],repeats:r,discoveries:d,score:state.score+candidates.length-rank},key=`${n}:${r}:${d}`;
    if(!next.has(key)||value.score>next.get(key).score)next.set(key,value);
   }
