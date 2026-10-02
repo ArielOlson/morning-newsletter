@@ -18,5 +18,5 @@ export function selectIdeas(items,day,calendar,zone='America/New_York'){
    idea.what+=` No plans found across the configured calendars that day; confirm before booking.`;
   }
   return idea;
- }).filter(Boolean).slice(0,5);
+ }).filter(Boolean).slice(0,10);
 }
