@@ -1,4 +1,5 @@
-import {chromium,webkit,devices} from '@playwright/test';
+import {syncFixture} from './sync-fixture.mjs';
+import {chromium,webkit,devices,expect} from '@playwright/test';
 import {preview} from 'vite';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
@@ -11,6 +12,7 @@ const safari=process.env.REMINDER_TEST_BROWSER==='webkit';
 const browser=await (safari?webkit.launch({headless:true}):chromium.launch({channel:'chrome',headless:true}));
 try{
  const page=await browser.newPage(safari?devices['iPhone 13']:{viewport:{width:390,height:844}}),errors=[],writes=[];
+ const remote=await syncFixture(password);await remote.install(page.context());
  page.on('pageerror',e=>errors.push(e.message));page.on('request',r=>{if(r.method()==='POST')writes.push(r.url());});
  const unlock=async()=>{await page.locator('#unlock-password').fill(password);await page.locator('#unlock-form button').click();await page.locator('.page').waitFor({state:'visible'});};
  await page.goto(base+'?reminder-test='+Date.now());await unlock();
@@ -27,16 +29,16 @@ try{
  const future=await encrypt(JSON.stringify({...brief,day:tomorrow}),password);
  await page.route('**/data/brief.enc.json*',route=>route.fulfill({json:future}));await page.reload();await unlock();
  assert.ok((await page.locator('#reminders-content').innerText()).includes(title));
- const card=page.locator('#reminders-content .reminder').filter({hasText:title});await card.locator('[data-complete]').click();assert.equal(await card.count(),0);
- await page.reload();await unlock();assert.equal(await card.count(),0);
+ const card=page.locator('#reminders-content .reminder').filter({hasText:title});await card.locator('[data-complete]').click();await expect(card).toHaveCount(0);
+ await page.reload();await unlock();await expect(card).toHaveCount(0);
  await open();assert.ok((await page.locator('#device-reminders-list').innerText()).includes('Completed'));
- await page.locator('[data-toggle-reminder]').click();assert.ok(!(await page.locator('#device-reminders-list').innerText()).includes('Undo complete'));assert.equal(await card.count(),1);
+ await page.locator('[data-toggle-reminder]').click();await expect(page.locator('#device-reminders-list')).not.toContainText('Undo complete');await expect(card).toHaveCount(1);
  await page.screenshot({path:'test-results/phone-reminders.png'});
  assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
- await page.locator('[data-delete-reminder]').click();await page.waitForFunction(()=>document.querySelector('#device-reminders-list').textContent.includes('No reminders'));
+ await page.locator('[data-delete-reminder]').click();await page.waitForFunction(()=>document.querySelector('#device-reminders-list').textContent.includes('No saved reminders'));
  // Storage failure must retain the form and report a failure instead of claiming success.
- await page.evaluate(()=>{Storage.prototype.setItem=function(){throw Error('Storage blocked');};});
- await form.locator('[name=title]').fill('Unsaved reminder');await form.locator('[name=startDate]').fill(tomorrow);await form.locator('[type=submit]').click();await page.waitForFunction(()=>document.querySelector('#form-status').textContent.includes('Could not save'));
+ remote.fail(true);
+ await form.locator('[name=title]').fill('Unsaved reminder');await form.locator('[name=startDate]').fill(tomorrow);await form.locator('[type=submit]').click();await page.waitForFunction(()=>document.querySelector('#form-status').textContent.includes('could not confirm'));
  assert.equal(await page.locator('#reminder-dialog').isVisible(),true);
  await page.locator('#reminder-dialog .close-dialog').click();await page.locator('#lock-button').click();
  assert.equal(await form.locator('[name=title]').inputValue(),'');assert.equal(await page.locator('#device-reminders-list').textContent(),'');

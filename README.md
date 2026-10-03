@@ -1,5 +1,12 @@
 # The Morning Edit 💛
 
+## Required durable user state
+
+Ariel requires ALL saved user changes to synchronize across devices and survive clearing browser data. This includes reminders, completion/undo marks, hearts, package Received/Return/Sent Back/Refunded stages and future features. Once due, reminders remain in every daily edition until explicitly completed; an end date does not dismiss them. Browser storage may cache or hold credentials, but is never the sole source of truth for a completed feature.
+
+Use the encrypted state file in private `ArielOlson/morning-newsletter-state`, through the GitHub Contents API with a repository-limited fine-grained token entered by Ariel on each device. Never embed a token in public assets or copy the Mac's gh token into the site. Confirm each durable save before showing success; preserve drafts and old state on failures. Re-read the latest SHA and reapply only the intended mutation on conflicts. Keep deletion/undo tombstones so imports cannot resurrect older choices. Daily publication must never replace or reset this state repository. Verify clean-browser restoration and concurrent-device changes for state-related updates. Until Ariel connects a browser, legacy local data remains readable and new hosted saves require connection; do not claim sync is active on that device.
+
+
 Ariel’s personal morning newsletter. Pink editorial styling, a custom NYC breakfast illustration, a tiny Three.js heart, and useful daily information. Plain HTML, CSS, and JavaScript, with Vite for bundling and a small Node script that prepares the edition.
 
 ## Start here
@@ -42,13 +49,15 @@ Private calendar links and snapshots are ignored by Git and blocked by the devel
 
 ## Deliveries
 
-The daily Codex task scans both configured Gmail accounts for shipping and package notices, merges updates by tracking number, and saves `config/deliveries.local.json`. Each package uses three compact rows: a bold merchant/item/status caption, qualification and tracking/email links, and the last update. Received hides it in this browser in later editions; Show received & refunded provides undo. The same tracking number retains this choice even if the source email changes. Split shipments remain separate. Pickup notices and subscription renewals are identified explicitly. Statuses are email-derived unless a successful official carrier check is recorded. Carrier tracking pages may block automated access; no tracking API credentials are required.
+The daily Codex task scans both configured Gmail accounts for shipping and package notices, merges updates by tracking number, and saves `config/deliveries.local.json`. Each package uses three compact rows: a bold merchant/item/status caption, qualification and tracking/email links, and the last update. Received hides it on connected devices in later editions; Show received & refunded provides undo. The same tracking number retains this choice even if the source email changes. Split shipments remain separate. Pickup notices and subscription renewals are identified explicitly. Statuses are email-derived unless a successful official carrier check is recorded. Carrier tracking pages may block automated access; no tracking API credentials are required.
 
 No email is sent, marked read, archived, or changed. Pickup PINs, addresses, and full email bodies are excluded. Connection IDs and private snapshots live in ignored `config/*.local.json`. The page’s **Refresh edition** button refreshes public sources and reuses the latest connector scan; it does not initiate a new Gmail scan. The daily task performs that scan. Snapshots older than 26 hours are visibly marked stale.
 
 ## Add something to the newsletter
 
-Use **Add a reminder** on the website from your phone or computer. Hosted reminders are encrypted with the newsletter password and saved in that browser. They appear on their reminder dates in future editions on the same device, with persistent completion marks. Open the form to edit or delete any saved reminder. They do not sync across browsers/devices, enter GitHub, or become part of published past editions; clearing browser storage removes them. For reminders shared across devices, ask Codex to add them to the newsletter. The local Mac editor still writes to `config/events.local.json` and refreshes the edition.
+Use **Made for Ariel → Save across your devices → Connect this device** once per browser. Create a fine-grained GitHub token for **Only select repositories → morning-newsletter-state**, with **Contents: Read and write**; keep other permissions off. Save it privately in Apple Passwords and paste it into the site, never chat. The token is encrypted locally with the newsletter password. Each confirmed reminder, completion, heart, link mark and package choice is stored encrypted in the separate private GitHub repository. Connect another device with the same key and newsletter password to restore those choices. Clearing browser data removes that device's connection but does not delete confirmed GitHub saves. Reconnect to recover them. Renew an expired token in Settings; data stays intact.
+
+Existing browser-only reminders, saved cards, completion marks and package choices are imported when that browser connects. Connect each old browser before clearing it: unimported local data cannot be recovered from GitHub. Reminders stay visible once due until marked complete. A failed save keeps the draft and reports a failure; there is no silent local-only fallback. The local Mac editor continues to write private configuration.
 
 Alternatively, edit `config/events.json` for items you are comfortable committing, or `config/events.local.json` for private items. Both use this structure:
 
@@ -87,7 +96,7 @@ The NYC section shows ten dated picks in a horizontal photo carousel. Every capt
 
 Weather failure preserves an earlier forecast only for the **same day**, visibly marked as earlier. Calendar failures never display an empty day as if it were confirmed free. Failed news sources do not retain old leads. Every edition carries a date and refresh time. An older edition displays an explicit notice. Source timeouts and retries are bounded, and edition writes are atomic. A config error preserves the previous edition.
 
-Saved discoveries live only in the current browser’s local storage. They do not sync between devices, and can outlive an event; check the source before going.
+Saved discoveries synchronize through private GitHub state after connection and can outlive an event; check the source before going.
 
 ## Daily automation and publication
 
@@ -152,7 +161,7 @@ Documentation for operational assumptions:
 
 Past editions appears beside About your edit. Each date keeps the final prepared edition for that day; later builds on the same day update that date. The index and every historical edition are encrypted. Builds preserve earlier encrypted editions in dist and private local copies in .cache/editions. Current code can render older edition schemas.
 
-Received packages, completed reminders/ideas, and opened links are remembered by hashed identifiers in this browser only. Reloads and new editions preserve these choices. Past editions retain their original content and display your current completion/received marks and hearts; they are not frozen snapshots of your clicking history. Show received allows undo; past editions allow undo of completed items. Clearing browser storage resets these choices, and they do not synchronize between devices. On the hosted site, saved card details are encrypted in browser storage.
+Received packages, completed reminders/ideas, saved hearts and opened links synchronize through encrypted GitHub state. Past editions show current marks for their original content. Finished package choices support undo. Clearing browser data requires reconnection, not recreation of confirmed saves.
 
 
 ## Daily NYC variety
@@ -166,7 +175,7 @@ Prepare ten season-appropriate restaurant/activity ideas each day, prioritizing 
 
 ### Phone reminder troubleshooting
 
-On the hosted site, Refresh edition reloads the complete website with a fresh URL while keeping encrypted reminders in browser storage. Do not clear Safari website data to fix a reminder error: that would remove browser-only reminders. The form distinguishes unreadable saved data, blocked storage and quota errors without erasing the stored copy. Tests can run against WebKit with `REMINDER_TEST_BROWSER=webkit node tests/reminders-browser.mjs`; this is an iPhone-profile browser-engine test, not a physical iOS-device test. Cross-device reminder sync is not configured.
+Refresh edition reloads the website and restores confirmed saves from private GitHub state. If a device loses its connection after clearing browser data, reconnect from Made for Ariel. Import old browser-only data before clearing its original browser. GitHub outages or expired keys preserve saved data and keep unsaved drafts visible. Run `node tests/sync-browser.mjs` for two-device and cleared-storage recovery in Chrome and WebKit; these are browser-engine tests, not physical iOS-device tests.
 
 
 ## Daily seasonal artwork
@@ -176,6 +185,6 @@ Generate a new seasonal NYC header illustration each day using the built-in imag
 
 ## Package choices
 
-Packages have three sections: Incoming (Received or Return), Returns (Sent Back), and Refunds (Refunded). Choices move packages immediately and persist into later editions in the same browser. Received and Refunded hide finished packages; Show received & refunded provides undo. Returns remain until Sent Back; refunds remain until Refunded. These buttons record Ariel’s choices only; they do not initiate a merchant return, send mail, or confirm a bank refund.
+Packages have three sections: Incoming (Received or Return), Returns (Sent Back), and Refunds (Refunded). Confirmed choices move packages immediately and persist into later editions on connected devices. Received and Refunded hide finished packages; Show received & refunded provides undo. Returns remain until Sent Back; refunds remain until Refunded. These buttons record Ariel’s choices only; they do not initiate a merchant return, send mail, or confirm a bank refund.
 
-The browser retains a minimal encrypted package snapshot with each choice, so returns and pending refunds survive after the email feed stops including the parcel. Preserve carrier/tracking identities and legacy received marks. Never infer a manual choice from an email status. Archive views retain the current choice for parcels present in that edition, without adding newer parcels to old editions. Storage is encrypted with the newsletter password and cleared from page memory on lock. Choices do not sync across devices, and clearing browser data deletes them. Password migrations must include this saved package ledger.
+The private GitHub state retains a minimal encrypted package snapshot with each choice, so returns and pending refunds survive after the email feed stops including the parcel. Preserve carrier/tracking identities and legacy received marks. Never infer a manual choice from an email status. Archive views retain the current choice for parcels present in that edition, without adding newer parcels to old editions. Storage is encrypted with the newsletter password and cleared from page memory on lock. Confirmed GitHub choices survive clearing browser data; reconnect the device to restore them. Legacy browser-only choices require import from their original browser. Password migrations must include this saved package ledger.

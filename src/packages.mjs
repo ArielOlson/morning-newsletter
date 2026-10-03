@@ -19,10 +19,7 @@ export async function changePackageStage(password,shipment,stage,{storage=localS
   if(!password||!isCurrent())throw Error('Unlock the newsletter before saving.');
   if(!stages.includes(stage)||!shipment.id)throw Error('Invalid package choice.');
   const records=await readPackages(password,storage,key),id=await historyId('shipment',shipmentIdentity(shipment));
-  const from=records[id]?.stage||'incoming';
-  const allowed={incoming:['incoming','received','return'],received:['incoming'],return:['refund'],refund:['refunded'],refunded:['incoming']};
-  if(!allowed[from].includes(stage))throw Error('This package changed. Refresh the page and try again.');
-  records[id]={stage,changedAt:new Date().toISOString(),shipment:snapshot(latest(records[id]?.shipment,shipment))};
+  setPackageRecord(records,id,shipment,stage);
   const encoded=JSON.stringify(await encrypt(JSON.stringify({version:1,records}),password));
   if(!isCurrent())throw Error('The newsletter locked before saving. Unlock and try again.');
   try{storage.setItem(key,encoded);}catch{throw Error('Could not save your choice. Allow browser storage or free some space, then try again.');}return records;
@@ -32,6 +29,14 @@ export async function changePackageStage(password,shipment,stage,{storage=localS
 export async function packageRows(shipments,records,received={},includeRetained=true){
  const rows=new Map();
  for(const shipment of shipments){const key=await historyId('shipment',shipmentIdentity(shipment)),record=records[key];rows.set(key,{key,shipment,stage:record?.stage||(received[key]?'received':'incoming'),changedAt:record?.changedAt||received[key]});}
- if(includeRetained)for(const [key,record] of Object.entries(records))if(!rows.has(key)&&record.stage!=='incoming')rows.set(key,{key,...record});
+ if(includeRetained)for(const [key,record] of Object.entries(records))if(!rows.has(key))rows.set(key,{key,...record});
  return [...rows.values()];
+}
+
+export function setPackageRecord(records,id,shipment,stage){
+  const from=records[id]?.stage||'incoming';
+  const allowed={incoming:['incoming','received','return'],received:['incoming'],return:['refund'],refund:['refunded'],refunded:['incoming']};
+  if(!allowed[from].includes(stage))throw Error('This package changed. Refresh the page and try again.');
+  records[id]={stage,changedAt:new Date().toISOString(),shipment:snapshot(latest(records[id]?.shipment,shipment))};
+ return records;
 }

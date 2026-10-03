@@ -18,7 +18,7 @@ Personal editorial morning newsletter for Ariel. Strawberry pink, butter-yellow 
 
 ## Interaction & motion
 
-Native dialog focus trapping and Escape, visible keyboard focus, skip link, semantic buttons, live status, meaningful empty and failure states. Hearts save to this browser. Data is escaped before entering markup; external links allow HTTPS only. A single Three.js gold heart is decorative and isolated, pauses when offscreen/hidden, and becomes static with reduced motion. The main page remains usable when WebGL fails. Modest entry fade; no scroll hijacking, looping ticker, or custom cursor.
+Native dialog focus trapping and Escape, visible keyboard focus, skip link, semantic buttons, live status, meaningful empty and failure states. Hearts save to encrypted private GitHub state after connection; show success only after acknowledgement. Data is escaped before entering markup; external links allow HTTPS only. A single Three.js gold heart is decorative and isolated, pauses when offscreen/hidden, and becomes static with reduced motion. The main page remains usable when WebGL fails. Modest entry fade; no scroll hijacking, looping ticker, or custom cursor.
 
 ## Content
 
@@ -26,7 +26,7 @@ No invented weather, meetings, reminders, or event dates. The issue date is alwa
 
 ## September 2026 reading-density revision
 
-Compact the greeting and illustration so useful content starts sooner. Use ten photo-led NYC cards with name, dates, cost, neighborhood, details, and source links below each image; no category labels or filters. A separate matching carousel holds personal restaurant and activity ideas. Place the next three calendar plans inline, followed by finance headlines with descriptions and package status with visible dates. Keep the pink palette, artwork, serif headings, and small Three.js accent. Reduce decorative copy and avoid expand-to-read interactions. Clearly separate edition refresh time, connector scan time, and individual shipment status time. Packages use three semantic rows, wrapping naturally on phones. Keep Past editions beside About your edit, with an obvious return to the latest edition. Hearts, completed items, received packages, and opened links persist in the browser and are reflected when viewing past content.
+Compact the greeting and illustration so useful content starts sooner. Use ten photo-led NYC cards with name, dates, cost, neighborhood, details, and source links below each image; no category labels or filters. A separate matching carousel holds personal restaurant and activity ideas. Place the next three calendar plans inline, followed by finance headlines with descriptions and package status with visible dates. Keep the pink palette, artwork, serif headings, and small Three.js accent. Reduce decorative copy and avoid expand-to-read interactions. Clearly separate edition refresh time, connector scan time, and individual shipment status time. Packages use three semantic rows, wrapping naturally on phones. Keep Past editions beside About your edit, with an obvious return to the latest edition. Hearts, completed items, received packages, and opened links persist across connected devices and are reflected when viewing past content.
 
 ## Site identity and link previews
 

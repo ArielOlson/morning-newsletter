@@ -1,4 +1,5 @@
-import {chromium} from '@playwright/test';
+import {syncFixture} from './sync-fixture.mjs';
+import {chromium,expect} from '@playwright/test';
 import {preview} from 'vite';
 import assert from 'node:assert/strict';
 import {readFile,mkdir} from 'node:fs/promises';
@@ -10,6 +11,7 @@ const browser=await chromium.launch({channel:'chrome',headless:true});
 await mkdir('test-results',{recursive:true});
 try{
  const page=await browser.newPage({viewport:{width:1440,height:1000},reducedMotion:'reduce'}),errors=[];
+ await (await syncFixture(password)).install(page.context());
  page.on('pageerror',e=>errors.push(e.message));
  const unlock=async()=>{await page.locator('#unlock-password').fill(password);await page.locator('#unlock-form button').click();await page.locator('.page').waitFor({state:'visible'});};
  await page.goto(base+'?features='+Date.now());await unlock();
@@ -28,11 +30,11 @@ try{
  assert.equal(await page.locator('.delivery-item').first().locator(':scope > *').count(),3);
  await page.locator('#received-toggle').click();
  const idea=page.locator('#ideas-content [data-complete]').first(),ideaId=await idea.getAttribute('data-complete');
- await idea.click();assert.equal(await page.locator(`#ideas-content [data-complete="${ideaId}"]`).count(),0);
+ await idea.click();await expect(page.locator(`#ideas-content [data-complete="${ideaId}"]`)).toHaveCount(0);
  const link=page.locator('#finds-content a[target="_blank"]').first();
  // Record a real link interaction without navigating to the external site during this test.
  await link.evaluate(a=>{a.addEventListener('click',e=>e.preventDefault(),{once:true});a.click();});
- assert.equal(await link.getAttribute('data-visited'),'true');
+ await expect(link).toHaveAttribute('data-visited','true');
  await page.reload();await unlock();
  assert.equal(await page.locator(`[data-save="${id}"]`).first().getAttribute('aria-pressed'),'true');
  assert.equal(await page.locator(`[data-received="${shipment}"]`).count(),0);
@@ -44,6 +46,7 @@ try{
  assert.match(await page.locator(`[data-received="${shipment}"]`).innerText(),/Received/);
  assert.match(await page.locator(`#ideas-content [data-complete="${ideaId}"]`).innerText(),/Done/);
  await page.locator(`#ideas-content [data-complete="${ideaId}"]`).click();
+ await expect(page.locator(`#ideas-content [data-complete="${ideaId}"]`)).toHaveText("Done this");
  await page.locator(`[data-received="${shipment}"]`).click();
  await page.waitForFunction(id=>document.querySelector(`[data-received="${id}"]`)?.textContent==='Received',shipment);
  await page.locator('#past-editions-button').click();

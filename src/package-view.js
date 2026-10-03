@@ -1,5 +1,5 @@
-import {readPackages,changePackageStage,packageRows,packagesKey} from './packages.mjs';
-export function createPackageView({escape,safeURL,stamp,dateLabel,external,wireLinks,toast,getPassword,isArchive,getHistory}){
+import {readPackages,changePackageStage,packageRows,packagesKey,setPackageRecord} from './packages.mjs';
+export function createPackageView({escape,safeURL,stamp,dateLabel,external,wireLinks,toast,getPassword,isArchive,getHistory,sync}){
  let records={},rows=[],data=null,generation=0,showFinished=false,saving=false,error='';
  const root=document.querySelector('#deliveries-content'),toggle=document.querySelector('#received-toggle');
  const labels={ordered:'Ordered',shipped:'Shipped',delivered:'Delivered',pickup:'Pickup notice',scheduled:'Scheduled',delayed:'Delayed','out-for-delivery':'Out for delivery','in-transit':'In transit'};
@@ -18,13 +18,13 @@ export function createPackageView({escape,safeURL,stamp,dateLabel,external,wireL
   if(!data)return;
   const finished=rows.filter(r=>['received','refunded'].includes(r.stage));
   toggle.textContent=showFinished?'Hide received & refunded':'Show received & refunded';toggle.setAttribute('aria-expanded',String(showFinished));
-  document.querySelector('#deliveries-source').textContent=data.checkedAt?`Email scanned ${stamp(data.checkedAt)} · ${data.scope||'Connected Gmail'}. Package choices are saved in this browser.`:'Email scan unavailable. Saved returns and refunds remain below.';
+  document.querySelector('#deliveries-source').textContent=data.checkedAt?`Email scanned ${stamp(data.checkedAt)} · ${data.scope||'Connected Gmail'}. ${sync.connected?'Package choices are saved across connected devices.':'Connect cross-device saving in Made for Ariel before making changes.'}`:'Email scan unavailable. Saved returns and refunds remain below.';
   root.innerHTML=(error?`<p class="notice" role="alert">${escape(error)} Your stored copy is preserved; package buttons are paused until it can be opened.</p>`:'')+(data.state==='stale'?'<p class="notice">The last email scan is over 26 hours old. These statuses may have changed.</p>':'')+section('incoming','Incoming',rows.filter(r=>r.stage==='incoming'),data.state==='unavailable'?'Email scan unavailable.':'No incoming packages to review.')+section('returns','Returns',rows.filter(r=>r.stage==='return'),'No packages marked for return.')+section('refunds','Refunds',rows.filter(r=>r.stage==='refund'),'No refunds awaiting confirmation.')+((showFinished||isArchive())?section('finished','Received & refunded',finished,'No finished packages.'):'');
   wireLinks(root);
  }
  async function load(brief){
   const current=++generation;let next={},failure='';
-  try{next=await readPackages(password(),localStorage,key);}catch(e){failure=e.message;}
+  try{next=import.meta.env.PROD&&sync.connected?sync.state.packages:await readPackages(password(),localStorage,key);}catch(e){failure=e.message;}
   const list=await packageRows(brief.deliveries?.shipments||[],next,getHistory().received,!isArchive());
   if(current!==generation)return;
   saving=false;records=next;rows=list;error=failure;data=brief.deliveries||{state:'unavailable',shipments:[]};render();
@@ -35,11 +35,11 @@ export function createPackageView({escape,safeURL,stamp,dateLabel,external,wireL
   const row=rows.find(r=>r.key===b.dataset.packageKey);if(!row)return;
   const current=generation,action=b.dataset.packageAction;saving=true;render();
   try{
-   const next=await changePackageStage(password(),row.shipment,action,{key,isCurrent:()=>current===generation&&!!password()});
+   const next=import.meta.env.PROD?(await sync.change(state=>{setPackageRecord(state.packages,row.key,row.shipment,action);return state;})).packages:await changePackageStage(password(),row.shipment,action,{key,isCurrent:()=>current===generation&&!!password()});
    if(current!==generation)return;
    const nextRows=await packageRows(data.shipments||[],next,getHistory().received,!isArchive());
    if(current!==generation)return;records=next;rows=nextRows;
-   toast(action==='return'?'Moved to Returns. It stays until you mark Sent Back.':action==='refund'?'Moved to Refunds. It stays until you mark Refunded.':action==='incoming'?'Moved back to Incoming.':'Saved. Hidden from future editions in this browser.');
+   toast(action==='return'?'Moved to Returns. It stays until you mark Sent Back.':action==='refund'?'Moved to Refunds. It stays until you mark Refunded.':action==='incoming'?'Moved back to Incoming.':'Saved. Hidden from future editions on your connected devices.');
   }catch(e){if(current===generation)toast(e.message||'Could not save. Please allow browser storage and try again.');}
   finally{if(current===generation){saving=false;render();const group=action==='return'?'returns':action==='refund'?'refunds':'incoming';root.querySelector(`#packages-${group}-heading`)?.focus({preventScroll:true});}}
  });

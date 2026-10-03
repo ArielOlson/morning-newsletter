@@ -1,5 +1,12 @@
 # Daily connected refresh
 
+## Required durable user state
+
+Ariel requires ALL saved user changes to synchronize across devices and survive clearing browser data. This includes reminders, completion/undo marks, hearts, package Received/Return/Sent Back/Refunded stages and future features. Once due, reminders remain in every daily edition until explicitly completed; an end date does not dismiss them. Browser storage may cache or hold credentials, but is never the sole source of truth for a completed feature.
+
+Use the encrypted state file in private `ArielOlson/morning-newsletter-state`, through the GitHub Contents API with a repository-limited fine-grained token entered by Ariel on each device. Never embed a token in public assets or copy the Mac's gh token into the site. Confirm each durable save before showing success; preserve drafts and old state on failures. Re-read the latest SHA and reapply only the intended mutation on conflicts. Keep deletion/undo tombstones so imports cannot resurrect older choices. Daily publication must never replace or reset this state repository. Verify clean-browser restoration and concurrent-device changes for state-related updates. Until Ariel connects a browser, legacy local data remains readable and new hosted saves require connection; do not claim sync is active on that device.
+
+
 This is the runbook for the existing Codex heartbeat at 4:10 a.m. America/New_York. Use current New York dates (Luxon is installed). Keep runs quiet on routine success. Ariel has authorized daily GitHub pushes and publication to the configured website. Do not send email, change mail labels, or edit calendar events.
 
 ## 1. Calendar
@@ -77,6 +84,6 @@ Generate a new seasonal NYC header illustration each day using the built-in imag
 
 ## Package choices
 
-Packages have three sections: Incoming (Received or Return), Returns (Sent Back), and Refunds (Refunded). Choices move packages immediately and persist into later editions in the same browser. Received and Refunded hide finished packages; Show received & refunded provides undo. Returns remain until Sent Back; refunds remain until Refunded. These buttons record Ariel’s choices only; they do not initiate a merchant return, send mail, or confirm a bank refund.
+Packages have three sections: Incoming (Received or Return), Returns (Sent Back), and Refunds (Refunded). Confirmed choices move packages immediately and persist into later editions on connected devices. Received and Refunded hide finished packages; Show received & refunded provides undo. Returns remain until Sent Back; refunds remain until Refunded. These buttons record Ariel’s choices only; they do not initiate a merchant return, send mail, or confirm a bank refund.
 
-The browser retains a minimal encrypted package snapshot with each choice, so returns and pending refunds survive after the email feed stops including the parcel. Preserve carrier/tracking identities and legacy received marks. Never infer a manual choice from an email status. Archive views retain the current choice for parcels present in that edition, without adding newer parcels to old editions. Storage is encrypted with the newsletter password and cleared from page memory on lock. Choices do not sync across devices, and clearing browser data deletes them. Password migrations must include this saved package ledger.
+The private GitHub state retains a minimal encrypted package snapshot with each choice, so returns and pending refunds survive after the email feed stops including the parcel. Preserve carrier/tracking identities and legacy received marks. Never infer a manual choice from an email status. Archive views retain the current choice for parcels present in that edition, without adding newer parcels to old editions. Storage is encrypted with the newsletter password and cleared from page memory on lock. Confirmed GitHub choices survive clearing browser data; reconnect the device to restore them. Legacy browser-only choices require import from their original browser. Password migrations must include this saved package ledger.
