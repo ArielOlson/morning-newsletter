@@ -4,7 +4,7 @@
       "id": "reiss-2026-09",
       "title": "Reiss London sample sale",
       "category": "Sample sales",
-      "priority": 25,
+      "priority": 100,
       "startDate": "2026-09-29",
       "endDate": "2026-10-04",
       "what": "Six days of discounted Reiss clothing, with the organizer advertising reductions up to 75%.",
@@ -13,7 +13,7 @@
       "cost": "Item prices vary; up to 75% off. An admission charge is not specified.",
       "source": "260 Sample Sale",
       "url": "https://260samplesale.com/pages/events/reiss-london-flagship-ny",
-      "checkedAt": "2026-10-02T12:37:55.521Z",
+      "checkedAt": "2026-10-04T16:54:37Z",
       "image": "https://virtual.260samplesale.com/cdn/shop/files/mainimage-reiss-london_9b7fc232-59d8-4265-a516-13ffc2050244.jpg?v=1789572442&width=500",
       "imageAlt": "Reiss London organizer photo",
       "neighborhood": "NoMad"
@@ -22,7 +22,7 @@
       "id": "nybg-dia-2026",
       "title": "Día de los Muertos at NYBG",
       "category": "Seasonal",
-      "priority": 30,
+      "priority": -10,
       "startDate": "2026-10-03",
       "endDate": "2026-11-02",
       "what": "Opening weekend of NYBG’s seasonal celebration: marigolds, a community ofrenda, live Mexican folk music, and hands-on paper and flower crafts.",
@@ -40,7 +40,7 @@
       "id": "watermark-oktoberfest-2026",
       "title": "Oktoberfest at Watermark",
       "category": "Seasonal",
-      "priority": 25,
+      "priority": 100,
       "startDate": "2026-09-10",
       "endDate": "2026-10-31",
       "what": "Waterfront Oktoberfest with German beer, food, and seasonal decorations. Reservations and paid packages are available.",
@@ -52,7 +52,7 @@
       "url": "https://oktober-fest.nyc/get-your-tickets/",
       "image": "https://oktober-fest.nyc/oktoberfest/wp-content/uploads/2024/06/oktoberfest-nyc-2023-at-watermark-beer-festival-05.jpg",
       "imageAlt": "Watermark Oktoberfest in a previous season",
-      "checkedAt": "2026-10-02T12:37:55.521Z"
+      "checkedAt": "2026-10-04T16:54:37Z"
     },
     {
       "id": "260:09/29/2026-Boll&Branch, (NoMad) NY-10/04/2026",
@@ -70,8 +70,8 @@
       "note": "NYC (NoMad). Check the source for daily opening hours and entry details.",
       "when": "Sep 29–Oct 4 · Tue–Sat 10 a.m.–7 p.m.; Sun 10 a.m.–5 p.m.",
       "what": "Bedding and home textiles at the organizer’s NoMad sale. The page heading and event feed identify Boll & Branch; confirm with the store because one description line names another brand.",
-      "priority": -10,
-      "checkedAt": "2026-09-29T08:16:34.361Z",
+      "priority": 100,
+      "checkedAt": "2026-10-04T16:54:37Z",
       "imageAlt": "Boll & Branch sample sale organizer photograph"
     },
     {
@@ -90,8 +90,8 @@
       "note": "NYC (LaFA). Check the source for daily opening hours and entry details.",
       "when": "Sep 30–Oct 4 · Wed–Sat 11 a.m.–7 p.m.; Sun 11 a.m.–5 p.m.",
       "what": "Five-day clothing sale at the Lafayette location.",
-      "priority": -10,
-      "checkedAt": "2026-10-01T13:05:40.543Z",
+      "priority": 100,
+      "checkedAt": "2026-10-04T16:54:37Z",
       "imageAlt": "Another Tomorrow sample sale organizer photograph"
     },
     {
@@ -110,8 +110,8 @@
       "note": "NYC (LaFA). Check the source for daily opening hours and entry details.",
       "when": "Sep 30–Oct 4 · Wed–Sat 11 a.m.–7 p.m.; Sun 11 a.m.–5 p.m.",
       "what": "Five-day sale at the Lafayette location.",
-      "priority": -10,
-      "checkedAt": "2026-10-01T13:05:40.543Z",
+      "priority": 100,
+      "checkedAt": "2026-10-04T16:54:37Z",
       "imageAlt": "Janessa Leoné sample sale organizer photograph"
     },
     {
@@ -130,8 +130,8 @@
       "note": "NYC (LaFA). Check the source for daily opening hours and entry details.",
       "when": "Sep 30–Oct 4 · Wed–Sat 11 a.m.–7 p.m.; Sun 11 a.m.–5 p.m.",
       "what": "Five-day clothing sale at the Lafayette location.",
-      "priority": -10,
-      "checkedAt": "2026-10-01T13:06:41.804283+00:00",
+      "priority": 100,
+      "checkedAt": "2026-10-04T16:54:37Z",
       "imageAlt": "Scanlan Theodore sample sale organizer photograph"
     },
     {
@@ -150,7 +150,7 @@
       "note": "NYC (NoMad). Check the source for daily opening hours and entry details.",
       "when": "Oct 6–11 · Tue–Sat 11 a.m.–7 p.m.; Sun 11 a.m.–5 p.m.",
       "what": "Six-day Eberjey sale at the NoMad location.",
-      "priority": 25,
+      "priority": -10,
       "checkedAt": "2026-10-02T12:37:55.521Z",
       "imageAlt": "Eberjey sample sale organizer photograph"
     },
@@ -159,10 +159,10 @@
       "title": "Behemoth! at the New York Film Festival",
       "startDate": "2026-10-02",
       "endDate": "2026-10-11",
-      "what": "Try a film-festival night: Pedro Pascal plays a cellist rebuilding his life in Tony Gilroy’s drama. The Oct 2, 6:15 p.m. premiere includes a Q&A; later screenings offer another way to see it. Check the venue for your chosen screening.",
+      "what": "Pedro Pascal plays a cellist rebuilding his life in Tony Gilroy’s drama. Choose a remaining festival screening; the Staten Island and Astoria screenings use different venues.",
       "where": "Film at Lincoln Center; Oct 7 Staten Island and Oct 9 Astoria screenings also listed",
       "neighborhood": "Lincoln Square · other venues on select dates",
-      "when": "Oct 2, 3, 6, 7, 9 & 11 · premiere Oct 2 at 6:15 p.m.",
+      "when": "Remaining screenings: Oct 6 at 11:45 a.m.; Oct 7 at 6 p.m. (Staten Island); Oct 9 at 6:30 p.m. (Astoria); Oct 11 at 10 a.m.",
       "cost": "Ticket prices and availability depend on the screening; price not confirmed",
       "source": "Film at Lincoln Center",
       "url": "https://www.filmlinc.org/nyff2026/films/behemoth/",
@@ -170,8 +170,8 @@
       "imageAlt": "Behemoth! official film still from Film at Lincoln Center",
       "category": "Around town",
       "discovery": true,
-      "priority": -10,
-      "checkedAt": "2026-10-01T13:05:40.543Z"
+      "priority": 100,
+      "checkedAt": "2026-10-04T16:54:37Z"
     },
     {
       "id": "whitney-lichtenstein-2026",
@@ -190,7 +190,7 @@
       "supportingURL": "https://whitney.org/visit",
       "category": "Around town",
       "discovery": true,
-      "priority": 25,
+      "priority": -10,
       "checkedAt": "2026-10-02T12:37:55.521Z"
     },
     {
@@ -211,7 +211,7 @@
       "what": "Six-day sale at the Fifth Avenue flagship; check the organizer for stock and entry updates.",
       "imageAlt": "Generation Love sample sale organizer photograph",
       "checkedAt": "2026-10-02T12:37:55.521Z",
-      "priority": 25
+      "priority": -10
     },
     {
       "id": "260:10/06/2026-LoveShackFancy, (Flagship) NY-10/11/2026",
@@ -231,7 +231,7 @@
       "what": "Six-day sale at the Fifth Avenue flagship; check the organizer for stock and entry updates.",
       "imageAlt": "LoveShackFancy sample sale organizer photograph",
       "checkedAt": "2026-10-02T12:37:55.521Z",
-      "priority": 25
+      "priority": -10
     },
     {
       "id": "260:10/06/2026-RAILS, (NoMad) NY-10/11/2026",
@@ -247,10 +247,10 @@
       "where": "260 Fifth Avenue",
       "cost": "Item prices vary; admission charge not listed.",
       "note": "NYC (NoMad). Check the source for daily opening hours and entry details.",
-      "priority": -10,
+      "priority": 100,
       "what": "A six-day RAILS clothing sample sale at the organizer’s NoMad store.",
       "when": "Oct 6–11 · Tue–Sat 11 a.m.–7 p.m.; Sun 11 a.m.–5 p.m.",
-      "checkedAt": "2026-10-01T13:05:40.543Z",
+      "checkedAt": "2026-10-04T16:54:37Z",
       "imageAlt": "RAILS organizer photograph"
     },
     {
@@ -258,7 +258,7 @@
       "title": "Another Wonderland at MCNY",
       "category": "Around town",
       "discovery": true,
-      "priority": -10,
+      "priority": 100,
       "startDate": "2026-06-06",
       "endDate": "2026-10-12",
       "what": "See a restored 16-panel mural that brings Alice in Wonderland into 1930s New York. A broader art suggestion, with less than two weeks left to visit.",
@@ -270,32 +270,33 @@
       "source": "Museum of the City of New York",
       "image": "https://www.mcny.org/sites/default/files/styles/1488x480/public/AnotherWonderland-Banner_0.jpg?h=8e3006ae&itok=OHzBBzwV",
       "imageAlt": "Alice in Wonderland mural by Abram August Champanier, from the museum’s exhibition page",
-      "checkedAt": "2026-10-01T13:05:40.543Z"
+      "checkedAt": "2026-10-04T16:54:37Z"
     },
     {
       "id": "nycc-2026",
       "title": "New York Comic Con",
       "category": "Around town",
       "discovery": true,
-      "priority": 25,
+      "priority": 100,
       "startDate": "2026-10-08",
       "endDate": "2026-10-11",
-      "what": "A broader pop-culture outing: explore Artist Alley, costumes, panels, and exhibitors. Choose a day and check its pass availability before planning around a guest or session.",
+      "what": "Explore Artist Alley, costumes, exhibitors and panels. Thursday and Sunday admission remain listed; Friday and Saturday are sold out. Some sessions need separate reservations; photo ops and autographs cost extra.",
       "where": "Javits Center · 429 11th Avenue",
       "neighborhood": "Hudson Yards",
       "when": "Oct 8–11 · hours and panel schedules vary by day",
-      "cost": "Paid passes; current prices and availability must be checked on the official ticket page.",
+      "cost": "Thursday $103.98; Thursday after 3 p.m. $54.98; Sunday $109.42, including fees and tax. Availability can change.",
       "url": "https://www.newyorkcomiccon.com/en-us.html",
       "source": "New York Comic Con",
       "image": "https://www.newyorkcomiccon.com/content/dam/sitebuilder/rna/new-york-comic-con/2026/img/homepage/this-is-nycc-8.jpg/_jcr_content/renditions/original.image_file.375.375.file/885442077/this-is-nycc-8.jpg",
       "imageAlt": "New York Comic Con organizer photograph",
-      "checkedAt": "2026-10-02T12:37:55.521Z"
+      "checkedAt": "2026-10-04T16:54:37Z",
+      "supportingURL": "https://www.newyorkcomiccon.com/en-us/buy/tickets.html"
     },
     {
       "id": "260:10/06/2026-Proenza Schouler, (LaFA) NY-10/11/2026",
       "title": "Proenza Schouler sample sale",
       "category": "Sample sales",
-      "priority": 25,
+      "priority": -10,
       "startDate": "2026-10-07",
       "endDate": "2026-10-11",
       "what": "Five days at the Lafayette location, with the organizer advertising discounts up to 70%. The detailed event page lists a Wednesday opening, later than the feed’s Oct 6 date.",
@@ -314,7 +315,7 @@
       "title": "The Surrealist Book: Tomorrow Lives in Mirrors",
       "category": "Around town",
       "discovery": true,
-      "priority": 25,
+      "priority": -10,
       "startDate": "2026-10-04",
       "endDate": "2027-01-23",
       "what": "Opening Sunday: rare artists’ books, collage-filled sketchbooks and sculptural bindings by Surrealist artists including Dalí, Cahun and Unica Zürn. Member previews Oct 1–3; public access starts Oct 4.",
@@ -334,7 +335,7 @@
       "title": "Last weekend: Peggy Weil’s Core Memory",
       "category": "Around town",
       "discovery": true,
-      "priority": 30,
+      "priority": -10,
       "startDate": "2026-03-07",
       "endDate": "2026-10-04",
       "what": "Two immersive films turn polar ice and California rock cores into portraits of deep time on MoMA’s 24-foot lobby screen. This is the final weekend before the installation closes Sunday.",
@@ -355,7 +356,7 @@
       "startDate": "2026-10-06",
       "endDate": "2026-10-11",
       "category": "Sample sales",
-      "priority": 25,
+      "priority": -10,
       "what": "Six days of discounted cashmere at the Fifth Avenue flagship. The organizer lists savings up to 80%; stock and individual prices vary.",
       "where": "260 Sample Sale flagship · 261 Fifth Avenue",
       "neighborhood": "NoMad",
@@ -374,7 +375,7 @@
       "endDate": "2026-10-11",
       "category": "Around town",
       "discovery": true,
-      "priority": 25,
+      "priority": -10,
       "what": "A dance performance woven into MoMA’s daily life, with Michelson and a rotating group of dancers using the atrium as their workspace. Fridays feature an open gathering rather than the usual performance; no separate advance registration is required.",
       "where": "MoMA · Floor 2 atrium · 11 West 53rd Street",
       "neighborhood": "Midtown",
