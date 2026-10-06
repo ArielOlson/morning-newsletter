@@ -21,6 +21,17 @@
       "generatedAt": "2026-10-04T16:52:56.594Z",
       "prompt": "Landscape 3:2 hand-painted gouache illustration for a pink New York morning newsletter in early October. Centered pink vintage flower-market bicycle beside a small flower stand, with burgundy dahlias, cream chrysanthemums, tiny pale pumpkins and golden ginkgo leaves; softly suggested Manhattan brick buildings behind. Strawberry pink, warm cream and butter yellow palette, textured paper, charming sophisticated editorial illustration. Main bicycle basket and autumn flowers centered for a square mobile crop. No people, no text, no logos, no personal details. Decorative seasonal atmosphere, distinct from a brownstone stoop or breakfast window.",
       "tool": "Built-in image generation"
+    },
+    {
+      "day": "2026-10-05",
+      "src": "assets/artwork/2026-10-05-autumn-park-bridge.png",
+      "alt": "A pink thermos and closed book beside a Central Park pond, with an autumn stone bridge and warm Manhattan skyline.",
+      "width": 1536,
+      "height": 1024,
+      "season": "autumn",
+      "generatedAt": "2026-10-05T11:59:49.224Z",
+      "prompt": "Use case: illustration-story. Asset: landscape 3:2 seasonal header for a pink NYC morning newsletter, early October. Hand-painted editorial gouache on textured cream paper, warm strawberry pink and butter-yellow accents. Scene: a quiet Central Park stone bridge over a small pond, with a centered pink thermos and closed book on a stone ledge, delicate early-autumn gold and russet branches framing a softly suggested Manhattan skyline. Gentle morning light, charming refined illustration, no people, no text, no logos or personal information. Keep the thermos, bridge and main foliage near center for a square mobile crop. Distinct composition from a flower bicycle, window breakfast or brownstone stoop. This is decorative seasonal atmosphere, not a depiction of observed weather.",
+      "tool": "Built-in image generation"
     }
   ]
 }
