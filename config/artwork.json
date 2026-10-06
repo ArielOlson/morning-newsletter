@@ -32,6 +32,17 @@
       "generatedAt": "2026-10-05T11:59:49.224Z",
       "prompt": "Use case: illustration-story. Asset: landscape 3:2 seasonal header for a pink NYC morning newsletter, early October. Hand-painted editorial gouache on textured cream paper, warm strawberry pink and butter-yellow accents. Scene: a quiet Central Park stone bridge over a small pond, with a centered pink thermos and closed book on a stone ledge, delicate early-autumn gold and russet branches framing a softly suggested Manhattan skyline. Gentle morning light, charming refined illustration, no people, no text, no logos or personal information. Keep the thermos, bridge and main foliage near center for a square mobile crop. Distinct composition from a flower bicycle, window breakfast or brownstone stoop. This is decorative seasonal atmosphere, not a depiction of observed weather.",
       "tool": "Built-in image generation"
+    },
+    {
+      "day": "2026-10-06",
+      "src": "assets/artwork/2026-10-06-bookstore-apples.png",
+      "alt": "Pink NYC bookstore window with books, an apple basket and golden ginkgo leaves.",
+      "width": 1536,
+      "height": 1024,
+      "season": "autumn",
+      "generatedAt": "2026-10-06T11:24:53.856Z",
+      "prompt": "Use case: illustration-story. A new editorial header illustration, landscape 3:2, 1536 by 1024. Warm hand-painted gouache on cream paper, strawberry pink and butter yellow NYC early October atmosphere. A charming pink brownstone bookstore window with blank book spines and a small basket of red apples on the central windowsill; golden ginkgo leaves drifting outside, distant delicate New York rooflines. Focus the window, books and apple basket near the center for a square mobile crop. Soft autumn morning light, quiet detailed painterly texture, sophisticated cozy pink palette. No people, readable text, logos, watermarks or personal information.",
+      "tool": "built-in image_gen"
     }
   ]
 }
