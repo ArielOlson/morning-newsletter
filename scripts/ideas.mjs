@@ -1,9 +1,9 @@
 import {DateTime} from 'luxon';
-import {safeURL} from './lib.mjs';
-export function selectIdeas(items,day,calendar,zone='America/New_York'){
+import {safeURL,cityKeys} from './lib.mjs';
+export function selectIdeas(items,day,calendar,zone='America/New_York',previous=[]){
  const today=DateTime.fromISO(day,{zone}),md=day.slice(5);
- const seen=new Set();
- return items.filter(x=>x.id&&x.title&&safeURL(x.url)&&(!x.availableThrough||x.availableThrough>=day)).filter(x=>{
+ const seen=new Set(),prior=new Set(previous.flatMap(cityKeys));
+ return items.filter(x=>x.id&&x.title&&safeURL(x.url)&&(!x.availableThrough||x.availableThrough>=day)&&!cityKeys(x).some(key=>prior.has(key))).filter(x=>{
   if(!x.seasonStart||!x.seasonEnd)return true;
   return x.seasonStart<=x.seasonEnd?md>=x.seasonStart&&md<=x.seasonEnd:md>=x.seasonStart||md<=x.seasonEnd;
  }).sort((a,b)=>Number(a.suggested===true)-Number(b.suggested===true)).filter(x=>{if(seen.has(x.id))return false;seen.add(x.id);return true;}).map(x=>{

@@ -1,6 +1,14 @@
 import test from 'node:test';import assert from 'node:assert/strict';import {selectIdeas} from '../scripts/ideas.mjs';
 const idea={id:'orchard',title:'Orchard',url:'https://example.com',what:'Go picking.',seasonStart:'09-01',seasonEnd:'10-31',planWeekend:true,preferredWeekday:7};
 const calendar={state:'fresh',sourceCount:2,events:[]};
+test('ideas exclude yesterday by stable ID or canonical URL and never backfill with repeats',()=>{
+ const prior=[{id:'wish',title:'Wish',url:'https://example.com/wish'}];
+ const repeats=[prior[0],{...prior[0],url:'https://example.com/changed'}, {...prior[0],id:'renamed',url:'https://example.com/wish/?utm_source=today#details'}];
+ const fresh=Array.from({length:10},(_,i)=>({id:'new'+i,title:'New idea',url:'https://example.com/new'+i,suggested:true}));
+ const result=selectIdeas([...repeats,...fresh],'2026-10-05',calendar,'America/New_York',prior);
+ assert.deepEqual(result.map(x=>x.id),fresh.map(x=>x.id));
+ assert.equal(selectIdeas(repeats,'2026-10-05',calendar,'America/New_York',prior).length,0);
+});
 test('Tuesday suggests a free Sunday across both calendars; partial data never implies availability',()=>{assert.equal(selectIdeas([idea],'2026-09-29',calendar)[0].suggestedDate,'2026-10-04');assert.equal(selectIdeas([idea],'2026-09-29',{...calendar,state:'partial'})[0].suggestedDate,undefined);assert.equal(selectIdeas([idea],'2026-09-29',{...calendar,events:[{startDate:'2026-10-04',endDate:'2026-10-05',allDay:true}]}).length,0);});
 test('seasonal ideas stay in their window, year wrapping works, and Monday never asserts free weekend',()=>{assert.equal(selectIdeas([idea],'2026-11-01',calendar).length,0);assert.equal(selectIdeas([idea],'2026-09-28',calendar)[0].suggestedDate,undefined);assert.equal(selectIdeas([{...idea,seasonStart:'12-01',seasonEnd:'01-31'}],'2027-01-10',calendar).length,1);});
 test('ten ideas favor personal wishes, label suggestions and backfill unavailable seasonal plans',()=>{

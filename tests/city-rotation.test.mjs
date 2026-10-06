@@ -28,11 +28,12 @@ test('same-day rebuilds compare with yesterday from encrypted history, with priv
  const original=process.cwd(),dir=await mkdtemp(join(tmpdir(),'city-history-'));process.chdir(dir);
  try{
   await mkdir('dist/data/editions',{recursive:true});await mkdir('config');await mkdir('.cache/editions',{recursive:true});
-  const yesterday={day:'2026-09-29',finds:[event('yesterday')]},today={day:'2026-09-30',finds:[event('today')]};
+  const yesterday={day:'2026-09-29',finds:[event('yesterday')],ideas:[event('yesterday-idea')]},today={day:'2026-09-30',finds:[event('today')],ideas:[event('today-idea')]};
   await writeFile('config/security.local.json',JSON.stringify({password:'test-only-archive-secret'}));
   await writeFile('dist/data/editions/2026-09-29.enc.json',JSON.stringify(await encrypt(JSON.stringify(yesterday),'test-only-archive-secret')));
   await writeFile('.cache/editions/2026-09-29.json',JSON.stringify({...yesterday,finds:[event('unpublished')]}));
   assert.deepEqual((await previousCityEdition('2026-09-30',today)).finds,yesterday.finds);
+  assert.deepEqual((await previousCityEdition('2026-09-30',today)).ideas,yesterday.ideas);
   await rm('dist/data/editions/2026-09-29.enc.json');assert.equal((await previousCityEdition('2026-09-30',today)).finds[0].id,'unpublished');
   assert.equal((await previousCityEdition('2026-10-02',today)).available,false);
  }finally{process.chdir(original);await rm(dir,{recursive:true,force:true});}

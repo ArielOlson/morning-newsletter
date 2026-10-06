@@ -10,5 +10,5 @@ export async function previousCityEdition(day,old={},zone='America/New_York'){
  if(encrypted){const security=await read('config/security.local.json');edition=JSON.parse(await decrypt(encrypted,security?.password));}
  else edition=await read(`.cache/editions/${yesterday}.json`)||(old.day===yesterday?old:null);
  if(edition&&edition.day!==yesterday)throw Error('Previous edition date mismatch');
- return {day:yesterday,available:!!edition,finds:edition?.finds||[]};
+ return {day:yesterday,available:!!edition,finds:edition?.finds||[],ideas:edition?.ideas||[]};
 }
