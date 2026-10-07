@@ -4,7 +4,7 @@
       "id": "nybg-dia-2026",
       "title": "Día de los Muertos at NYBG",
       "category": "Seasonal",
-      "priority": 0,
+      "priority": 100,
       "startDate": "2026-10-03",
       "endDate": "2026-11-02",
       "what": "Marigolds, a community ofrenda and flower-covered figures celebrate remembrance. Weekend craft sessions offer silk-flower making and papel picado. Closed Mondays except federal holidays.",
@@ -13,7 +13,7 @@
       "cost": "All-Garden adult pass: $35 weekdays / $39 weekends. NYC resident grounds-only option $15 on eligible days; confirm event access with your ticket.",
       "source": "New York Botanical Garden",
       "url": "https://www.nybg.org/event/dia-de-los-muertos/",
-      "checkedAt": "2026-10-05T19:11:40.126Z",
+      "checkedAt": "2026-10-07T11:17:49.324Z",
       "image": "https://www.nybg.org/content/uploads/2026/07/iStock-1438560015-edit-1.1-800x800.jpg",
       "neighborhood": "Bronx Park",
       "imageAlt": "NYBG seasonal ofrenda display",
@@ -23,7 +23,7 @@
       "id": "watermark-oktoberfest-2026",
       "title": "Oktoberfest at Watermark",
       "category": "Seasonal",
-      "priority": 100,
+      "priority": 0,
       "startDate": "2026-09-10",
       "endDate": "2026-10-31",
       "what": "Waterfront Oktoberfest with German beer, food, and seasonal decorations. Reservations and paid packages are available.",
@@ -53,8 +53,8 @@
       "note": "NYC (NoMad). Check the source for daily opening hours and entry details.",
       "when": "Oct 6–11 · Tue–Sat 11 a.m.–7 p.m.; Sun 11 a.m.–5 p.m.",
       "what": "Six-day Eberjey sale at the NoMad location.",
-      "priority": 0,
-      "checkedAt": "2026-10-05T19:11:40.126Z",
+      "priority": 100,
+      "checkedAt": "2026-10-07T11:17:49.324Z",
       "imageAlt": "Eberjey sample sale organizer photograph"
     },
     {
@@ -73,7 +73,7 @@
       "imageAlt": "Behemoth! official film still from Film at Lincoln Center",
       "category": "Around town",
       "discovery": true,
-      "priority": 100,
+      "priority": 0,
       "checkedAt": "2026-10-06T11:32:28.466Z"
     },
     {
@@ -93,8 +93,8 @@
       "supportingURL": "https://whitney.org/visit",
       "category": "Around town",
       "discovery": true,
-      "priority": 0,
-      "checkedAt": "2026-10-05T19:11:40.126Z"
+      "priority": 100,
+      "checkedAt": "2026-10-07T11:17:49.324Z"
     },
     {
       "id": "260:10/06/2026-Generation Love, (Flagship) NY-10/11/2026",
@@ -113,8 +113,8 @@
       "when": "Oct 6–11 · Tue–Sat 11 a.m.–7 p.m.; Sun 10 a.m.–5 p.m.",
       "what": "Six-day sale at the Fifth Avenue flagship; check the organizer for stock and entry updates.",
       "imageAlt": "Generation Love sample sale organizer photograph",
-      "checkedAt": "2026-10-05T19:11:40.126Z",
-      "priority": 0
+      "checkedAt": "2026-10-07T11:17:49.324Z",
+      "priority": 100
     },
     {
       "id": "260:10/06/2026-LoveShackFancy, (Flagship) NY-10/11/2026",
@@ -133,8 +133,8 @@
       "when": "Oct 6–11 · Tue–Sat 11 a.m.–7 p.m.; Sun 10 a.m.–5 p.m.",
       "what": "Six-day sale at the Fifth Avenue flagship; check the organizer for stock and entry updates.",
       "imageAlt": "LoveShackFancy sample sale organizer photograph",
-      "checkedAt": "2026-10-05T19:11:40.126Z",
-      "priority": 0
+      "checkedAt": "2026-10-07T11:17:49.324Z",
+      "priority": 100
     },
     {
       "id": "260:10/06/2026-RAILS, (NoMad) NY-10/11/2026",
@@ -150,7 +150,7 @@
       "where": "260 Fifth Avenue",
       "cost": "Item prices vary; admission charge not listed.",
       "note": "NYC (NoMad). Check the source for daily opening hours and entry details.",
-      "priority": 100,
+      "priority": 0,
       "what": "A six-day RAILS clothing sample sale at the organizer’s NoMad store.",
       "when": "Oct 6–11 · Tue–Sat 11 a.m.–7 p.m.; Sun 11 a.m.–5 p.m.",
       "checkedAt": "2026-10-06T11:32:28.466Z",
@@ -161,7 +161,7 @@
       "title": "Another Wonderland at MCNY",
       "category": "Around town",
       "discovery": true,
-      "priority": 100,
+      "priority": 0,
       "startDate": "2026-06-06",
       "endDate": "2026-10-12",
       "what": "See a restored 16-panel mural that brings Alice in Wonderland into 1930s New York. A broader art suggestion, with less than two weeks left to visit.",
@@ -180,7 +180,7 @@
       "title": "New York Comic Con",
       "category": "Around town",
       "discovery": true,
-      "priority": 100,
+      "priority": 0,
       "startDate": "2026-10-08",
       "endDate": "2026-10-11",
       "what": "Explore Artist Alley, costumes, exhibitors and panels. Thursday tickets remain listed; Friday, Saturday and Sunday are sold out. Some sessions need reservations, and autographs and photo ops cost extra.",
@@ -199,7 +199,7 @@
       "id": "260:10/06/2026-Proenza Schouler, (LaFA) NY-10/11/2026",
       "title": "Proenza Schouler sample sale",
       "category": "Sample sales",
-      "priority": 0,
+      "priority": 100,
       "startDate": "2026-10-07",
       "endDate": "2026-10-11",
       "what": "Five days at the Lafayette location, with the organizer advertising discounts up to 70%. The detailed event page lists a Wednesday opening, later than the feed’s Oct 6 date.",
@@ -211,14 +211,14 @@
       "url": "https://260samplesale.com/pages/events/proenza-schouler-lafa-ny",
       "image": "https://virtual.260samplesale.com/cdn/shop/files/Proenza_Schuler_LA_DropDown_8e12118d-bbd8-4d70-b203-d8e7ed847ac4.jpg?v=1790603157&width=500",
       "imageAlt": "Proenza Schouler organizer photograph",
-      "checkedAt": "2026-10-05T19:11:40.126Z"
+      "checkedAt": "2026-10-07T11:17:49.324Z"
     },
     {
       "id": "moma-surrealist-book-2026",
       "title": "The Surrealist Book: Tomorrow Lives in Mirrors",
       "category": "Around town",
       "discovery": true,
-      "priority": 0,
+      "priority": 100,
       "startDate": "2026-10-04",
       "endDate": "2027-01-23",
       "what": "Newly opened: unusual artists’ books, collage-filled sketchbooks and sculptural bindings by Surrealists including Dalí, Cahun and Unica Zürn. Explore how a book can become an artwork.",
@@ -231,7 +231,7 @@
       "supportingURL": "https://www.moma.org/visit/",
       "image": "https://www.moma.org/d/assets/W1siZiIsIjIwMjYvMDUvMjEvOHBkOHZmcjdrM19adXJuX09yYWNsZV9hbmRfU3BlY3RhY2xlX0hfU0laRUQuanBnIl0sWyJwIiwiY29udmVydCIsIi1xdWFsaXR5IDkwIC1yZXNpemUgMjAwMHg2NjdeIC1ncmF2aXR5IFNvdXRoIC1jcm9wIDIwMDB4NjY3KzArODAiXV0/Zurn_Oracle-and-Spectacle_H_SIZED.jpg?sha=7d5815443ce3ea9b",
       "imageAlt": "Unica Zürn, Oracle and Spectacle, Book IV, 1960. MoMA; gift of Helen and Sam Zell. Photo: Ben Blackwell. © Verlag Brinkmann & Bose, Berlin.",
-      "checkedAt": "2026-10-05T19:11:40.126Z"
+      "checkedAt": "2026-10-07T11:17:49.324Z"
     },
     {
       "id": "260:10/06/2026-Brodie Cashmere, (Flagship) NY-10/11/2026",
@@ -239,7 +239,7 @@
       "startDate": "2026-10-06",
       "endDate": "2026-10-11",
       "category": "Sample sales",
-      "priority": 0,
+      "priority": 100,
       "what": "Six days of discounted cashmere at the Fifth Avenue flagship. The organizer lists savings up to 80%; stock and individual prices vary.",
       "where": "260 Sample Sale flagship · 261 Fifth Avenue",
       "neighborhood": "NoMad",
@@ -249,7 +249,7 @@
       "url": "https://260samplesale.com/pages/events/brodie-cashmere-flagship-ny",
       "image": "https://virtual.260samplesale.com/cdn/shop/files/mainimage-brodie-cashmere_2.jpg?v=1771003825&width=500",
       "imageAlt": "Brodie Cashmere organizer photograph",
-      "checkedAt": "2026-10-05T19:11:40.126Z"
+      "checkedAt": "2026-10-07T11:17:49.324Z"
     },
     {
       "id": "moma-sarah-michelson-nowhere-2026",
@@ -258,7 +258,7 @@
       "endDate": "2026-10-11",
       "category": "Around town",
       "discovery": true,
-      "priority": 0,
+      "priority": 100,
       "what": "A dance performance woven into MoMA’s daily life, with Michelson and a rotating group of dancers using the atrium as their workspace. Fridays feature an open gathering rather than the usual performance; no separate advance registration is required.",
       "where": "MoMA · Floor 2 atrium · 11 West 53rd Street",
       "neighborhood": "Midtown",
@@ -269,7 +269,7 @@
       "supportingURL": "https://press.moma.org/film-media/sarah-michelson-nowhere/",
       "image": "https://www.moma.org/d/assets/W1siZiIsIjIwMjYvMDcvMjIvYXkyc3kxeHl4X1NhcmFoX01pY2hlbHNvbl9fbm93aGVyZV8yLmpwZyJdLFsicCIsImNvbnZlcnQiLCItcXVhbGl0eSA5MCAtcmVzaXplIDIwMDB4NjY3XiAtZ3Jhdml0eSBDZW50ZXIgLWNyb3AgMjAwMHg2NjcrMCswIl1d/Sarah%20Michelson_%20nowhere_2.jpg?sha=f8f0d00de2003288",
       "imageAlt": "Sarah Michelson, nowhere, 2026. Courtesy the artist.",
-      "checkedAt": "2026-10-05T19:11:40.126Z"
+      "checkedAt": "2026-10-07T11:17:49.324Z"
     },
     {
       "id": "260:10/13/2026-L'AGENCE, (NoMad) NY-10/18/2026",
@@ -286,8 +286,8 @@
       "url": "https://260samplesale.com/pages/events/l-agence-nomad-ny",
       "image": "https://virtual.260samplesale.com/cdn/shop/files/L_Agence_LA_DropDownMenu_effdaf74-de2e-4425-8b29-b31fc0340b10.jpg?v=1789574602&width=500",
       "imageAlt": "L’AGENCE clothing in the official sample-sale photograph",
-      "priority": 0,
-      "checkedAt": "2026-10-05T19:11:40.126Z"
+      "priority": 100,
+      "checkedAt": "2026-10-07T11:17:49.324Z"
     },
     {
       "id": "260:10/14/2026-Guest In Residence, (LaFA) NY-10/18/2026",
@@ -304,7 +304,7 @@
       "source": "260 Sample Sale",
       "image": "https://virtual.260samplesale.com/cdn/shop/files/mainimage_3.jpg?v=1790971031&width=500",
       "imageAlt": "Guest in Residence organizer photograph",
-      "priority": 100,
+      "priority": 0,
       "checkedAt": "2026-10-06T11:32:28.466Z"
     },
     {
@@ -322,7 +322,7 @@
       "source": "260 Sample Sale",
       "image": "https://virtual.260samplesale.com/cdn/shop/files/OV_468_DropDown.jpg?v=1790964121&width=500",
       "imageAlt": "Outdoor Voices organizer photograph",
-      "priority": 100,
+      "priority": 0,
       "checkedAt": "2026-10-06T11:32:28.466Z"
     },
     {
@@ -341,7 +341,7 @@
       "source": "New York Botanical Garden",
       "image": "https://www.nybg.org/content/uploads/2025/07/MCO-DSC09599-1.1-800x800.jpg",
       "imageAlt": "Rainbow-colored flower sculpture inside a conservatory, from NYBG’s official Flower Power page",
-      "priority": 100,
+      "priority": 0,
       "checkedAt": "2026-10-06T11:32:28.466Z"
     },
     {
@@ -360,7 +360,7 @@
       "source": "Brooklyn Botanic Garden",
       "image": "https://www.bbg.org/img/uploads/hero/_list_thumbnail_retina/hardy-begonia_MS_52371474767.jpg",
       "imageAlt": "Hardy begonias in the garden, photograph by Michael Stewart",
-      "priority": 100,
+      "priority": 0,
       "checkedAt": "2026-10-06T11:32:28.466Z"
     },
     {
@@ -380,7 +380,7 @@
       "source": "Brooklyn Botanic Garden",
       "image": "https://www.bbg.org/img/uploads/inline/_retina/gbb-9450113645-wide.jpg",
       "imageAlt": "Brooklyn streetscape gardening, official exhibition photograph",
-      "priority": 100,
+      "priority": 0,
       "checkedAt": "2026-10-06T11:32:28.466Z"
     }
   ]
