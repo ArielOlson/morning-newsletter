@@ -147,7 +147,8 @@ export function topFinance(items){
 }
 export function cityKeys(item){
  const keys=item.id?[`id:${item.id}`]:[];
- if(safeURL(item.url)){const u=new URL(item.url);u.hash='';for(const key of [...u.searchParams.keys()])if(/^utm_|^(fbclid|gclid)$/i.test(key))u.searchParams.delete(key);u.searchParams.sort();keys.push(`url:${u.href.replace(/\/$/,'')}`);}
+ if(item.recommendationKey)keys.push(`entity:${item.recommendationKey}`);
+ if(safeURL(item.url)){const u=new URL(item.url);u.hash='';u.hostname=u.hostname.replace(/^www\./,'');for(const key of [...u.searchParams.keys()])if(/^utm_|^(fbclid|gclid|ref|source|mc_cid|mc_eid|trk)$/i.test(key))u.searchParams.delete(key);u.searchParams.sort();keys.push(`url:${u.href.replace(/\/$/,'')}`);}
  return keys;
 }
 export function selectCity(items,day,interests={},previous=[]){
@@ -156,13 +157,13 @@ export function selectCity(items,day,interests={},previous=[]){
  const candidates=items.filter(x=>x.startDate&&x.startDate<=addDays(day,14)&&(x.endDate||x.startDate)>=day&&safeURL(x.url)).sort((a,b)=>score(b)-score(a)||a.startDate.localeCompare(b.startDate)).filter(x=>{const keys=cityKeys(x);if(keys.some(k=>seen.has(k)))return false;keys.forEach(k=>seen.add(k));return true;});
  // Yesterday’s events are excluded even if highly ranked or still running.
  // Search the quota space for ten picks with three or four discoveries.
- let states=new Map([['0:0:0',{picks:[],repeats:0,discoveries:0,score:0}]]);
+ let states=new Map([['0:0:0:0',{picks:[],repeats:0,discoveries:0,sales:0,score:0}]]);
  for(const [rank,item] of candidates.entries()){
   const repeat=cityKeys(item).some(k=>prior.has(k))?1:0,discovery=item.discovery===true?1:0;
   const next=new Map(states);
   for(const state of states.values()){
-   const n=state.picks.length+1,r=state.repeats+repeat,d=state.discoveries+discovery;if(n>10||r>0||d>4)continue;
-   const value={picks:[...state.picks,item],repeats:r,discoveries:d,score:state.score+candidates.length-rank},key=`${n}:${r}:${d}`;
+   const n=state.picks.length+1,r=state.repeats+repeat,d=state.discoveries+discovery,s=state.sales+Number(isSampleSale(item));if(n>10||r>0||d>4||s>2)continue;
+   const value={picks:[...state.picks,item],repeats:r,discoveries:d,sales:s,score:state.score+candidates.length-rank},key=`${n}:${r}:${d}:${s}`;
    if(!next.has(key)||value.score>next.get(key).score)next.set(key,value);
   }
   states=next;
@@ -171,6 +172,7 @@ export function selectCity(items,day,interests={},previous=[]){
  const issues=[];if(best.picks.length<10)issues.push(`Only ${best.picks.length} verified events fit today's rotation; more new picks are needed.`);if(best.discoveries<3)issues.push('Research at least three broader discoveries outside the requested priority categories.');
  return {items:best.picks.map(x=>({...x,what:x.what||x.note||x.title,where:x.where||x.location||'Location not confirmed',neighborhood:x.neighborhood||x.where||'Neighborhood not confirmed',when:x.when||null,cost:x.cost||'Not listed by the source'})),repeats:best.repeats,discoveryCount:best.discoveries,issues};
 }
+export const isSampleSale=x=>x.category==='Sample sales'||x.id?.startsWith('260:')||/sample\s+sale/i.test(x.title||'')||/260samplesale\.com/.test(x.url||'');
 export function topCity(items,day,interests={},previous=[]){return selectCity(items,day,interests,previous).items;}
 export function redSoxEvents(raw,day,zone='America/New_York'){
  return (raw.dates||[]).flatMap(d=>(d.games||[]).filter(g=>[3313,3289].includes(g.venue?.id)&&g.status?.abstractGameState==='Preview').map(g=>{

@@ -19,12 +19,12 @@ async function remote(){
 }
 test('fresh devices restore durable reminders and completions; conflicts preserve unrelated changes',async()=>{
  const r=await remote(),a=createSync({fetcher:r.fetch}),b=createSync({fetcher:r.fetch});
- await a.connect('test',password);await a.change(s=>{s.reminders.a={id:'a',title:'Keep until complete'};return s;});
+ await a.connect('test',password);await a.change(s=>{s.reminders.a={id:'a',title:'Keep until complete'};s.recommendationExclusions={visited:{active:true,phrases:['Completed destination']}};s.recommendationProfile={interests:['trivia']};return s;});
  await b.connect('test',password);assert.equal(b.state.reminders.a.title,'Keep until complete');
  r.conflict();await b.change(s=>{s.history.completed.a='now';return s;});
  await a.refresh();assert.ok(a.state.saved.other);assert.equal(a.state.history.completed.a,'now');
  a.clear();const clean=createSync({fetcher:r.fetch});await clean.connect('test',password);assert.equal(clean.state.history.completed.a,'now');
- assert.equal((await r.data()).reminders.a.title,'Keep until complete');
+ assert.equal((await r.data()).reminders.a.title,'Keep until complete');assert.equal(clean.state.recommendationExclusions.visited.active,true);assert.deepEqual(clean.state.recommendationProfile.interests,['trivia']);
 });
 test('failed writes and missing files do not clear previous saves or claim success',async()=>{
  const r=await remote(),a=createSync({fetcher:r.fetch});await a.connect('test',password);

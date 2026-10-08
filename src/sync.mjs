@@ -7,6 +7,7 @@ export function validState(s){
  if(s?.version!==1)throw Error('Saved data has an unsupported format. Nothing was replaced.');
  for(const k of ['reminders','packages','saved','history'])if(!s[k]||typeof s[k]!=='object'||Array.isArray(s[k]))throw Error('Saved data could not be read. Nothing was replaced.');
  for(const k of ['received','completed','clicked'])if(!s.history[k]||typeof s.history[k]!=='object'||Array.isArray(s.history[k]))throw Error('Saved history could not be read. Nothing was replaced.');
+ for(const k of ['recommendationExclusions','recommendationProfile'])if(s[k]!==undefined&&(!s[k]||typeof s[k]!=='object'||Array.isArray(s[k])))throw Error('Saved preferences could not be read. Nothing was replaced.');
  return s;
 }
 // Every mutation reads the latest version and uses GitHub's SHA precondition.

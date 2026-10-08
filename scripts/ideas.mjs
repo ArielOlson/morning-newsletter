@@ -6,7 +6,7 @@ export function selectIdeas(items,day,calendar,zone='America/New_York',previous=
  return items.filter(x=>x.id&&x.title&&safeURL(x.url)&&(!x.availableThrough||x.availableThrough>=day)&&!cityKeys(x).some(key=>prior.has(key))).filter(x=>{
   if(!x.seasonStart||!x.seasonEnd)return true;
   return x.seasonStart<=x.seasonEnd?md>=x.seasonStart&&md<=x.seasonEnd:md>=x.seasonStart||md<=x.seasonEnd;
- }).sort((a,b)=>Number(a.suggested===true)-Number(b.suggested===true)).filter(x=>{if(seen.has(x.id))return false;seen.add(x.id);return true;}).map(x=>{
+ }).sort((a,b)=>Number(a.suggested===true)-Number(b.suggested===true)||(b.priority||0)-(a.priority||0)).filter(x=>{const keys=cityKeys(x);if(keys.some(k=>seen.has(k)))return false;keys.forEach(k=>seen.add(k));return true;}).map(x=>{
   const idea={...x,kind:'idea',when:x.timing||'Choose a day',what:x.suggested===true?`Suggested for you. ${x.what||''}`:x.what};
   if(x.planWeekend&&today.weekday===2){
    if(calendar.state!=='fresh'||calendar.sourceCount<2){idea.what+=` Weekend availability could not be confirmed across all configured calendars.`;return idea;}

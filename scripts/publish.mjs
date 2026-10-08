@@ -4,6 +4,9 @@ import { resolve, dirname, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { decrypt } from '../src/crypto.mjs';
 import { dayInZone } from './lib.mjs';
+import {recommendationHistory} from './city-history.mjs';
+import {assertRecommendations} from './recommendation-check.mjs';
+import {readRecommendationState,eligibleRecommendations} from './recommendation-state.mjs';
 
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 const checkout=resolve(root,'.cache/publish-repo');
@@ -28,6 +31,9 @@ try{
  const briefText=await readFile(resolve(root,'public/data/brief.json'),'utf8');
  const brief=JSON.parse(briefText),age=Date.now()-Date.parse(brief.generatedAt);
  if(brief.day!==dayInZone(new Date(),brief.timezone)||!Number.isFinite(age)||age<0||age>90*60*1000)throw new Error('Refresh today’s edition before publishing (maximum age: 90 minutes).');
+ assertRecommendations(brief,(await recommendationHistory(brief.day,{},brief.timezone)).items);
+ const choices=await readRecommendationState(),cards=[...brief.finds,...brief.ideas];
+ if((await eligibleRecommendations(cards,choices.state)).length!==cards.length)throw Error('A recommendation was completed or excluded since refresh. Refresh and rebuild before publishing.');
  const security=await optionalJSON(resolve(root,'config/security.local.json'));
  if(!security?.password)throw new Error('Newsletter encryption must be configured before publication.');
  passwordBytes=Buffer.from(security.password);

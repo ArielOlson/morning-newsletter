@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {selectCity,cityKeys} from '../scripts/lib.mjs';
-import {previousCityEdition} from '../scripts/city-history.mjs';
+import {previousCityEdition,recommendationHistory} from '../scripts/city-history.mjs';
 import {encrypt} from '../src/crypto.mjs';
 import {mkdtemp,mkdir,writeFile,rm} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
@@ -36,5 +36,18 @@ test('same-day rebuilds compare with yesterday from encrypted history, with priv
   assert.deepEqual((await previousCityEdition('2026-09-30',today)).ideas,yesterday.ideas);
   await rm('dist/data/editions/2026-09-29.enc.json');assert.equal((await previousCityEdition('2026-09-30',today)).finds[0].id,'unpublished');
   assert.equal((await previousCityEdition('2026-10-02',today)).available,false);
+ }finally{process.chdir(original);await rm(dir,{recursive:true,force:true});}
+});
+
+test('weekly history blocks alternating pools and includes every same-day exposure across both sections',async()=>{
+ const original=process.cwd(),dir=await mkdtemp(join(tmpdir(),'weekly-history-'));process.chdir(dir);
+ try{
+  await mkdir('.cache/editions',{recursive:true});
+  for(const day of ['2026-10-06','2026-10-05','2026-09-30','2026-09-29'])await writeFile(`.cache/editions/${day}.json`,JSON.stringify({day,finds:[{id:'event:'+day}],ideas:[{id:'idea:'+day}],recommendationExposures:[{id:'earlier:'+day}]}));
+  const history=await recommendationHistory('2026-10-07',{day:'2026-10-07',finds:[{id:'today'}]});
+  assert.deepEqual(history.days,['2026-10-06','2026-10-05','2026-09-30']);
+  assert.equal(history.items.length,9);assert.ok(history.items.some(x=>x.id==='earlier:2026-10-06'));
+  assert.ok(history.items.some(x=>x.id==='idea:2026-10-05'));assert.ok(!history.items.some(x=>x.id==='today'));
+  await rm('.cache/editions/2026-10-06.json');await assert.rejects(recommendationHistory('2026-10-07'),/missing/);
  }finally{process.chdir(original);await rm(dir,{recursive:true,force:true});}
 });

@@ -6,7 +6,8 @@ import { randomUUID } from 'node:crypto';
 import { dayInZone, addDays, remindersFor, validateEvents, weatherSummary, parseFeed, parseSales, parseFinance, topFinance, curatedFinance, deliverySnapshot, mergeCalendarPlans, redSoxEvents } from './lib.mjs';
 import {selectIdeas} from './ideas.mjs';
 import {selectCity} from './lib.mjs';
-import {previousCityEdition} from './city-history.mjs';
+import {recommendationHistory} from './city-history.mjs';
+import {readRecommendationState,eligibleRecommendations} from './recommendation-state.mjs';
 import {selectArtwork} from './artwork.mjs';
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 process.chdir(root);
@@ -37,7 +38,8 @@ async function main() {
   const packages = deliverySnapshot(await readJSON('config/deliveries.local.json', null), now);
   const events = validateEvents([...(await readJSON('config/events.json')).events, ...(await readJSON('config/events.local.json', {events:[]})).events, ...(await readJSON('config/nyc-events.json', {events:[]})).events]);
   const old = await readJSON('public/data/brief.json', {});
-  const previousCity=await previousCityEdition(day,old,prefs.timezone);
+  const rotation=await recommendationHistory(day,old,prefs.timezone,7);
+  const choices=await readRecommendationState();
   const status = {}, errors = [];
   const art=await selectArtwork((await readJSON('config/artwork.json',{artworks:[]})).artworks,day,now);
   status.artwork=art.status;if(art.status.state!=='fresh')errors.push('artwork');
@@ -67,15 +69,18 @@ async function main() {
   const deduped = [...new Map(news.sort((a,b)=>b.score-a.score || b.publishedAt.localeCompare(a.publishedAt)).map(x=>[x.url,x])).values()].slice(0,prefs.maxFinds);
   const personal = events.filter(e => !e.category || e.category === 'personal');
   const cityEvents = events.filter(e => e.category && e.category !== 'personal' && (e.endDate || e.startDate) >= day && e.startDate <= addDays(day,14,prefs.timezone)).map(e => ({...e,kind:'event',source:e.source || 'Your picks'}));
-  const city=selectCity([...cityEvents,...(games||[]),...(sales||[])],day,interests,previousCity.finds);
-  status.city={state:city.issues.length?'partial':'fresh',updatedAt:now.toISOString(),comparedWith:previousCity.available?previousCity.day:null,repeats:city.repeats,discoveryCount:city.discoveryCount,issues:city.issues};
+  const city=selectCity(await eligibleRecommendations([...cityEvents,...(games||[]),...(sales||[])],choices.state),day,interests,rotation.items);
+  status.recommendations={state:'fresh',updatedAt:choices.checkedAt,historyDays:rotation.days,cooldownDays:7,maxSampleSales:2};
+  status.city={state:city.issues.length?'partial':'fresh',updatedAt:now.toISOString(),comparedWith:rotation.days[0],repeats:city.repeats,discoveryCount:city.discoveryCount,issues:city.issues};
   if(city.issues.length)errors.push('city');
   const brief = { version:1, day, generatedAt:now.toISOString(), name:prefs.name, timezone:prefs.timezone, location:prefs.location,
     artwork:art.artwork, weather, calendar: { connected:calendar.urls.length>0, sourceCount:calendar.urls.length, state:calendar.urls.length ? (plans.length || !errors.some(e=>e.startsWith('calendar')) ? (errors.some(e=>e.startsWith('calendar')) ? 'partial' : 'fresh') : 'unavailable') : 'not-connected', events:mergeCalendarPlans(plans) },
     reminders:remindersFor(personal,day,prefs.timezone), upcomingReminders:personal.filter(e=>e.startDate>day && e.startDate<=addDays(day,14,prefs.timezone)),
     finds:city.items, finance, deliveries:packages, directories:sources.directories, status, errors };
-  brief.ideas=selectIdeas((await readJSON('config/ideas.local.json',{ideas:[]})).ideas,day,brief.calendar,prefs.timezone,previousCity.ideas);
-  status.ideas={state:brief.ideas.length===10?'fresh':'partial',count:brief.ideas.length,comparedWith:previousCity.available?previousCity.day:null};
+  brief.ideas=selectIdeas(await eligibleRecommendations((await readJSON('config/ideas.local.json',{ideas:[]})).ideas,choices.state),day,brief.calendar,prefs.timezone,[...rotation.items,...city.items]);
+  status.ideas={state:brief.ideas.length===10?'fresh':'partial',count:brief.ideas.length,comparedWith:rotation.days[0]};
+  // Keep every card exposed by earlier same-day builds for tomorrow's rotation.
+  brief.recommendationExposures=[...(old.day===day?[...(old.recommendationExposures||[]),...(old.finds||[]),...(old.ideas||[])]:[]),...brief.finds,...brief.ideas].map(({id,url,recommendationKey})=>({id,url,...(recommendationKey?{recommendationKey}:{})})).filter((item,index,items)=>items.findIndex(x=>x.id===item.id&&x.url===item.url&&x.recommendationKey===item.recommendationKey)===index);
   if(brief.ideas.length<10)errors.push('ideas');
   await atomic('public/data/brief.json',brief);
   // Private calendar details are intentionally excluded from logs and history.
