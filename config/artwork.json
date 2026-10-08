@@ -54,6 +54,17 @@
       "generatedAt": "2026-10-07T11:11:27.468Z",
       "prompt": "Use case: illustration-story. Landscape 3:2 editorial gouache illustration, 1536x1024. A warm pink New York autumn morning, early October: a small flower stall beside a brownstone stoop, centered basket of blush chrysanthemums, butter-yellow dahlias and ornamental pumpkins; golden leaves scattered around a pale pink watering can, soft city buildings behind. Hand-painted paper texture, sophisticated strawberry pink, cream and butter-yellow palette, cozy quiet light. New composition with flowers as the centered main subject that stays clear in a square mobile crop. No people, readable text, names, logos, watermarks or personal information. Decorative atmosphere, not a depiction of real weather or an event.",
       "tool": "built-in image_gen"
+    },
+    {
+      "day": "2026-10-08",
+      "src": "assets/artwork/2026-10-08-autumn-coffee-cart.png",
+      "alt": "A pink coffee cart in a New York park with a latte, red apples, golden autumn leaves and brownstones.",
+      "width": 1536,
+      "height": 1024,
+      "season": "autumn",
+      "generatedAt": "2026-10-08T12:46:14.382Z",
+      "prompt": "Use case: illustration-story. Create a landscape 3:2 hand-painted gouache editorial illustration for an early-October New York morning newsletter. A small pink coffee cart in a quiet Manhattan park, ceramic latte cup with heart foam and a basket of red apples in the central foreground, amber and golden leaves on the path, softly suggested brownstones beyond. Warm cream paper texture, strawberry pink, butter yellow, muted terracotta; elegant friendly brushwork. Keep main subjects centered and legible in a square mobile crop. Soft autumn morning light. No people, no readable text, no logos, no personal details. This is a decorative seasonal vignette, not a depiction of actual weather.",
+      "tool": "image_gen"
     }
   ]
 }
