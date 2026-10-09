@@ -14,8 +14,8 @@ test('sample sales remain capped at two even when they dominate priority and fee
  assert.equal(selectCity(sales,'2026-10-07').items.length,2);
 });
 test('cross-section rotation recognizes aliases and does not fill shortages with old cards',()=>{
- const old=card('old',{url:'https://www.example.com/show/?utm_source=a'});
- const renamed=card('new',{url:'https://example.com/show?ref=mail#tickets'});
+ const old=card('old',{costType:'free',url:'https://www.example.com/show/?utm_source=a'});
+ const renamed=card('new',{costType:'free',url:'https://example.com/show?ref=mail#tickets'});
  assert.ok(cityKeys(old).some(k=>cityKeys(renamed).includes(k)));
  assert.equal(selectCity([renamed],'2026-10-07',{},[old]).items.length,0);
  assert.equal(selectIdeas([renamed],'2026-10-07',{},'America/New_York',[old]).length,0);
@@ -29,10 +29,10 @@ test('completed and visited preferences exclude renamed cards; unrelated state a
  assert.equal((await eligibleRecommendations(input,s)).length,3);
 });
 test('publication guard rejects previous-week repeats, excess sales, cross-section duplicates and short editions',()=>{
- const brief={finds:Array.from({length:20},(_,i)=>card('event'+i)),ideas:Array.from({length:10},(_,i)=>card('idea'+i)),status:{recommendations:{cooldownDays:7}}};
+ const brief={finds:Array.from({length:20},(_,i)=>card('event'+i,{discovery:i<6})),ideas:Array.from({length:20},(_,i)=>({id:'idea'+i,title:'Idea',url:'https://example.com/idea'+i,costType:i<10?'free':'paid'})),status:{recommendations:{cooldownDays:7}}};
  assert.doesNotThrow(()=>assertRecommendations(brief,[]));
  assert.throws(()=>assertRecommendations(brief,[brief.ideas[0]]),/seven days/);
- assert.throws(()=>assertRecommendations({...brief,ideas:brief.finds.slice(0,10)},[]),/duplicated/);
- assert.throws(()=>assertRecommendations({...brief,ideas:[]},[]),/ten eligible/);
+ assert.throws(()=>assertRecommendations({...brief,ideas:brief.ideas.map((x,i)=>({...x,id:brief.finds[i].id,url:brief.finds[i].url}))},[]),/duplicated/);
+ assert.throws(()=>assertRecommendations({...brief,ideas:[]},[]),/twenty eligible/);
  assert.throws(()=>assertRecommendations({...brief,finds:brief.finds.map((x,i)=>({...x,category:i<3?'Sample sales':'Seasonal'}))},[]),/two sample sales/);
 });

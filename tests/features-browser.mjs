@@ -18,7 +18,10 @@ try{
  const checkArtwork=async src=>{const art=page.locator('.hero-art img');await art.evaluate(img=>img.complete?Promise.resolve():new Promise(resolve=>{img.addEventListener('load',resolve,{once:true});img.addEventListener('error',resolve,{once:true});setTimeout(resolve,12000);}));assert.ok((await art.getAttribute('src')).endsWith(src));assert.ok(await art.evaluate(img=>img.naturalWidth>0),'Edition artwork loads');};
  await checkArtwork(brief.artwork?.src||'assets/morning.png');
  assert.equal(await page.locator('#finds-content .find').count(),20);
- assert.equal(brief.ideas.length,10,'Daily edition has ten free-time ideas');
+ assert.equal(brief.ideas.length,20,'Daily edition has twenty free-time ideas');
+ assert.equal(await page.locator('#ideas-content .card-date').count(),0,'Flexible ideas have no assigned time or date');
+ assert.ok(brief.ideas.filter(x=>x.costType==='free').length>=8);
+ assert.ok(brief.ideas.filter(x=>x.costType==='paid').length>=8);
  assert.equal(await page.locator('#ideas-content .find').count(),brief.ideas.length);
  assert.match(await page.locator('#calendar-source').innerText(),/Calendar 1: checked.*Calendar 2: checked/);
  const heart=page.locator('#finds-content [data-save]').first(),id=await heart.getAttribute('data-save');
@@ -65,13 +68,13 @@ try{
  await page.locator('[data-scroll="finds-content"][data-direction="1"]').click();assert.ok(await rail.evaluate(e=>e.scrollLeft>0));
  // Scroll each photo into view so lazy loading is checked across the entire rail.
  const photos=rail.locator('img');assert.equal(await photos.count(),20);
- for(const photo of await photos.all()){await photo.scrollIntoViewIfNeeded();await photo.evaluate(img=>img.complete?Promise.resolve():new Promise(resolve=>{img.addEventListener('load',resolve,{once:true});img.addEventListener('error',resolve,{once:true});setTimeout(resolve,12000);}));assert.equal(await photo.evaluate(img=>img.naturalWidth>0),true,'Event photo loads');}
- const ideaPhotos=page.locator('#ideas-content img');assert.equal(await ideaPhotos.count(),10);
- for(const photo of await ideaPhotos.all()){await photo.scrollIntoViewIfNeeded();await photo.evaluate(img=>img.complete?Promise.resolve():new Promise(resolve=>{img.addEventListener('load',resolve,{once:true});img.addEventListener('error',resolve,{once:true});setTimeout(resolve,12000);}));assert.equal(await photo.evaluate(img=>img.naturalWidth>0),true,'Free-time idea photo loads');}
+ for(const photo of await photos.all()){await photo.evaluate(img=>{img.loading="eager";img.closest(".find").scrollIntoView({block:"nearest",inline:"nearest"});});await photo.evaluate(img=>img.complete?Promise.resolve():new Promise(resolve=>{img.addEventListener('load',resolve,{once:true});img.addEventListener('error',resolve,{once:true});setTimeout(resolve,12000);}));assert.equal(await photo.evaluate(img=>img.naturalWidth>0),true,`Event photo loads: ${await photo.getAttribute('src')}`);}
+ const ideaPhotos=page.locator('#ideas-content img');assert.equal(await ideaPhotos.count(),20);
+ for(const photo of await ideaPhotos.all()){await photo.evaluate(img=>{img.loading="eager";img.closest(".find").scrollIntoView({block:"nearest",inline:"nearest"});});await photo.evaluate(img=>img.complete?Promise.resolve():new Promise(resolve=>{img.addEventListener('load',resolve,{once:true});img.addEventListener('error',resolve,{once:true});setTimeout(resolve,12000);}));assert.equal(await photo.evaluate(img=>img.naturalWidth>0),true,`Free-time idea photo loads: ${await photo.getAttribute('src')}`);}
  await rail.evaluate(e=>e.scrollLeft=0);await page.evaluate(()=>document.fonts.ready);
  await page.screenshot({path:'test-results/features-desktop.png',fullPage:true});
  await page.setViewportSize({width:390,height:844});await page.screenshot({path:'test-results/features-mobile.png',fullPage:true});
  const storage=await page.evaluate(()=>JSON.stringify({...localStorage}));assert.equal(storage.includes(password),false);assert.equal(storage.includes(shipment),false);assert.equal(storage.includes(brief.ideas[0].title),false);
  assert.deepEqual(errors,[]);
- console.log('Verified ten event photos and ten free-time photos, both calendars, responsive scrolling, persistent encrypted hearts, received packages and undo, completed ideas, link history, and encrypted archive navigation.');
+ console.log('Verified twenty event photos and twenty free-time photos, both calendars, responsive scrolling, persistent encrypted hearts, received packages and undo, completed ideas, link history, and encrypted archive navigation.');
 }finally{await browser.close();await new Promise(resolve=>server?server.httpServer.close(resolve):resolve());}

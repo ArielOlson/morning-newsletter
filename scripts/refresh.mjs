@@ -1,3 +1,4 @@
+import {IDEA_COUNT,MIN_FREE_IDEAS,MIN_PAID_IDEAS,ideaBudget} from './recommendation-policy.mjs';
 import {readCalendarSource} from './calendar-source.mjs';
 import { readFile, writeFile, mkdir, rename } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
@@ -78,10 +79,11 @@ async function main() {
     reminders:remindersFor(personal,day,prefs.timezone), upcomingReminders:personal.filter(e=>e.startDate>day && e.startDate<=addDays(day,14,prefs.timezone)),
     finds:city.items, finance, deliveries:packages, directories:sources.directories, status, errors };
   brief.ideas=selectIdeas(await eligibleRecommendations((await readJSON('config/ideas.local.json',{ideas:[]})).ideas,choices.state),day,brief.calendar,prefs.timezone,[...rotation.items,...city.items]);
-  status.ideas={state:brief.ideas.length===10?'fresh':'partial',count:brief.ideas.length,comparedWith:rotation.days[0]};
+  const freeIdeas=brief.ideas.filter(x=>ideaBudget(x)==='free').length,paidIdeas=brief.ideas.filter(x=>ideaBudget(x)==='paid').length;
+  status.ideas={state:brief.ideas.length===IDEA_COUNT&&freeIdeas>=MIN_FREE_IDEAS&&paidIdeas>=MIN_PAID_IDEAS?'fresh':'partial',count:brief.ideas.length,free:freeIdeas,paid:paidIdeas,comparedWith:rotation.days[0]};
   // Keep every card exposed by earlier same-day builds for tomorrow's rotation.
   brief.recommendationExposures=[...(old.day===day?[...(old.recommendationExposures||[]),...(old.finds||[]),...(old.ideas||[])]:[]),...brief.finds,...brief.ideas].map(({id,url,recommendationKey})=>({id,url,...(recommendationKey?{recommendationKey}:{})})).filter((item,index,items)=>items.findIndex(x=>x.id===item.id&&x.url===item.url&&x.recommendationKey===item.recommendationKey)===index);
-  if(brief.ideas.length<10)errors.push('ideas');
+  if(status.ideas.state!=='fresh')errors.push('ideas');
   await atomic('public/data/brief.json',brief);
   // Private calendar details are intentionally excluded from logs and history.
   console.log(`Morning edit updated for ${day}. Weather: ${status.weather.state}. Calendar: ${brief.calendar.state}. NYC finds: ${brief.finds.length}.`);
