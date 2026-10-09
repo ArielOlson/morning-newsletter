@@ -125,7 +125,7 @@ function wireSave(container){container.querySelectorAll('[data-save]').forEach(b
 }));}
 function renderIdeas(){if(!brief)return;const items=(brief.ideas||[]).filter(x=>viewingArchive||!interactionHistory.completed[ideaKeys.get(x.id)]);$('#ideas-content').innerHTML=items.length?items.map(findHTML).join(''):empty('Room for a little inspiration','Your saved restaurant and activity ideas will appear when the timing fits.');wireSave($('#ideas-content'));wirePhotos($('#ideas-content'));wireCompletions($('#ideas-content'));wireLinks($('#ideas-content'));}
 function renderFinds(){if(!brief)return;
-  $('#finds-content').innerHTML=brief.finds.length?brief.finds.slice(0,10).map(findHTML).join(''):empty('No verified picks available.','NYC sources could not provide current events. Try the next edition.');wireSave($('#finds-content'));wirePhotos($('#finds-content'));wireLinks($('#finds-content'));$('#city-count').textContent=`${brief.finds.length} events for the days ahead`; 
+  $('#finds-content').innerHTML=brief.finds.length?brief.finds.map(findHTML).join(''):empty('No verified picks available.','NYC sources could not provide current events. Try the next edition.');wireSave($('#finds-content'));wirePhotos($('#finds-content'));wireLinks($('#finds-content'));$('#city-count').textContent=`${brief.finds.length} events for the days ahead`; 
 }
 const stamp=value=>new Intl.DateTimeFormat('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit',timeZone:zone()}).format(new Date(value));
 function renderFinance(){

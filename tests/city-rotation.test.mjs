@@ -7,11 +7,11 @@ import {mkdtemp,mkdir,writeFile,rm} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
 import {join} from 'node:path';
 const event=(id,discovery=false,priority=0)=>({id,title:id,url:`https://events.example/${id}`,startDate:'2026-09-30',endDate:'2026-10-04',discovery,priority});
-test('ten city picks include 3–4 discoveries and no yesterday repeats, even high priority',()=>{
+test('twenty city picks include 6–8 discoveries and no yesterday repeats, even high priority',()=>{
  const yesterday=Array.from({length:10},(_,i)=>event('old'+i,false,100));
- const pool=[...yesterday,...Array.from({length:8},(_,i)=>event('new'+i)),...Array.from({length:6},(_,i)=>event('discovery'+i,true))];
+ const pool=[...yesterday,...Array.from({length:16},(_,i)=>event('new'+i)),...Array.from({length:10},(_,i)=>event('discovery'+i,true))];
  const result=selectCity(pool,'2026-09-30',{},yesterday);
- assert.equal(result.items.length,10);assert.equal(result.repeats,0);assert.ok(result.discoveryCount>=3&&result.discoveryCount<=4);assert.deepEqual(result.issues,[]);
+ assert.equal(result.items.length,20);assert.equal(result.repeats,0);assert.ok(result.discoveryCount>=6&&result.discoveryCount<=8);assert.deepEqual(result.issues,[]);
 });
 test('a discovery shortage never reintroduces yesterday’s events',()=>{
  const prior=[event('d1',true,100),event('d2',true,100),event('d3',true,100),event('target',false,999)];

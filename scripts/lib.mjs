@@ -1,3 +1,4 @@
+import {EVENT_COUNT,MIN_DISCOVERIES,MAX_DISCOVERIES} from './recommendation-policy.mjs';
 import ical from 'node-ical';
 import { DateTime } from 'luxon';
 import { XMLParser, XMLValidator } from 'fast-xml-parser';
@@ -156,20 +157,20 @@ export function selectCity(items,day,interests={},previous=[]){
  const score=x=>(x.priority||0)+(x.tags?.includes('red-sox')?40:0)+(interests.artists?.some(a=>x.title.toLowerCase().includes(a.toLowerCase()))?50:0)+(interests.brands?.some(a=>x.title.toLowerCase().includes(a.toLowerCase()))?30:0);
  const candidates=items.filter(x=>x.startDate&&x.startDate<=addDays(day,14)&&(x.endDate||x.startDate)>=day&&safeURL(x.url)).sort((a,b)=>score(b)-score(a)||a.startDate.localeCompare(b.startDate)).filter(x=>{const keys=cityKeys(x);if(keys.some(k=>seen.has(k)))return false;keys.forEach(k=>seen.add(k));return true;});
  // Yesterday’s events are excluded even if highly ranked or still running.
- // Search the quota space for ten picks with three or four discoveries.
+ // Search the quota space for twenty picks with six to eight discoveries.
  let states=new Map([['0:0:0:0',{picks:[],repeats:0,discoveries:0,sales:0,score:0}]]);
  for(const [rank,item] of candidates.entries()){
   const repeat=cityKeys(item).some(k=>prior.has(k))?1:0,discovery=item.discovery===true?1:0;
   const next=new Map(states);
   for(const state of states.values()){
-   const n=state.picks.length+1,r=state.repeats+repeat,d=state.discoveries+discovery,s=state.sales+Number(isSampleSale(item));if(n>10||r>0||d>4||s>2)continue;
+   const n=state.picks.length+1,r=state.repeats+repeat,d=state.discoveries+discovery,s=state.sales+Number(isSampleSale(item));if(n>EVENT_COUNT||r>0||d>MAX_DISCOVERIES||s>2)continue;
    const value={picks:[...state.picks,item],repeats:r,discoveries:d,sales:s,score:state.score+candidates.length-rank},key=`${n}:${r}:${d}:${s}`;
    if(!next.has(key)||value.score>next.get(key).score)next.set(key,value);
   }
   states=next;
  }
- const best=[...states.values()].sort((a,b)=>b.picks.length-a.picks.length||(b.discoveries>=3)-(a.discoveries>=3)||b.score-a.score)[0];
- const issues=[];if(best.picks.length<10)issues.push(`Only ${best.picks.length} verified events fit today's rotation; more new picks are needed.`);if(best.discoveries<3)issues.push('Research at least three broader discoveries outside the requested priority categories.');
+ const best=[...states.values()].sort((a,b)=>b.picks.length-a.picks.length||(b.discoveries>=MIN_DISCOVERIES)-(a.discoveries>=MIN_DISCOVERIES)||b.score-a.score)[0];
+ const issues=[];if(best.picks.length<EVENT_COUNT)issues.push(`Only ${best.picks.length} verified events fit today's rotation; more new picks are needed.`);if(best.discoveries<MIN_DISCOVERIES)issues.push('Research at least six broader discoveries outside the requested priority categories.');
  return {items:best.picks.map(x=>({...x,what:x.what||x.note||x.title,where:x.where||x.location||'Location not confirmed',neighborhood:x.neighborhood||x.where||'Neighborhood not confirmed',when:x.when||null,cost:x.cost||'Not listed by the source'})),repeats:best.repeats,discoveryCount:best.discoveries,issues};
 }
 export const isSampleSale=x=>x.category==='Sample sales'||x.id?.startsWith('260:')||/sample\s+sale/i.test(x.title||'')||/260samplesale\.com/.test(x.url||'');

@@ -17,7 +17,7 @@ try{
  await page.goto(base+'?features='+Date.now());await unlock();
  const checkArtwork=async src=>{const art=page.locator('.hero-art img');await art.evaluate(img=>img.complete?Promise.resolve():new Promise(resolve=>{img.addEventListener('load',resolve,{once:true});img.addEventListener('error',resolve,{once:true});setTimeout(resolve,12000);}));assert.ok((await art.getAttribute('src')).endsWith(src));assert.ok(await art.evaluate(img=>img.naturalWidth>0),'Edition artwork loads');};
  await checkArtwork(brief.artwork?.src||'assets/morning.png');
- assert.equal(await page.locator('#finds-content .find').count(),10);
+ assert.equal(await page.locator('#finds-content .find').count(),20);
  assert.equal(brief.ideas.length,10,'Daily edition has ten free-time ideas');
  assert.equal(await page.locator('#ideas-content .find').count(),brief.ideas.length);
  assert.match(await page.locator('#calendar-source').innerText(),/Calendar 1: checked.*Calendar 2: checked/);
@@ -64,7 +64,7 @@ try{
  assert.ok(await rail.evaluate(e=>e.scrollWidth>e.clientWidth));
  await page.locator('[data-scroll="finds-content"][data-direction="1"]').click();assert.ok(await rail.evaluate(e=>e.scrollLeft>0));
  // Scroll each photo into view so lazy loading is checked across the entire rail.
- const photos=rail.locator('img');assert.equal(await photos.count(),10);
+ const photos=rail.locator('img');assert.equal(await photos.count(),20);
  for(const photo of await photos.all()){await photo.scrollIntoViewIfNeeded();await photo.evaluate(img=>img.complete?Promise.resolve():new Promise(resolve=>{img.addEventListener('load',resolve,{once:true});img.addEventListener('error',resolve,{once:true});setTimeout(resolve,12000);}));assert.equal(await photo.evaluate(img=>img.naturalWidth>0),true,'Event photo loads');}
  const ideaPhotos=page.locator('#ideas-content img');assert.equal(await ideaPhotos.count(),10);
  for(const photo of await ideaPhotos.all()){await photo.scrollIntoViewIfNeeded();await photo.evaluate(img=>img.complete?Promise.resolve():new Promise(resolve=>{img.addEventListener('load',resolve,{once:true});img.addEventListener('error',resolve,{once:true});setTimeout(resolve,12000);}));assert.equal(await photo.evaluate(img=>img.naturalWidth>0),true,'Free-time idea photo loads');}

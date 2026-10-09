@@ -73,10 +73,10 @@ test('finance returns three distinct recent stories, excludes future and stale i
  const rows=parseFinance(`<rss><channel>${item('Oil prices rise','a')}${item('Bond yields rise','b')}${item('Stocks dip','c')}${item('Oil rises again','d')}${item('Old stocks','old','Mon, 01 Jun 2026 01:00:00 GMT')}${item('Future stocks','future','Mon, 30 Sep 2030 01:00:00 GMT')}</channel></rss>`,{name:'CNBC'},new Date('2026-09-28T06:00:00Z'));
  assert.equal(rows.length,4);const selected=topFinance([...rows,...rows]);assert.equal(selected.length,3);assert.equal(new Set(selected.map(x=>x.topic)).size,3);
 });
-test('city selection removes expired events, deduplicates, caps at ten and provides detail fields',async()=>{
+test('city selection removes expired events, deduplicates, caps at twenty and provides detail fields',async()=>{
  const {topCity}=await import('../scripts/lib.mjs');
- const events=[{id:'expired',endDate:'2026-09-27',priority:99},...Array.from({length:12},(_,i)=>({id:String(i),title:'Event',url:`https://example.com/${i}`,kind:'event',startDate:'2026-09-29',endDate:'2026-10-02'}))];
- const chosen=topCity([...events,events[1]],'2026-09-28');assert.equal(chosen.length,10);assert.equal(new Set(chosen.map(x=>x.id)).size,10);assert.equal(chosen.some(x=>x.id==='expired'),false);assert.equal(chosen[0].cost,'Not listed by the source');
+ const events=[{id:'expired',endDate:'2026-09-27',priority:99},...Array.from({length:24},(_,i)=>({id:String(i),title:'Event',url:`https://example.com/${i}`,kind:'event',startDate:'2026-09-29',endDate:'2026-10-02'}))];
+ const chosen=topCity([...events,events[1]],'2026-09-28');assert.equal(chosen.length,20);assert.equal(new Set(chosen.map(x=>x.id)).size,20);assert.equal(chosen.some(x=>x.id==='expired'),false);assert.equal(chosen[0].cost,'Not listed by the source');
 });
 test('delivery scans retain separate parcels, flag stale data and expire old delivered records',async()=>{
  const {deliverySnapshot}=await import('../scripts/lib.mjs');const now=new Date('2026-09-28T06:00:00Z');
