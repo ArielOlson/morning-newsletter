@@ -65,6 +65,17 @@
       "generatedAt": "2026-10-08T12:46:14.382Z",
       "prompt": "Use case: illustration-story. Create a landscape 3:2 hand-painted gouache editorial illustration for an early-October New York morning newsletter. A small pink coffee cart in a quiet Manhattan park, ceramic latte cup with heart foam and a basket of red apples in the central foreground, amber and golden leaves on the path, softly suggested brownstones beyond. Warm cream paper texture, strawberry pink, butter yellow, muted terracotta; elegant friendly brushwork. Keep main subjects centered and legible in a square mobile crop. Soft autumn morning light. No people, no readable text, no logos, no personal details. This is a decorative seasonal vignette, not a depiction of actual weather.",
       "tool": "image_gen"
+    },
+    {
+      "day": "2026-10-09",
+      "src": "assets/artwork/2026-10-09-autumn-picnic.png",
+      "alt": "A pink picnic blanket with apples, books and mugs beside a Central Park pond in early autumn",
+      "width": 1536,
+      "height": 1024,
+      "season": "autumn",
+      "generatedAt": "2026-10-09T04:00:00.916615+00:00",
+      "prompt": "Use case: illustration-story. Create a new landscape 3:2 decorative header illustration for a pink New York morning newsletter. Early October in New York: a charming pink picnic blanket beside a curved Central Park pond, two butter-yellow mugs, a book with no lettering, a basket of apples, small golden and coral autumn leaves, distant simplified Manhattan buildings. Soft hand-painted gouache and colored pencil editorial style on warm cream paper, dusty rose, muted sage and butter yellow palette. Main picnic scene centered and legible in a square mobile crop. Peaceful daylight, no people, no words, no logos, no identifying information. Composition distinctly focused on the pond-side picnic, not a coffee cart.",
+      "tool": "image_gen"
     }
   ]
 }
