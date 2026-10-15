@@ -72,6 +72,7 @@ async function main() {
   const cityEvents = events.filter(e => e.category && e.category !== 'personal' && (e.endDate || e.startDate) >= day && e.startDate <= addDays(day,14,prefs.timezone)).map(e => ({...e,kind:'event',source:e.source || 'Your picks'}));
   const city=selectCity(await eligibleRecommendations([...cityEvents,...(games||[]),...(sales||[])],choices.state),day,interests,rotation.items);
   status.recommendations={state:'fresh',updatedAt:choices.checkedAt,historyDays:rotation.days,cooldownDays:7,maxSampleSales:2};
+  if(rotation.recovery)status.recommendations.recovery=rotation.recovery;
   status.city={state:city.issues.length?'partial':'fresh',updatedAt:now.toISOString(),comparedWith:rotation.days[0],repeats:city.repeats,discoveryCount:city.discoveryCount,issues:city.issues};
   if(city.issues.length)errors.push('city');
   const brief = { version:1, day, generatedAt:now.toISOString(), name:prefs.name, timezone:prefs.timezone, location:prefs.location,
@@ -82,7 +83,7 @@ async function main() {
   const freeIdeas=brief.ideas.filter(x=>ideaBudget(x)==='free').length,paidIdeas=brief.ideas.filter(x=>ideaBudget(x)==='paid').length;
   status.ideas={state:brief.ideas.length===IDEA_COUNT&&freeIdeas>=MIN_FREE_IDEAS&&paidIdeas>=MIN_PAID_IDEAS?'fresh':'partial',count:brief.ideas.length,free:freeIdeas,paid:paidIdeas,comparedWith:rotation.days[0]};
   // Keep every card exposed by earlier same-day builds for tomorrow's rotation.
-  brief.recommendationExposures=[...(old.day===day?[...(old.recommendationExposures||[]),...(old.finds||[]),...(old.ideas||[])]:[]),...brief.finds,...brief.ideas].map(({id,url,recommendationKey})=>({id,url,...(recommendationKey?{recommendationKey}:{})})).filter((item,index,items)=>items.findIndex(x=>x.id===item.id&&x.url===item.url&&x.recommendationKey===item.recommendationKey)===index);
+  brief.recommendationExposures=[...(rotation.observed||[]),...(old.day===day?[...(old.recommendationExposures||[]),...(old.finds||[]),...(old.ideas||[])]:[]),...brief.finds,...brief.ideas].map(({id,url,recommendationKey})=>({id,url,...(recommendationKey?{recommendationKey}:{})})).filter((item,index,items)=>items.findIndex(x=>x.id===item.id&&x.url===item.url&&x.recommendationKey===item.recommendationKey)===index);
   if(status.ideas.state!=='fresh')errors.push('ideas');
   await atomic('public/data/brief.json',brief);
   // Private calendar details are intentionally excluded from logs and history.

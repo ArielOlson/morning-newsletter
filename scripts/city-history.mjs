@@ -1,6 +1,7 @@
 import {readFile} from 'node:fs/promises';
 import {addDays} from './lib.mjs';
 import {decrypt} from '../src/crypto.mjs';
+import {recoverPublicationGap} from './history-recovery.mjs';
 
 export async function previousCityEdition(day,old={},zone='America/New_York'){
  const yesterday=addDays(day,-1,zone);
@@ -19,6 +20,9 @@ export async function recommendationHistory(day,old={},zone='America/New_York',d
   const history=await previousCityEdition(addDays(day,-offset,zone),old,zone);
   if(history.available)editions.push(history);
  }
- if(!editions.some(x=>x.day===addDays(day,-1,zone)))throw Error('Yesterday’s edition is missing; recommendation rotation cannot be verified.');
+ if(!editions.some(x=>x.day===addDays(day,-1,zone))){
+  try{return await recoverPublicationGap(day,zone);}
+  catch{throw Error('Yesterday’s edition is missing and publication-gap recovery could not be verified. Preserve the last edition and inspect GitHub/live archive access.');}
+ }
  return {days:editions.map(x=>x.day),items:editions.flatMap(x=>[...x.finds,...x.ideas,...x.exposures])};
 }
