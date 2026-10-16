@@ -30,3 +30,11 @@ test('a second interruption retains earlier observed cards and records the curre
  f.day='2026-10-20';f.observedAt='2026-10-20T08:00:00Z';f.versions[0]={sha:'abc',current:next,editions:[f.live,next]};f.live=next;f.local=f.versions[0].editions;
  const r=verifyRecoveryEvidence(f);assert.ok(r.observed.some(x=>x.id==='walk'));assert.ok(r.items.some(x=>x.id==='new'));assert.equal(r.recovery.lastPublishedDay,'2026-10-14');
 });
+test('a verified recovery edition can be corrected later the same day without rotating its cards',()=>{
+ const f=fixture(),old=f.live,today=edition(f.day,[{id:'new',url:'https://example.org/new'}]);
+ today.status={recommendations:{recovery:{mode:'verified-publication-gap',commit:'abc',lastPublishedDay:old.day}}};
+ today.recommendationExposures=[card];f.head='updated';f.runs.unshift({head_sha:'updated',status:'completed',conclusion:'success'});f.totalRuns++;
+ f.versions.push({sha:'updated',current:today,editions:[old,today]});f.live=today;f.local=[old,{...today,deliveries:{corrected:true}}];
+ const r=verifyRecoveryEvidence(f);assert.ok(!r.items.some(x=>x.id==='new'));assert.ok(r.items.some(x=>x.id==='walk'));
+ f.local[1]={...today,finds:[],recommendationExposures:[]};assert.throws(()=>verifyRecoveryEvidence(f),/lost published/);
+});

@@ -17,7 +17,12 @@ export function verifyRecoveryEvidence({day,zone,head,runs,totalRuns,versions,li
  const latest=versions.find(v=>v.sha===head);
  assert.ok(latest,'Published commit is missing');
  assert.deepEqual(live,latest.current,'Live edition differs from the published commit');
- assert.ok(live.day<addDays(day,-1,zone),'A published yesterday edition must be restored, not bypassed');
+ const priorRecovery=live.status?.recommendations?.recovery;
+ const continuation=live.day===day&&priorRecovery?.mode==='verified-publication-gap';
+ if(continuation){
+  const anchor=versions.find(v=>v.sha===priorRecovery.commit);
+  assert.ok(anchor&&anchor.current.day===priorRecovery.lastPublishedDay&&anchor.current.day<addDays(day,-1,zone),'Same-day recovery requires its verified original published anchor');
+ }else assert.ok(live.day<addDays(day,-1,zone),'A published yesterday edition must be restored, not bypassed');
  assert.ok(Number.isFinite(Date.parse(observedAt)),'Missing actual observation time');
  const latestDays=new Map(latest.editions.map(e=>[e.day,e]));
  assert.deepEqual(latestDays.get(live.day),live,'Published current edition is missing from its archive');
@@ -28,11 +33,16 @@ export function verifyRecoveryEvidence({day,zone,head,runs,totalRuns,versions,li
   for(const edition of version.editions)assert.ok(latestDays.has(edition.day),'A previously published archive was removed');
  }
  for(const [date,edition] of latestDays){
-  assert.deepEqual(local.find(e=>e.day===date),edition,'Local history differs from the verified published archive');
+  const localEdition=local.find(e=>e.day===date);
+  if(continuation&&date===day){
+   assert.ok(localEdition,'Local current-day archive is missing');
+   const exposures=new Set(cards(localEdition).map(c=>JSON.stringify(identity(c))));
+   assert.ok(cards(edition).every(c=>exposures.has(JSON.stringify(identity(c)))),'Same-day update lost published recommendation exposures');
+  }else assert.deepEqual(localEdition,edition,'Local history differs from the verified published archive');
  }
- const items=versions.flatMap(v=>[...cards(v.current),...v.editions.flatMap(cards)]).map(identity);
+ const items=versions.flatMap(v=>[v.current,...v.editions]).filter(e=>e.day<day).flatMap(cards).map(identity);
  return {days:[...latestDays.keys()].sort().reverse(),items,
-  observed:cards(live).map(identity),recovery:{mode:'verified-publication-gap',commit:head,lastPublishedDay:live.day,observedAt}};
+  observed:cards(live).map(identity),recovery:continuation?{...priorRecovery,verifiedCommit:head,observedAt}:{mode:'verified-publication-gap',commit:head,lastPublishedDay:live.day,observedAt}};
 }
 
 export async function recoverPublicationGap(day,zone='America/New_York'){
