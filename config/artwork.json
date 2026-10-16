@@ -91,12 +91,23 @@
     {
       "day": "2026-10-15",
       "src": "assets/artwork/2026-10-15-autumn-cafe-table.png",
-      "alt": "Pink coffee cup, apples and a cream scarf on a yellow café table above an autumn New York street",
+      "alt": "Pink coffee cup, apples and a cream scarf on a yellow caf\u00e9 table above an autumn New York street",
       "width": 1536,
       "height": 1024,
       "season": "autumn",
       "generatedAt": "2026-10-15T13:07:22.777Z",
-      "prompt": "Create a decorative editorial illustration for a pink New York morning newsletter, landscape 3:2, hand-painted gouache and colored-pencil texture on warm ivory paper. Mid-October autumn in NYC: centered small butter-yellow café table beside an arched brownstone window, a blush ceramic mug, a folded cream scarf, two red apples and scattered ochre maple leaves. Beyond the window, a quiet pink-brown Manhattan streetscape with autumn trees and a tiny yellow taxi, soft morning light. Charming refined illustration with strawberry pink and butter-yellow accents, modest airy composition. Keep the main table and mug centered and legible in a square mobile crop. No people, lettering, logos, readable text or personal data. New composition, no flower stand.",
+      "prompt": "Create a decorative editorial illustration for a pink New York morning newsletter, landscape 3:2, hand-painted gouache and colored-pencil texture on warm ivory paper. Mid-October autumn in NYC: centered small butter-yellow caf\u00e9 table beside an arched brownstone window, a blush ceramic mug, a folded cream scarf, two red apples and scattered ochre maple leaves. Beyond the window, a quiet pink-brown Manhattan streetscape with autumn trees and a tiny yellow taxi, soft morning light. Charming refined illustration with strawberry pink and butter-yellow accents, modest airy composition. Keep the main table and mug centered and legible in a square mobile crop. No people, lettering, logos, readable text or personal data. New composition, no flower stand.",
+      "tool": "image_gen"
+    },
+    {
+      "day": "2026-10-16",
+      "src": "assets/artwork/2026-10-16-ginkgo-park-kiosk.png",
+      "alt": "A pink park kiosk and iron bench with apples and a cream scarf beneath golden ginkgo trees in autumn New York",
+      "width": 1536,
+      "height": 1024,
+      "season": "autumn",
+      "generatedAt": "2026-10-16T08:11:50.050396+00:00",
+      "prompt": "Landscape 3:2 hand-painted gouache and colored pencil editorial illustration on warm ivory paper. Mid-October New York park: pink kiosk framed by golden ginkgo trees, centered iron bench with a cream scarf and bag of red apples, pumpkins, russet leaves, distant brownstones and yellow taxi. Strawberry pink, dusty rose and butter yellow. Center subjects for square mobile crop. No people, lettering, logos or private data.",
       "tool": "image_gen"
     }
   ]
