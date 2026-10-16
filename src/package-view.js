@@ -2,7 +2,7 @@ import {readPackages,changePackageStage,packageRows,packagesKey,setPackageRecord
 export function createPackageView({escape,safeURL,stamp,dateLabel,external,wireLinks,toast,getPassword,isArchive,getHistory,sync}){
  let records={},rows=[],data=null,generation=0,showFinished=false,saving=false,error='';
  const root=document.querySelector('#deliveries-content'),toggle=document.querySelector('#received-toggle');
- const labels={ordered:'Ordered',shipped:'Shipped',delivered:'Delivered',pickup:'Pickup notice',scheduled:'Scheduled',delayed:'Delayed','out-for-delivery':'Out for delivery','in-transit':'In transit'};
+ const labels={ordered:'Ordered',shipped:'Shipped',delivered:'Delivered',pickup:'Pickup notice',scheduled:'Scheduled',delayed:'Delayed','label-created':'Label created','return-label':'Return label issued','return-processed':'Return processed','out-for-delivery':'Out for delivery','in-transit':'In transit'};
  const stateLabels={received:'Received',return:'To return',refund:'Awaiting refund',refunded:'Refunded'};
  const key=import.meta.env.PROD?packagesKey:packagesKey+'-local-preview';
  const password=()=>getPassword()||(import.meta.env.PROD?null:'local-preview-only');

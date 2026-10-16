@@ -10,6 +10,7 @@ import {selectCity} from './lib.mjs';
 import {recommendationHistory} from './city-history.mjs';
 import {readRecommendationState,eligibleRecommendations} from './recommendation-state.mjs';
 import {selectArtwork} from './artwork.mjs';
+import {assertPackageScan} from './package-scan.mjs';
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 process.chdir(root);
 const readJSON = async (path, fallback) => { try { return JSON.parse(await readFile(path, 'utf8')); } catch(e) { if (e.code === 'ENOENT' && fallback !== undefined) return fallback; throw new Error(`Cannot read ${path}: check JSON syntax`); } };
@@ -36,7 +37,9 @@ async function main() {
   if (process.env.ICAL_URLS) calendar.urls = JSON.parse(process.env.ICAL_URLS);
   if (!Array.isArray(calendar.urls) || calendar.urls.some(u => typeof u !== 'string' || !/^((https:\/\/)|(webcal:\/\/))/.test(u))) throw new Error('Calendar urls must be an array of HTTPS or webcal links');
   const linkedCalendar = await readJSON('config/calendar-snapshot.local.json', {});
-  const packages = deliverySnapshot(await readJSON('config/deliveries.local.json', null), now);
+  const deliveryData=await readJSON('config/deliveries.local.json',null);
+  if(deliveryData){const connections=await readJSON('config/connections.local.json');assertPackageScan(deliveryData,connections.gmail.map(x=>x.account));}
+  const packages = deliverySnapshot(deliveryData, now);
   const events = validateEvents([...(await readJSON('config/events.json')).events, ...(await readJSON('config/events.local.json', {events:[]})).events, ...(await readJSON('config/nyc-events.json', {events:[]})).events]);
   const old = await readJSON('public/data/brief.json', {});
   const rotation=await recommendationHistory(day,old,prefs.timezone,7);

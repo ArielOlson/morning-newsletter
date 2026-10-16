@@ -186,7 +186,9 @@ export function deliverySnapshot(snapshot,now=new Date()){
   if(!snapshot||!Number.isFinite(age)||age<0||!Array.isArray(snapshot.shipments))return {state:'unavailable',checkedAt:null,shipments:[]};
   const shipments=[...new Map(snapshot.shipments.map(x=>[x.id,x])).values()].filter(x=>{
     if(!x.id||!x.merchant||!x.status||!Number.isFinite(+new Date(x.updatedAt)))return false;
-    return x.status!=='delivered'||(+now-new Date(x.updatedAt))<7*86400000;
+    // Email delivery is not Ariel's confirmation of receipt. Only durable user
+    // choices hide finished parcels; age must never silently dismiss one.
+    return true;
   });
   return {state:age>26?'stale':'fresh',checkedAt:snapshot.checkedAt,shipments,scope:snapshot.scope||'Connected email accounts'};
 }

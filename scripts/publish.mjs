@@ -3,10 +3,11 @@ import { execFileSync } from 'node:child_process';
 import { resolve, dirname, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { decrypt } from '../src/crypto.mjs';
-import { dayInZone } from './lib.mjs';
+import { dayInZone,deliverySnapshot } from './lib.mjs';
 import {recommendationHistory} from './city-history.mjs';
 import {assertRecommendations} from './recommendation-check.mjs';
 import {readRecommendationState,eligibleRecommendations} from './recommendation-state.mjs';
+import {assertPackageScan} from './package-scan.mjs';
 
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 const checkout=resolve(root,'.cache/publish-repo');
@@ -30,6 +31,10 @@ async function checkTree(path){
 try{
  const briefText=await readFile(resolve(root,'public/data/brief.json'),'utf8');
  const brief=JSON.parse(briefText),age=Date.now()-Date.parse(brief.generatedAt);
+ const deliveryScan=await optionalJSON(resolve(root,'config/deliveries.local.json'));
+ const connections=await optionalJSON(resolve(root,'config/connections.local.json'));
+ assertPackageScan(deliveryScan,connections.gmail.map(x=>x.account));
+ if(JSON.stringify(deliverySnapshot(deliveryScan,new Date(brief.generatedAt)))!==JSON.stringify(brief.deliveries))throw new Error('Package scan changed after refresh. Refresh and rebuild before publishing.');
  if(brief.day!==dayInZone(new Date(),brief.timezone)||!Number.isFinite(age)||age<0||age>90*60*1000)throw new Error('Refresh today’s edition before publishing (maximum age: 90 minutes).');
  assertRecommendations(brief,(await recommendationHistory(brief.day,{},brief.timezone)).items);
  const choices=await readRecommendationState(),cards=[...brief.finds,...brief.ideas];

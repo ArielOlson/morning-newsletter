@@ -78,10 +78,10 @@ test('city selection removes expired events, deduplicates, caps at twenty and pr
  const events=[{id:'expired',endDate:'2026-09-27',priority:99},...Array.from({length:24},(_,i)=>({id:String(i),title:'Event',url:`https://example.com/${i}`,kind:'event',startDate:'2026-09-29',endDate:'2026-10-02'}))];
  const chosen=topCity([...events,events[1]],'2026-09-28');assert.equal(chosen.length,20);assert.equal(new Set(chosen.map(x=>x.id)).size,20);assert.equal(chosen.some(x=>x.id==='expired'),false);assert.equal(chosen[0].cost,'Not listed by the source');
 });
-test('delivery scans retain separate parcels, flag stale data and expire old delivered records',async()=>{
+test('delivery scans retain separate parcels and old delivered records until explicit receipt',async()=>{
  const {deliverySnapshot}=await import('../scripts/lib.mjs');const now=new Date('2026-09-28T06:00:00Z');
  const shipments=[{id:'one',merchant:'Store',status:'shipped',updatedAt:'2026-09-20T00:00:00Z'},{id:'two',merchant:'Store',status:'delivered',updatedAt:'2026-09-27T00:00:00Z'},{id:'old',merchant:'Store',status:'delivered',updatedAt:'2026-09-01T00:00:00Z'}];
- const result=deliverySnapshot({checkedAt:'2026-09-28T05:00:00Z',shipments},now);assert.equal(result.state,'fresh');assert.deepEqual(result.shipments.map(x=>x.id),['one','two']);
+ const result=deliverySnapshot({checkedAt:'2026-09-28T05:00:00Z',shipments},now);assert.equal(result.state,'fresh');assert.deepEqual(result.shipments.map(x=>x.id),['one','two','old']);
  assert.equal(deliverySnapshot({checkedAt:'2026-09-26T05:00:00Z',shipments},now).state,'stale');assert.equal(deliverySnapshot(null,now).state,'unavailable');
 });
 
