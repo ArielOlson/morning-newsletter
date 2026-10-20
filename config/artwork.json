@@ -109,6 +109,39 @@
       "generatedAt": "2026-10-16T08:11:50.050396+00:00",
       "prompt": "Landscape 3:2 hand-painted gouache and colored pencil editorial illustration on warm ivory paper. Mid-October New York park: pink kiosk framed by golden ginkgo trees, centered iron bench with a cream scarf and bag of red apples, pumpkins, russet leaves, distant brownstones and yellow taxi. Strawberry pink, dusty rose and butter yellow. Center subjects for square mobile crop. No people, lettering, logos or private data.",
       "tool": "image_gen"
+    },
+    {
+      "day": "2026-10-17",
+      "src": "assets/artwork/2026-10-17-chrysanthemum-stoop.png",
+      "alt": "Burgundy chrysanthemums on a pink flower cart beside an autumn brownstone stoop, pumpkins and a butter-yellow cup.",
+      "width": 1536,
+      "height": 1024,
+      "season": "autumn",
+      "generatedAt": "2026-10-17T17:55:54.029808+00:00",
+      "prompt": "Create a landscape 3:2 editorial gouache illustration for a cute pink New York autumn newsletter. Mid-October scene: a small flower cart filled with burgundy chrysanthemums and golden leaves beside a brownstone stoop, two miniature pumpkins, a butter-yellow ceramic takeaway-style cup without lettering in the center foreground. Soft strawberry-pink buildings and delicate wrought iron railings behind. Textured warm ivory paper, hand-painted brushwork, blush pink and butter yellow with muted terracotta and gold. Central subjects remain legible in a square mobile crop. Cozy clear afternoon light. No people, no text, no signage, no logos, no personal data. New composition; not a breakfast table or park kiosk.",
+      "tool": "image_gen"
+    },
+    {
+      "day": "2026-10-18",
+      "src": "assets/artwork/2026-10-18-waterfront-reading-bench.png",
+      "alt": "Pink autumn leaves frame a yellow reading bench, pumpkin and bicycle beside the New York waterfront.",
+      "width": 1536,
+      "height": 1024,
+      "season": "autumn",
+      "generatedAt": "2026-10-18T19:30:56.900295+00:00",
+      "prompt": "A warm hand-painted gouache editorial illustration, landscape 3:2. A pink New York autumn riverside promenade in mid October, composition centered around a quaint butter-yellow reading bench with a closed rose pink book and a little pumpkin, rust-gold maple branches arching above, terracotta fallen leaves, soft Manhattan skyline across pale blue river, a tiny pink bicycle leaning by an iron railing. Sophisticated cute pink NYC morning newsletter style, textured watercolor paper, dusty blush and cream palette with butter yellow accents. No people, no words, no letters, no private information. Keep main subject in central square for mobile crop. New composition, serene wide waterfront view rather than a stoop or flower cart.",
+      "tool": "image_gen.imagegen"
+    },
+    {
+      "day": "2026-10-20",
+      "src": "assets/artwork/2026-10-20-autumn-flower-stand.png",
+      "alt": "Pink New York flower stand filled with autumn chrysanthemums, pumpkins and golden leaves.",
+      "width": 1536,
+      "height": 1024,
+      "season": "autumn",
+      "generatedAt": "2026-10-20T13:49:24.796154+00:00",
+      "prompt": "Landscape 3:2 editorial gouache illustration for an October New York morning, warm blush pink and butter yellow with russet autumn accents. A charming pink street-corner flower stand under a striped cream awning, buckets of copper chrysanthemums and golden branches, two small pumpkins beside the stand, a yellow taxi passing in the background and recognizable Manhattan brownstone facades. View at gentle eye level, textured hand-painted paper, sophisticated playful illustrated magazine style, soft morning light. Composition distinctly centered on the flower buckets and stand so a square mobile crop works. No text, lettering, logos, people close-ups or personal information.",
+      "tool": "image_gen"
     }
   ]
 }
