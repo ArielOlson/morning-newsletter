@@ -91,12 +91,12 @@
     {
       "day": "2026-10-15",
       "src": "assets/artwork/2026-10-15-autumn-cafe-table.png",
-      "alt": "Pink coffee cup, apples and a cream scarf on a yellow caf\u00e9 table above an autumn New York street",
+      "alt": "Pink coffee cup, apples and a cream scarf on a yellow café table above an autumn New York street",
       "width": 1536,
       "height": 1024,
       "season": "autumn",
       "generatedAt": "2026-10-15T13:07:22.777Z",
-      "prompt": "Create a decorative editorial illustration for a pink New York morning newsletter, landscape 3:2, hand-painted gouache and colored-pencil texture on warm ivory paper. Mid-October autumn in NYC: centered small butter-yellow caf\u00e9 table beside an arched brownstone window, a blush ceramic mug, a folded cream scarf, two red apples and scattered ochre maple leaves. Beyond the window, a quiet pink-brown Manhattan streetscape with autumn trees and a tiny yellow taxi, soft morning light. Charming refined illustration with strawberry pink and butter-yellow accents, modest airy composition. Keep the main table and mug centered and legible in a square mobile crop. No people, lettering, logos, readable text or personal data. New composition, no flower stand.",
+      "prompt": "Create a decorative editorial illustration for a pink New York morning newsletter, landscape 3:2, hand-painted gouache and colored-pencil texture on warm ivory paper. Mid-October autumn in NYC: centered small butter-yellow café table beside an arched brownstone window, a blush ceramic mug, a folded cream scarf, two red apples and scattered ochre maple leaves. Beyond the window, a quiet pink-brown Manhattan streetscape with autumn trees and a tiny yellow taxi, soft morning light. Charming refined illustration with strawberry pink and butter-yellow accents, modest airy composition. Keep the main table and mug centered and legible in a square mobile crop. No people, lettering, logos, readable text or personal data. New composition, no flower stand.",
       "tool": "image_gen"
     },
     {
@@ -141,6 +141,17 @@
       "season": "autumn",
       "generatedAt": "2026-10-20T13:49:24.796154+00:00",
       "prompt": "Landscape 3:2 editorial gouache illustration for an October New York morning, warm blush pink and butter yellow with russet autumn accents. A charming pink street-corner flower stand under a striped cream awning, buckets of copper chrysanthemums and golden branches, two small pumpkins beside the stand, a yellow taxi passing in the background and recognizable Manhattan brownstone facades. View at gentle eye level, textured hand-painted paper, sophisticated playful illustrated magazine style, soft morning light. Composition distinctly centered on the flower buckets and stand so a square mobile crop works. No text, lettering, logos, people close-ups or personal information.",
+      "tool": "image_gen"
+    },
+    {
+      "day": "2026-10-21",
+      "src": "assets/artwork/2026-10-21-autumn-bakery.png",
+      "alt": "Pink Manhattan bakery and outdoor café table with coffee, apple galette and golden autumn leaves.",
+      "width": 1536,
+      "height": 1024,
+      "season": "autumn",
+      "generatedAt": "2026-10-21T12:54:08.813653+00:00",
+      "prompt": "A new 3:2 landscape hand-painted editorial illustration of New York in mid October. Blush pink and cream bakery window glowing warmly on a Manhattan corner, central pink porcelain cup and small apple galette on an outdoor bistro table, golden ginkgo leaves scattered across the sidewalk, rust orange tree canopy, tall city buildings receding behind. Soft watercolor and gouache paper texture, butter-yellow highlights, cozy sophisticated magazine illustration, clear central composition for a square mobile crop. No readable text, logos, identifying personal details or recognizable real people. Different from flower-stand and park-bench scenes.",
       "tool": "image_gen"
     }
   ]
