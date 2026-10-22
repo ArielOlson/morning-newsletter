@@ -153,6 +153,17 @@
       "generatedAt": "2026-10-21T12:54:08.813653+00:00",
       "prompt": "A new 3:2 landscape hand-painted editorial illustration of New York in mid October. Blush pink and cream bakery window glowing warmly on a Manhattan corner, central pink porcelain cup and small apple galette on an outdoor bistro table, golden ginkgo leaves scattered across the sidewalk, rust orange tree canopy, tall city buildings receding behind. Soft watercolor and gouache paper texture, butter-yellow highlights, cozy sophisticated magazine illustration, clear central composition for a square mobile crop. No readable text, logos, identifying personal details or recognizable real people. Different from flower-stand and park-bench scenes.",
       "tool": "image_gen"
+    },
+    {
+      "day": "2026-10-22",
+      "src": "assets/artwork/2026-10-22-autumn-bookstall.png",
+      "alt": "Autumn books and a yellow heart coffee cup beside a pink New York brownstone, with chrysanthemums and golden leaves.",
+      "width": 1536,
+      "height": 1024,
+      "season": "autumn",
+      "generatedAt": "2026-10-22T14:55:47.345971+00:00",
+      "prompt": "Create a landscape 3:2 editorial watercolor and gouache illustration for a warm pink NYC morning newsletter. A charming outdoor autumn bookstall beside a Manhattan brownstone stoop, stacked vintage books with blank spines, a tiny butter-yellow ceramic cup, russet maple leaves and blush pink chrysanthemums. October in New York; soft pink, muted cranberry, golden ochre, cream paper texture. A small yellow heart motif on the cup. Main subjects clustered near center for a square mobile crop. Hand-painted, sophisticated and cheerful, detailed but airy. No readable text, no people, no private data. Composition clearly different from a bakery window or skyline panorama. Full opaque background.",
+      "tool": "image_gen"
     }
   ]
 }

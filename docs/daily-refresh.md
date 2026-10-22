@@ -25,6 +25,12 @@ All-day dates have an exclusive endDate. Timed endDate is the New York date of e
 
 ## 2. Packages
 
+### Gmail request pacing
+
+Run Gmail calls sequentially across both accounts, with at least 15 seconds between completed calls and the next request. This is an initial working interval, not a claimed Gmail quota. Reuse successful search pages and previously reviewed immutable message IDs within the current scan; read only new evidence, using bounded batches. Continue all required discovery, reference queries and pagination rather than narrowing coverage to save calls.
+
+On `RATE_LIMIT_EXCEEDED`, stop Gmail calls across both accounts. Honor any supplied retry-after value; otherwise wait at least 60 seconds before the single retry. If it succeeds, use at least 30 seconds between the remaining calls. Preserve completed search results privately so a later resume retries unfinished work instead of replaying the entire scan. If the retry fails, preserve the previous successful snapshot and report the incomplete scan. Never mark failed searches empty or advance checkedAt before coverage validation passes. Do unrelated research during cooldowns; do not probe the quota with unnecessary calls or assume that one successful run establishes a permanent limit.
+
 Use every Gmail connection in `config/connections.local.json`. Import `PACKAGE_DISCOVERY_QUERY` from `scripts/package-scan.mjs` and run it exactly for each account. It includes order confirmations, ready-to-ship notices, ordinary “on the way” subjects, returns, cancellations and subscriptions as well as carrier terms. Never filter by Gmail category, unread status, inbox placement or a fixed retailer/domain list: real transactions can be Promotions, archived, read, Shopify mail or Apple private relay.
 
 Paginate every query fully, up to 200 matches per account. If capped, split the date window into bounded smaller queries and preserve every result; otherwise mark the scan incomplete and keep the previous snapshot. Also search exact known tracking/order references, including older unresolved shipments, and investigate merchants Ariel names. Read relevant MIME bodies (HTML fallback when plain text is empty), distinguish transactional evidence from promotions/digital orders/meal receipts, and reconcile each order confirmation with later shipping and cancellation notices. One canceled item must not cancel the remaining shipment. Label creation is not carrier pickup.
