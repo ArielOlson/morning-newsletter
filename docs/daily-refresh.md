@@ -25,6 +25,12 @@ All-day dates have an exclusive endDate. Timed endDate is the New York date of e
 
 ## 2. Packages
 
+### One parcel, one current row
+
+Use `mergePackageEvidence` for scan updates and retain explicit `orderNumber` plus `orderItemKey` when a retailer supplies an item identifier. Match by stable source ID, normalized tracking number (independent of carrier spelling), or an unambiguous merchant/order/item combination. `sourceIds` and `identityAliases` preserve older notices, coverage references and saved choices when a confirmation acquires tracking. Do not remove these aliases on later scans. Do not create separate rows for preparing, shipped and delivered emails about the same parcel. A late shipping email must not regress a delivered parcel.
+
+Different order numbers, exchange/replacement orders, distinct tracked parcels and different unshipped items remain separate. Never merge by merchant name or similar dates alone; investigate ambiguous evidence rather than guessing. Include order numbers in the encrypted display to distinguish legitimate separate purchases. Saved user choices override email stages across all matched aliases, including explicit undo; the latest confirmed choice wins. Daily builds read these choices but never rewrite the private state repository. The browser reconciles old archive payloads too, preserving their dated email evidence.
+
 ### Gmail request pacing
 
 Run Gmail calls sequentially across both accounts, with at least 15 seconds between completed calls and the next request. This is an initial working interval, not a claimed Gmail quota. Reuse successful search pages and previously reviewed immutable message IDs within the current scan; read only new evidence, using bounded batches. Continue all required discovery, reference queries and pagination rather than narrowing coverage to save calls.

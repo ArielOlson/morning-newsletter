@@ -2,6 +2,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createSync,emptyState,importLegacy} from '../src/sync.mjs';
 import {encrypt,decrypt} from '../src/crypto.mjs';
+import {packageRows,setPackageRecord} from '../src/packages.mjs';
+import {historyId,shipmentIdentity} from '../src/history.mjs';
 const password='synthetic-sync-secret';
 async function remote(){
  let content=await encrypt(JSON.stringify(emptyState()),password),sha=1,fail=false,conflict=false,writes=0;
@@ -36,4 +38,17 @@ test('legacy imports cannot resurrect deleted items or undone completion marks',
  const s=emptyState();s.reminders.a=null;s.saved.a=null;s.history.completed.a=null;
  importLegacy(s,{reminders:{a:{id:'a'},b:{id:'b'}},saved:{a:{id:'a'}},history:{completed:{a:'old',b:'old'}}});
  assert.equal(s.reminders.a,null);assert.equal(s.saved.a,null);assert.equal(s.history.completed.a,null);assert.ok(s.reminders.b);assert.equal(s.history.completed.b,'old');
+});
+test('two devices preserve package aliases on conflict and reject outdated stage actions',async()=>{
+ const r=await remote(),a=createSync({fetcher:r.fetch}),b=createSync({fetcher:r.fetch});
+ const order={id:'confirmation',merchant:'Test shop',orderNumber:'1234',status:'ordered',updatedAt:'2026-10-20T08:00:00Z'};
+ const shipping={...order,id:'shipping',trackingNumber:'TRACK1234',status:'shipped',updatedAt:'2026-10-21T08:00:00Z'};
+ const id=await historyId('shipment',shipmentIdentity(order));
+ await a.connect('test',password);await b.connect('test',password);
+ await a.change(s=>{setPackageRecord(s.packages,id,order,'return');return s;});
+ r.conflict();await b.change(s=>{setPackageRecord(s.packages,id,shipping,'refund');return s;});
+ assert.ok((await r.data()).saved.other,'Unrelated conflicting changes survive');
+ await assert.rejects(a.change(s=>{setPackageRecord(s.packages,id,order,'received');return s;}),/changed/);
+ const clean=createSync({fetcher:r.fetch});await clean.connect('test',password);
+ const rows=await packageRows([order,shipping],clean.state.packages);assert.equal(rows.length,1);assert.equal(rows[0].stage,'refund');
 });

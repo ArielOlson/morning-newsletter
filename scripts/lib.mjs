@@ -1,4 +1,5 @@
 import {EVENT_COUNT,MIN_DISCOVERIES,MAX_DISCOVERIES} from './recommendation-policy.mjs';
+import {reconcileShipments} from '../src/shipment-matching.mjs';
 import ical from 'node-ical';
 import { DateTime } from 'luxon';
 import { XMLParser, XMLValidator } from 'fast-xml-parser';
@@ -184,12 +185,12 @@ export function redSoxEvents(raw,day,zone='America/New_York'){
 export function deliverySnapshot(snapshot,now=new Date()){
   const age=(now-new Date(snapshot?.checkedAt))/3600000;
   if(!snapshot||!Number.isFinite(age)||age<0||!Array.isArray(snapshot.shipments))return {state:'unavailable',checkedAt:null,shipments:[]};
-  const shipments=[...new Map(snapshot.shipments.map(x=>[x.id,x])).values()].filter(x=>{
+  const shipments=reconcileShipments(snapshot.shipments.filter(x=>{
     if(!x.id||!x.merchant||!x.status||!Number.isFinite(+new Date(x.updatedAt)))return false;
     // Email delivery is not Ariel's confirmation of receipt. Only durable user
     // choices hide finished parcels; age must never silently dismiss one.
     return true;
-  });
+  }));
   return {state:age>26?'stale':'fresh',checkedAt:snapshot.checkedAt,shipments,scope:snapshot.scope||'Connected email accounts'};
 }
 export function calendarSnapshot(snapshot,input,day,now=new Date(),lookAheadDays=14){

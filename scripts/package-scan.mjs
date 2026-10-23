@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import {reconcileShipments,shipmentSourceIds} from '../src/shipment-matching.mjs';
 
 // Search is deliberately independent of Gmail category, read state and retailer
 // domain. Shopify, Apple relay and marketing-labelled transaction mail count.
@@ -10,7 +11,7 @@ export function assertPackageScan(snapshot,expectedAccounts){
  const accounts=snapshot.scanAccounts;
  assert.ok(Array.isArray(accounts)&&accounts.length===expectedAccounts.length,'Package scan must cover every configured Gmail account.');
  assert.deepEqual([...accounts.map(a=>a.account)].sort(),[...expectedAccounts].sort(),'Package scan account mismatch.');
- const shipments=new Set(snapshot.shipments.map(s=>s.id));
+ const shipments=new Set(snapshot.shipments.flatMap(shipmentSourceIds));
  for(const a of accounts){
   assert.ok(a.searches?.some(q=>q.query===PACKAGE_DISCOVERY_QUERY),'Broad discovery query was not run.');
   const matched=new Set();
@@ -36,11 +37,8 @@ export function assertPackageScan(snapshot,expectedAccounts){
 // Only explicitly supplied newer evidence replaces a record. Absence in a query
 // is never a delivery/receipt signal and never deletes an unresolved shipment.
 export function mergePackageEvidence(previous=[],updates=[]){
- const merged=new Map(previous.map(s=>[s.id,s]));
  for(const next of updates){
   assert.ok(next.id&&next.merchant&&next.status&&Number.isFinite(Date.parse(next.updatedAt)),'Invalid shipment evidence.');
-  const prior=merged.get(next.id);
-  if(!prior||Date.parse(next.updatedAt)>=Date.parse(prior.updatedAt))merged.set(next.id,{...prior,...next});
  }
- return [...merged.values()];
+ return reconcileShipments([...previous,...updates]);
 }
