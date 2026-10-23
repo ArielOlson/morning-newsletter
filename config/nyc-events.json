@@ -4,7 +4,7 @@
       "id": "nybg-dia-2026",
       "title": "Día de los Muertos at NYBG",
       "category": "Seasonal",
-      "priority": 300,
+      "priority": 0,
       "startDate": "2026-10-03",
       "endDate": "2026-11-02",
       "what": "Marigolds, a community ofrenda and flower-covered figures celebrate remembrance. Weekend craft sessions offer silk-flower making and papel picado. Closed Mondays except federal holidays.",
@@ -54,7 +54,7 @@
       "supportingURL": "https://whitney.org/visit",
       "category": "Around town",
       "discovery": true,
-      "priority": 300,
+      "priority": 0,
       "checkedAt": "2026-10-16T13:23:20.692Z"
     },
     {
@@ -62,7 +62,7 @@
       "title": "The Surrealist Book: Tomorrow Lives in Mirrors",
       "category": "Around town",
       "discovery": true,
-      "priority": 300,
+      "priority": 0,
       "startDate": "2026-10-04",
       "endDate": "2027-01-23",
       "what": "Newly opened: unusual artists’ books, collage-filled sketchbooks and sculptural bindings by Surrealists including Dalí, Cahun and Unica Zürn. Explore how a book can become an artwork.",
@@ -92,7 +92,7 @@
       "source": "260 Sample Sale",
       "image": "https://virtual.260samplesale.com/cdn/shop/files/OV_468_DropDown.jpg?v=1790964121&width=500",
       "imageAlt": "Official brand product photograph from 260 Sample Sale.",
-      "priority": 600,
+      "priority": 0,
       "checkedAt": "2026-10-21T13:12:40.889201+00:00",
       "discovery": false
     },
@@ -112,7 +112,7 @@
       "source": "Brooklyn Botanic Garden",
       "image": "https://www.bbg.org/img/uploads/hero/_list_thumbnail_retina/hardy-begonia_MS_52371474767.jpg",
       "imageAlt": "Hardy begonias in the garden, photograph by Michael Stewart",
-      "priority": 300,
+      "priority": 0,
       "checkedAt": "2026-10-16T13:23:20.692Z"
     },
     {
@@ -132,7 +132,7 @@
       "source": "Brooklyn Botanic Garden",
       "image": "https://www.bbg.org/img/uploads/inline/_retina/gbb-9450113645-wide.jpg",
       "imageAlt": "Brooklyn streetscape gardening, official exhibition photograph",
-      "priority": 300,
+      "priority": 0,
       "checkedAt": "2026-10-16T13:23:20.692Z"
     },
     {
@@ -141,7 +141,7 @@
       "startDate": "2026-10-10",
       "endDate": "2026-10-31",
       "category": "Seasonal",
-      "priority": 300,
+      "priority": 0,
       "where": "Behind New York Hall of Science · 47-01 111th Street",
       "neighborhood": "Flushing Meadows–Corona Park",
       "when": "Saturdays Oct 17, 24 & 31 · 4 p.m.–midnight",
@@ -160,7 +160,7 @@
       "startDate": "2026-10-01",
       "endDate": "2026-10-31",
       "category": "Seasonal",
-      "priority": 300,
+      "priority": 0,
       "where": "Queens County Farm Museum · 73-50 Little Neck Parkway",
       "neighborhood": "Floral Park, Queens",
       "when": "October daily · weekdays 1–5 p.m.; weekends 10 a.m.–5 p.m.",
@@ -170,25 +170,6 @@
       "source": "Queens County Farm Museum",
       "image": "https://www.queensfarm.org/wp-content/uploads/2023/01/Pumpkin-Patch.jpg",
       "imageAlt": "Pumpkins at Queens County Farm Museum",
-      "checkedAt": "2026-10-16T13:23:20.692Z",
-      "discovery": false
-    },
-    {
-      "id": "lakeside-fall-festival-2026",
-      "title": "Lakeside Fall Festival opens",
-      "startDate": "2026-10-09",
-      "endDate": "2026-11-01",
-      "category": "Seasonal",
-      "priority": 300,
-      "where": "LeFrak Center at Lakeside · 171 East Drive",
-      "neighborhood": "Prospect Park, Brooklyn",
-      "when": "Oct 9–Nov 1 · Mon/Thu/Fri festival 3–6 p.m.; Sat/Sun 11 a.m.–6 p.m. Closed Oct 20–21; check later holiday hours.",
-      "cost": "Pumpkin-patch entry free; pumpkins $10, corn maze $5, all-access festival pass $20. Haunted Hotel separate.",
-      "what": "A seasonal Prospect Park stop with a pumpkin patch, small maze, games and pumpkin painting. Many activities suit families. The all-access pass includes the maze, games and one small pumpkin; the scarier Haunted Hotel has its own ticket and hours.",
-      "url": "https://fallfestlakeside.com/",
-      "source": "Lakeside Fall Festival",
-      "image": "https://lakeside.prospectpark.org/wp-content/uploads/2025/10/bluestone_cafe_c_michael_moran_otto-scaled-1-1024x507.jpg",
-      "imageAlt": "Lakeside café and surroundings before the festival; photo by Michael Moran / OTTO",
       "checkedAt": "2026-10-16T13:23:20.692Z",
       "discovery": false
     },
@@ -217,7 +198,7 @@
       "startDate": "2026-10-09",
       "endDate": "2027-02-28",
       "category": "Free & lovely",
-      "priority": 300,
+      "priority": 0,
       "where": "American Folk Art Museum · 2 Lincoln Square",
       "neighborhood": "Lincoln Square",
       "when": "Oct 9–Feb 28 · Wed–Sun 11:30 a.m.–6 p.m.; closed Mon–Tue",
@@ -247,7 +228,7 @@
       "imageAlt": "The Rink at Rockefeller Center at night, organizer promotional photograph",
       "checkedAt": "2026-10-16T13:23:20.692Z",
       "category": "Seasonal",
-      "priority": 300
+      "priority": 0
     },
     {
       "id": "bronx-zoo-boo-2026",
@@ -266,43 +247,24 @@
       "imageAlt": "Bronx Zoo — image supplied on the organizer website",
       "checkedAt": "2026-10-16T13:23:20.692Z",
       "category": "Seasonal",
-      "priority": 300
-    },
-    {
-      "id": "newfest-festival-2026",
-      "title": "NewFest: choose an LGBTQ+ film premiere",
-      "category": "Around town",
-      "priority": 0,
-      "startDate": "2026-10-15",
-      "endDate": "2026-10-25",
-      "where": "Participating NYC cinemas · venue depends on screening",
-      "neighborhood": "Across NYC",
-      "when": "Oct 15–25 · select a screening",
-      "cost": "Tickets and passes vary; check the selected screening",
-      "what": "The festival’s in-person program includes more than 140 films. Browse by story or genre, then choose one screening; the venue and admission are tied to that individual booking.",
-      "discovery": true,
-      "source": "newfest.org",
-      "url": "https://newfest.org/festival-2026/",
-      "checkedAt": "2026-10-09T03:50:44.435Z",
-      "image": "https://newfest.org/wp-content/uploads/2026/09/LABOLANEGRA_08-1024x576.jpg",
-      "imageAlt": "Official NewFest film still from La Bola Negra"
+      "priority": 0
     },
     {
       "id": "sadies-halloween-movies-2026",
       "title": "Halloween movie nights at Sadie’s",
       "category": "Seasonal",
-      "priority": 0,
+      "priority": 1000,
       "startDate": "2026-10-14",
       "endDate": "2026-10-28",
       "where": "Sadie’s · 19 Fulton Street",
       "neighborhood": "Seaport",
-      "when": "Oct 14, 21 & 28 · 7 p.m.",
+      "when": "Oct 28 · 7 p.m.",
       "cost": "Free screening; food and drinks optional and extra",
-      "what": "The outdoor series shows Halloweentown on Oct 14, Practical Magic on Oct 21 and Hocus Pocus on Oct 28. Pick the film you want and bring an extra layer; purchases are separate from the screening.",
+      "what": "The remaining outdoor screening is Hocus Pocus on Oct 28. Bring an extra layer for the Garden Bar lawn; food and drinks are optional purchases.",
       "discovery": false,
       "source": "theseaport.nyc",
       "url": "https://theseaport.nyc/events/halloween-movie-nights-at-sadies/",
-      "checkedAt": "2026-10-09T04:01:58.886Z",
+      "checkedAt": "2026-10-23T13:35:44.499Z",
       "image": "https://theseaport.nyc/wp-content/uploads/2026/04/07042026-July-4th-Sadies-013_109185-1024x683.jpg",
       "imageAlt": "Sadie’s official venue photograph"
     },
@@ -364,63 +326,6 @@
       "imageAlt": "Tall Ship Wavertree"
     },
     {
-      "id": "nyc:spirits-2026",
-      "title": "Spirits of the Season at Urban Cove",
-      "startDate": "2026-10-21",
-      "endDate": "2026-10-21",
-      "where": "Urban Cove · 33 Hotel, 33 Peck Slip",
-      "neighborhood": "Seaport",
-      "when": "Oct 21 · 5–7 p.m.",
-      "cost": "Complimentary Rosaluna tastings; food and other cocktails cost extra.",
-      "what": "Explore a Día de los Muertos installation and seasonal drinks at the kickoff evening. An adult bar outing with tastings and giveaways.",
-      "category": "Seasonal",
-      "discovery": false,
-      "priority": 0,
-      "url": "https://theseaport.nyc/events/urban-cove/",
-      "source": "theseaport.nyc",
-      "checkedAt": "2026-10-14T12:04:39.877Z",
-      "image": "https://theseaport.nyc/wp-content/uploads/2024/04/Urban-Cove-websize-1024x683.jpg",
-      "imageAlt": "the interior at urban cove"
-    },
-    {
-      "id": "nyc:foliage-2026",
-      "title": "NYBG fall foliage tour",
-      "startDate": "2026-10-24",
-      "endDate": "2026-10-24",
-      "where": "Reflecting Pool · Leon Levy Visitor Center, New York Botanical Garden",
-      "neighborhood": "Bronx Park",
-      "when": "Oct 24 · 11:30 a.m.",
-      "cost": "Included in an All-Garden Pass; confirm the date-specific ticket price.",
-      "what": "Join a guided look at the garden’s changing autumn colors. The tour has a fixed start, so allow time to reach the visitor center after entering.",
-      "category": "Seasonal",
-      "discovery": false,
-      "priority": 0,
-      "url": "https://www.nybg.org/event/fall-foliage-tour/",
-      "source": "nybg.org",
-      "checkedAt": "2026-10-14T12:04:40.067Z",
-      "image": "https://www.nybg.org/content/uploads/2017/10/IVO_9152-1000px-3.1-1280x427.jpg",
-      "imageAlt": "Autumn forest path at NYBG, organizer photograph"
-    },
-    {
-      "id": "nyc:merchant-2026",
-      "title": "Merchant’s House candlelight ghost tours",
-      "startDate": "2026-10-16",
-      "endDate": "2026-10-30",
-      "where": "Merchant’s House Museum · enter through Manuel Plaza, 35 East 4th Street",
-      "neighborhood": "NoHo",
-      "when": "Oct 16–17, 23–24 and 29–30 · 50-minute tours start every half-hour, 6:30–9 p.m.",
-      "cost": "$45; museum members $35.",
-      "what": "A candlelit tour of the preserved 19th-century house, with guides recounting its ghost stories and reported paranormal encounters. Book a departure. During restoration, use the Manuel Plaza entrance. Photo shows the historic passageway.",
-      "category": "Seasonal",
-      "discovery": false,
-      "priority": 0,
-      "url": "https://merchantshouse.org/calendar/",
-      "source": "merchantshouse.org",
-      "checkedAt": "2026-10-14T12:04:41.688Z",
-      "image": "https://merchantshouse.org/wp-content/uploads/2026/03/Website-Cover-Touhey-Passage.jpg",
-      "imageAlt": "Merchant’s House historic passageway; photograph by Max Touhey"
-    },
-    {
       "id": "nyc:mahjong-2026",
       "title": "Mahjong & Martinis at Sadie’s",
       "startDate": "2026-10-26",
@@ -440,25 +345,6 @@
       "imageAlt": "the exterior patio seating at sadie"
     },
     {
-      "id": "nyc:winter-2026",
-      "title": "Bryant Park Winter Village opens",
-      "startDate": "2026-10-28",
-      "endDate": "2026-10-28",
-      "where": "Bryant Park · Sixth Avenue at 42nd Street",
-      "neighborhood": "Midtown",
-      "when": "Opens Oct 28; rink season through Feb 28, 2027",
-      "cost": "Free entry and skating admission with your own skates. Rentals $18.72–$64.48 before tax; reserve.",
-      "what": "The winter market and rink return. Save this opening if you want a skating outing; the organizer lists a noon opening event, so check your reserved slot rather than assuming regular morning hours apply that day.",
-      "category": "Seasonal",
-      "discovery": false,
-      "priority": 0,
-      "url": "https://bryantpark.org/activities/bank-of-america-winter-village-at-bryant-park",
-      "source": "bryantpark.org",
-      "checkedAt": "2026-10-14T12:04:41.251Z",
-      "image": "https://bryantpark.org/assets/uploads/images/general/_resize/Winter-Village_Bryant-Park_2024-12-19_Colin-Miller_155_lores_resize_b75e780a70a3a913790624d10d39c370.jpg",
-      "imageAlt": "Organizer photograph"
-    },
-    {
       "id": "nyc:nightfall-2026",
       "title": "Nightfall at Green-Wood",
       "startDate": "2026-10-22",
@@ -476,25 +362,6 @@
       "checkedAt": "2026-10-14T12:04:40.172Z",
       "image": "https://images.squarespace-cdn.com/content/v1/6a5664e62f58d57b8fc16089/0b2c94c8-e791-4f47-b47e-10e14f8c2ef5/GWC018+NightfallMS+0288+%282%29.jpg",
       "imageAlt": "Organizer photograph"
-    },
-    {
-      "id": "nyc:tarot-2026",
-      "title": "Tarot & ’Tinis at Sadie’s",
-      "startDate": "2026-10-22",
-      "endDate": "2026-10-22",
-      "where": "Sadie’s · 19 Fulton Street",
-      "neighborhood": "Seaport",
-      "when": "Oct 22 · choose 7 or 8 p.m. arrival; event ends 9 p.m.",
-      "cost": "Paid ticket; public page does not list the price. Gratuity extra.",
-      "what": "A playful dinner outing including an entrée, cocktail and a private ten-minute tarot reading. Steak frites is excluded. Treat the reading as entertainment.",
-      "category": "Around town",
-      "discovery": true,
-      "priority": 0,
-      "url": "https://theseaport.nyc/events/tarot-and-tinis-at-sadies/",
-      "source": "theseaport.nyc",
-      "checkedAt": "2026-10-14T12:04:39.903Z",
-      "image": "https://theseaport.nyc/wp-content/uploads/2026/04/07042026-July-4th-Sadies-013_109185-1024x683.jpg",
-      "imageAlt": "the interior and main dining room at sadie"
     },
     {
       "id": "nyc:moonlightdetail-2026",
@@ -519,7 +386,7 @@
       "id": "fort-greene-halloween-fest-20261024",
       "title": "Halloween Fest in Fort Greene Park",
       "category": "Seasonal",
-      "priority": 400,
+      "priority": 0,
       "startDate": "2026-10-24",
       "endDate": "2026-10-24",
       "what": "A free neighborhood Halloween afternoon with spooky stories, face painting and family-friendly games. Costumes welcome; no RSVP required. A lighter daytime celebration rather than a haunted attraction.",
@@ -550,7 +417,7 @@
       "checkedAt": "2026-10-17T18:26:14.110081+00:00",
       "discovery": false,
       "category": "Seasonal",
-      "priority": 420,
+      "priority": 0,
       "supportingURL": "https://lunaparknyc.com/events-luna-park/"
     },
     {
@@ -570,7 +437,7 @@
       "checkedAt": "2026-10-17T18:26:14.110081+00:00",
       "discovery": false,
       "category": "Seasonal",
-      "priority": 420
+      "priority": 0
     },
     {
       "id": "riverside-pup-halloween-2026",
@@ -589,7 +456,7 @@
       "checkedAt": "2026-10-17T18:26:14.110081+00:00",
       "discovery": false,
       "category": "Seasonal",
-      "priority": 420
+      "priority": 0
     },
     {
       "id": "grand-bazaar-spooky-2026",
@@ -608,7 +475,7 @@
       "checkedAt": "2026-10-17T18:26:14.110081+00:00",
       "discovery": false,
       "category": "Seasonal",
-      "priority": 420
+      "priority": 0
     },
     {
       "id": "governors-pumpkin-point-2026",
@@ -627,7 +494,7 @@
       "checkedAt": "2026-10-17T18:26:14.110081+00:00",
       "discovery": false,
       "category": "Seasonal",
-      "priority": 420
+      "priority": 0
     },
     {
       "id": "socrates-halloween-harvest-2026",
@@ -646,7 +513,7 @@
       "checkedAt": "2026-10-17T18:26:14.110081+00:00",
       "discovery": false,
       "category": "Seasonal",
-      "priority": 420
+      "priority": 0
     },
     {
       "id": "qbg-halloween-2026",
@@ -665,7 +532,7 @@
       "checkedAt": "2026-10-17T18:26:14.110081+00:00",
       "discovery": false,
       "category": "Seasonal",
-      "priority": 420
+      "priority": 0
     },
     {
       "id": "wave-hill-o-ween-2026",
@@ -684,7 +551,7 @@
       "checkedAt": "2026-10-17T18:26:14.110081+00:00",
       "discovery": false,
       "category": "Seasonal",
-      "priority": 420
+      "priority": 0
     },
     {
       "id": "black-lagoon-someday-2026",
@@ -703,7 +570,7 @@
       "checkedAt": "2026-10-17T18:26:14.110081+00:00",
       "discovery": false,
       "category": "Seasonal",
-      "priority": 420,
+      "priority": 0,
       "supportingURL": "https://www.somedaybarnyc.com/"
     },
     {
@@ -723,7 +590,7 @@
       "checkedAt": "2026-10-17T18:26:14.110081+00:00",
       "discovery": false,
       "category": "Seasonal",
-      "priority": 420
+      "priority": 0
     },
     {
       "id": "new-yorker-festival-2026",
@@ -742,7 +609,7 @@
       "checkedAt": "2026-10-17T18:26:14.110081+00:00",
       "discovery": true,
       "category": "Around town",
-      "priority": 420
+      "priority": 0
     },
     {
       "id": "fort-tryon-stargazing-2026-10",
@@ -761,7 +628,7 @@
       "checkedAt": "2026-10-17T18:26:14.110081+00:00",
       "discovery": true,
       "category": "Around town",
-      "priority": 420
+      "priority": 0
     },
     {
       "id": "chelsea-flea",
@@ -780,7 +647,7 @@
       "checkedAt": "2026-10-20T13:53:24.455411+00:00",
       "discovery": true,
       "category": "Around town",
-      "priority": 420,
+      "priority": 0,
       "supportingURL": "https://www.brooklynflea.com/chelseaflea"
     },
     {
@@ -800,7 +667,7 @@
       "checkedAt": "2026-10-17T18:26:14.110081+00:00",
       "discovery": true,
       "category": "Pop-ups",
-      "priority": 420
+      "priority": 0
     },
     {
       "id": "hujar-contact-morgan-2026",
@@ -819,7 +686,7 @@
       "checkedAt": "2026-10-20T13:53:24.455411+00:00",
       "discovery": true,
       "category": "Around town",
-      "priority": 450,
+      "priority": 0,
       "supportingURL": "https://www.themorgan.org/visit"
     },
     {
@@ -839,7 +706,7 @@
       "checkedAt": "2026-10-17T18:26:14.110081+00:00",
       "discovery": false,
       "category": "Seasonal",
-      "priority": 420
+      "priority": 0
     },
     {
       "id": "bbg-fall-harvest-2026",
@@ -858,26 +725,7 @@
       "checkedAt": "2026-10-20T13:53:24.455411+00:00",
       "discovery": false,
       "category": "Seasonal",
-      "priority": 430
-    },
-    {
-      "id": "moma-ps1-school-nite-2026-10-22",
-      "title": "School Nite: music after hours at MoMA PS1",
-      "startDate": "2026-10-22",
-      "endDate": "2026-10-22",
-      "when": "Oct 22 · 7–11 p.m.; galleries until 9 p.m.",
-      "what": "Live sets by Isabella Lovestory and B0YG1RL, plus DJ ali rq, turn the former schoolhouse into an after-hours music venue. Gallery access is included; drinks are sold separately. A broader music discovery, not a claimed favorite artist.",
-      "where": "MoMA PS1 · 22-25 Jackson Avenue",
-      "neighborhood": "Long Island City",
-      "cost": "Ticketed; current checkout price not independently confirmed. Drinks extra.",
-      "url": "https://www.momaps1.org/en/events/844-school-nite",
-      "source": "MoMA PS1",
-      "image": "https://d1tcycker2ppj.cloudfront.net/output=f:jpg,q:60/resize=width:1200,fit:max/YiZctknQQvuo43eOvHR4",
-      "imageAlt": "MoMA PS1’s official School Nite poster with an Isabella Lovestory photograph.",
-      "checkedAt": "2026-10-20T13:53:24.455411+00:00",
-      "discovery": true,
-      "category": "Around town",
-      "priority": 450
+      "priority": 0
     },
     {
       "id": "blood-manor-2026",
@@ -896,7 +744,7 @@
       "discovery": false,
       "category": "Seasonal",
       "checkedAt": "2026-10-21T13:01:26.216563+00:00",
-      "priority": 600
+      "priority": 0
     },
     {
       "id": "washington-market-pumpkin-contest-2026",
@@ -915,7 +763,7 @@
       "discovery": false,
       "category": "Seasonal",
       "checkedAt": "2026-10-21T13:02:29.116270+00:00",
-      "priority": 600
+      "priority": 0
     },
     {
       "id": "amnh-halloween-celebration-2026",
@@ -934,7 +782,7 @@
       "discovery": false,
       "category": "Seasonal",
       "checkedAt": "2026-10-22T01:46:10.526753+00:00",
-      "priority": 600
+      "priority": 0
     },
     {
       "id": "chantelle-downtown-halloween-barfest-2026",
@@ -953,7 +801,7 @@
       "discovery": false,
       "category": "Seasonal",
       "checkedAt": "2026-10-21T13:01:26.179411+00:00",
-      "priority": 600
+      "priority": 0
     },
     {
       "id": "vessel-candlelight-halloween-2026",
@@ -972,7 +820,7 @@
       "discovery": false,
       "category": "Seasonal",
       "checkedAt": "2026-10-21T13:01:27.487780+00:00",
-      "priority": 600
+      "priority": 0
     },
     {
       "id": "sutton-spooktacular-2026",
@@ -991,7 +839,7 @@
       "discovery": false,
       "category": "Seasonal",
       "checkedAt": "2026-10-21T13:03:58.847351+00:00",
-      "priority": 600,
+      "priority": 0,
       "supportingURL": "https://www.suttonplaceparks.org/faqs"
     },
     {
@@ -1011,7 +859,7 @@
       "discovery": false,
       "category": "Seasonal",
       "checkedAt": "2026-10-21T13:04:13.082220+00:00",
-      "priority": 600,
+      "priority": 0,
       "supportingURL": "https://prospectparkzoo.com/shop/ticket-options"
     },
     {
@@ -1031,7 +879,7 @@
       "discovery": false,
       "category": "Seasonal",
       "checkedAt": "2026-10-21T13:04:13.119567+00:00",
-      "priority": 600,
+      "priority": 0,
       "supportingURL": "https://oceanbreezenyc.org/news/2026/9/9/recreation-2026-ocean-breeze-fall-festival-saturday-october-24-2026-10am-3pm.aspx"
     },
     {
@@ -1051,27 +899,7 @@
       "discovery": false,
       "category": "Seasonal",
       "checkedAt": "2026-10-21T13:01:26.714613+00:00",
-      "priority": 600
-    },
-    {
-      "id": "drawing-center-form-shadow-motion-opening-2026",
-      "title": "Form, Shadow, Motion: opening reception",
-      "startDate": "2026-10-22",
-      "endDate": "2026-10-22",
-      "when": "Oct 22 · 6–8 p.m.",
-      "what": "An open reception for roughly fifty works on paper selected from the Burger Collection, exploring connections between Hong Kong and New York. No registration is needed. The exhibition opens for regular visits the following day.",
-      "where": "The Drawing Center · 35 Wooster Street",
-      "neighborhood": "SoHo",
-      "cost": "Free; no registration.",
-      "url": "https://drawingcenter.org/programs/opening-formshadowmotion",
-      "source": "The Drawing Center",
-      "image": "https://tdc.nyc3.cdn.digitaloceanspaces.com/tdc-1/2026-2027-Exhibitions/Form-Shadow-Motion/_800xAUTO_crop_center-center_none/BC007.jpg",
-      "imageAlt": "Work from the exhibition, reproduced in the Drawing Center’s official listing.",
-      "discovery": true,
-      "category": "Around town",
-      "checkedAt": "2026-10-22T01:46:10.526753+00:00",
-      "priority": 600,
-      "recommendationKey": "drawing-center:form-shadow-motion"
+      "priority": 0
     },
     {
       "id": "taste-of-seaport-2026",
@@ -1090,7 +918,7 @@
       "discovery": true,
       "category": "Around town",
       "checkedAt": "2026-10-21T13:04:33.760248+00:00",
-      "priority": 600,
+      "priority": 0,
       "supportingURL": "https://pulsd.com/new-york/promotions/2026-taste-of-the-seaport-festival-nyc"
     },
     {
@@ -1110,7 +938,7 @@
       "discovery": true,
       "category": "Around town",
       "checkedAt": "2026-10-22T01:46:10.526753+00:00",
-      "priority": 600
+      "priority": 0
     },
     {
       "id": "nuulee-winter-popup-2026",
@@ -1129,7 +957,7 @@
       "discovery": true,
       "category": "Around town",
       "checkedAt": "2026-10-21T13:01:27.610252+00:00",
-      "priority": 600,
+      "priority": 0,
       "supportingURL": "https://www.parasolprojects.com/nyc-pop-ups-this-weekend"
     },
     {
@@ -1149,7 +977,7 @@
       "discovery": true,
       "category": "Around town",
       "checkedAt": "2026-10-21T13:04:13.423121+00:00",
-      "priority": 600,
+      "priority": 0,
       "supportingURL": "https://www.softminkyblankets.com/"
     },
     {
@@ -1169,7 +997,7 @@
       "discovery": true,
       "category": "Around town",
       "checkedAt": "2026-10-21T13:04:14.419254+00:00",
-      "priority": 600
+      "priority": 0
     },
     {
       "id": "nordic-international-film-festival-2026",
@@ -1188,7 +1016,7 @@
       "discovery": true,
       "category": "Around town",
       "checkedAt": "2026-10-21T13:06:10.067908+00:00",
-      "priority": 600
+      "priority": 0
     },
     {
       "id": "skylark-victoria-requiem-2026",
@@ -1207,7 +1035,7 @@
       "discovery": true,
       "category": "Around town",
       "checkedAt": "2026-10-21T13:06:10.003752+00:00",
-      "priority": 600
+      "priority": 0
     },
     {
       "id": "260:10/21/2026-D.S. & Durga, (NoMad) NY-10/25/2026",
@@ -1225,7 +1053,7 @@
       "image": "https://virtual.260samplesale.com/cdn/shop/files/mainimage-ds_71117647-dc9d-43c6-9800-742bf4849ee8.jpg?v=1791380920&width=500",
       "imageAlt": "Official brand product photograph from 260 Sample Sale.",
       "checkedAt": "2026-10-21T13:12:40.889201+00:00",
-      "priority": 600,
+      "priority": 0,
       "discovery": false
     },
     {
@@ -1246,7 +1074,7 @@
       "checkedAt": "2026-10-22T01:51:36.135846+00:00",
       "category": "Seasonal",
       "discovery": false,
-      "priority": 600
+      "priority": 0
     },
     {
       "id": "city-of-gods-2026",
@@ -1265,7 +1093,7 @@
       "checkedAt": "2026-10-22T15:20:05.608710+00:00",
       "discovery": false,
       "category": "Seasonal",
-      "priority": 800
+      "priority": 0
     },
     {
       "id": "vampire-ball-2026",
@@ -1284,7 +1112,7 @@
       "checkedAt": "2026-10-22T15:20:06.144202+00:00",
       "discovery": false,
       "category": "Seasonal",
-      "priority": 800
+      "priority": 0
     },
     {
       "id": "kaarem-dumbo-oct2026",
@@ -1303,7 +1131,7 @@
       "checkedAt": "2026-10-22T15:20:05.886093+00:00",
       "discovery": true,
       "category": "Around town",
-      "priority": 800
+      "priority": 0
     },
     {
       "id": "bbp-fall-trees-walk-2026",
@@ -1322,7 +1150,7 @@
       "checkedAt": "2026-10-22T15:45:50.837Z",
       "discovery": false,
       "category": "Seasonal",
-      "priority": 800
+      "priority": 0
     },
     {
       "id": "randalls-boo-bash-2026",
@@ -1341,7 +1169,7 @@
       "checkedAt": "2026-10-22T15:20:06.058212+00:00",
       "discovery": false,
       "category": "Seasonal",
-      "priority": 800
+      "priority": 0
     },
     {
       "id": "domino-woofoween-2026",
@@ -1360,7 +1188,7 @@
       "checkedAt": "2026-10-22T15:20:06.208703+00:00",
       "discovery": false,
       "category": "Seasonal",
-      "priority": 800
+      "priority": 0
     },
     {
       "id": "rockefeller-kenny-scharf-2026",
@@ -1379,7 +1207,7 @@
       "checkedAt": "2026-10-22T15:49:23.126307+00:00",
       "discovery": true,
       "category": "Around town",
-      "priority": 800
+      "priority": 0
     },
     {
       "id": "nyaquarium-ascarium-2026",
@@ -1398,7 +1226,7 @@
       "checkedAt": "2026-10-22T15:20:06.067554+00:00",
       "discovery": false,
       "category": "Seasonal",
-      "priority": 800
+      "priority": 0
     },
     {
       "id": "tarrytown-halloween-parade-2026",
@@ -1417,7 +1245,7 @@
       "checkedAt": "2026-10-22T15:21:59.851531+00:00",
       "discovery": false,
       "category": "Seasonal",
-      "priority": 800
+      "priority": 0
     },
     {
       "id": "great-jackolantern-blaze-2026",
@@ -1436,7 +1264,7 @@
       "checkedAt": "2026-10-22T15:21:59.697035+00:00",
       "discovery": false,
       "category": "Seasonal",
-      "priority": 800
+      "priority": 0
     },
     {
       "id": "highline-gnometopia-2026",
@@ -1455,7 +1283,7 @@
       "checkedAt": "2026-10-22T15:23:48.688817+00:00",
       "discovery": false,
       "category": "Seasonal",
-      "priority": 800
+      "priority": 0
     },
     {
       "id": "roosevelt-island-halloween-2026",
@@ -1474,7 +1302,7 @@
       "checkedAt": "2026-10-22T15:21:59.629792+00:00",
       "discovery": false,
       "category": "Seasonal",
-      "priority": 800
+      "priority": 0
     },
     {
       "id": "lakecia-benjamin-carnegie-20261023",
@@ -1493,7 +1321,7 @@
       "checkedAt": "2026-10-22T15:42:32.297069+00:00",
       "discovery": true,
       "category": "Around town",
-      "priority": 800
+      "priority": 0
     },
     {
       "id": "ny-pops-bond-20261023",
@@ -1512,7 +1340,7 @@
       "checkedAt": "2026-10-22T15:24:49.893Z",
       "discovery": true,
       "category": "Around town",
-      "priority": 800
+      "priority": 0
     },
     {
       "id": "aco-hello-america-20261027",
@@ -1531,7 +1359,7 @@
       "checkedAt": "2026-10-22T15:23:48.531049+00:00",
       "discovery": true,
       "category": "Around town",
-      "priority": 800
+      "priority": 0
     },
     {
       "id": "moma-brancusi-studio-2026",
@@ -1550,7 +1378,7 @@
       "checkedAt": "2026-10-22T15:49:23.126307+00:00",
       "discovery": true,
       "category": "Around town",
-      "priority": 800
+      "priority": 0
     },
     {
       "id": "candlelight-queen-beatles-stann",
@@ -1569,7 +1397,7 @@
       "checkedAt": "2026-10-22T15:45:08.674415+00:00",
       "discovery": true,
       "category": "Around town",
-      "priority": 800
+      "priority": 0
     },
     {
       "id": "nyc-marathon-2026",
@@ -1588,7 +1416,7 @@
       "checkedAt": "2026-10-22T15:23:48.899959+00:00",
       "discovery": false,
       "category": "Seasonal",
-      "priority": 800
+      "priority": 0
     },
     {
       "id": "nyrr-five-boroughs-exhibit-2026",
@@ -1607,13 +1435,13 @@
       "checkedAt": "2026-10-22T15:49:23.126307+00:00",
       "discovery": true,
       "category": "Around town",
-      "priority": 800
+      "priority": 0
     },
     {
       "id": "dag-oktoberfest-2026",
       "title": "Oktoberfest, Pumpkins Galore!",
       "category": "Seasonal",
-      "priority": 800,
+      "priority": 0,
       "startDate": "2026-10-24",
       "endDate": "2026-10-24",
       "when": "Oct 24 · 1–4 p.m.",
@@ -1627,6 +1455,386 @@
       "image": "https://hammarskjoldplaza.org/dagwp24/wp-content/uploads/2024/10/1000093620.jpg",
       "imageAlt": "A previous Oktoberfest celebration at Dag Hammarskjold Plaza",
       "discovery": false
+    },
+    {
+      "id": "nyc:winter-2026",
+      "title": "Bryant Park Winter Village opens",
+      "startDate": "2026-10-28",
+      "endDate": "2026-10-28",
+      "where": "Bryant Park · Sixth Avenue at 42nd Street",
+      "neighborhood": "Midtown",
+      "when": "Opens Oct 28; rink season through Feb 28, 2027",
+      "cost": "Free entry and skating admission with your own skates. Rentals $18.72–$64.48 before tax; reserve.",
+      "what": "The winter market and rink return. Save this opening if you want a skating outing; the organizer lists a noon opening event, so check your reserved slot rather than assuming regular morning hours apply that day.",
+      "category": "Seasonal",
+      "discovery": false,
+      "priority": 1000,
+      "url": "https://bryantpark.org/activities/bank-of-america-winter-village-at-bryant-park",
+      "source": "bryantpark.org",
+      "checkedAt": "2026-10-23T13:13:51.196534+00:00",
+      "image": "https://bryantpark.org/assets/uploads/images/general/_resize/Winter-Village_Bryant-Park_2024-12-19_Colin-Miller_155_lores_resize_b75e780a70a3a913790624d10d39c370.jpg",
+      "imageAlt": "Organizer photograph"
+    },
+    {
+      "id": "nyc:foliage-2026",
+      "title": "NYBG fall foliage tour",
+      "startDate": "2026-10-24",
+      "endDate": "2026-10-31",
+      "where": "Reflecting Pool · Leon Levy Visitor Center, New York Botanical Garden",
+      "neighborhood": "Bronx Park",
+      "when": "Oct 24 at 11:30 a.m. & Oct 31 at 1 p.m.",
+      "cost": "Included in an All-Garden Pass; confirm the date-specific ticket price.",
+      "what": "Join a guided look at the garden’s changing autumn colors. The tour has a fixed start, so allow time to reach the visitor center after entering.",
+      "category": "Seasonal",
+      "discovery": false,
+      "priority": 1000,
+      "url": "https://www.nybg.org/event/fall-foliage-tour/",
+      "source": "nybg.org",
+      "checkedAt": "2026-10-23T13:13:50.095694+00:00",
+      "image": "https://www.nybg.org/content/uploads/2017/10/IVO_9152-1000px-3.1-1280x427.jpg",
+      "imageAlt": "Autumn forest path at NYBG, organizer photograph"
+    },
+    {
+      "id": "nyc:merchant-2026",
+      "title": "Merchant’s House candlelight ghost tours",
+      "startDate": "2026-10-16",
+      "endDate": "2026-10-30",
+      "where": "Merchant’s House Museum · enter through Manuel Plaza, 35 East 4th Street",
+      "neighborhood": "NoHo",
+      "when": "Remaining dates Oct 23–24 & 29–30 · departures every half hour, 6:30–9 p.m.",
+      "cost": "$45; museum members $35.",
+      "what": "A candlelit tour of the preserved 19th-century house, with guides recounting its ghost stories and reported paranormal encounters. Book a departure. During restoration, use the Manuel Plaza entrance. Photo shows the historic passageway.",
+      "category": "Seasonal",
+      "discovery": false,
+      "priority": 1000,
+      "url": "https://merchantshouse.org/calendar/",
+      "source": "merchantshouse.org",
+      "checkedAt": "2026-10-23T13:13:50.742708+00:00",
+      "image": "https://merchantshouse.org/wp-content/uploads/2026/03/Website-Cover-Touhey-Passage.jpg",
+      "imageAlt": "Merchant’s House historic passageway; photograph by Max Touhey"
+    },
+    {
+      "id": "newfest-festival-2026",
+      "title": "NewFest: choose an LGBTQ+ film premiere",
+      "category": "Around town",
+      "priority": 1000,
+      "startDate": "2026-10-15",
+      "endDate": "2026-10-25",
+      "where": "Participating NYC cinemas · venue depends on screening",
+      "neighborhood": "Across NYC",
+      "when": "Final in-person weekend through Oct 25 · choose a screening",
+      "cost": "Tickets and passes vary; check the selected screening",
+      "what": "The festival’s in-person program includes more than 140 films. Browse by story or genre, then choose one screening; the venue and admission are tied to that individual booking.",
+      "discovery": true,
+      "source": "newfest.org",
+      "url": "https://newfest.org/festival-2026/",
+      "checkedAt": "2026-10-23T13:17:49.524Z",
+      "image": "https://newfest.org/wp-content/uploads/2026/09/fd1b2525-802d-49fa-b9dc-df0cb43b0106-1024x675.png",
+      "imageAlt": "The Man I Love, NewFest closing-night film still"
+    },
+    {
+      "id": "lakeside-fall-festival-2026",
+      "title": "Pumpkins and a corn maze at Lakeside",
+      "startDate": "2026-10-08",
+      "endDate": "2026-11-01",
+      "when": "Through Nov 1 · Thu–Fri 4–10 p.m., Sat–Sun 11 a.m.–11 p.m.",
+      "where": "LeFrak Center at Lakeside · Prospect Park",
+      "neighborhood": "Prospect Lefferts Gardens",
+      "cost": "Entry, pumpkin-patch entry and photo ops free; corn maze $5, pumpkin $10, carnival games $3.",
+      "what": "A lakeside fall festival with pumpkins, seasonal games and a small corn maze. Activities are separately priced; a ticket to the haunted attraction is a separate purchase.",
+      "source": "Lakeside / Prospect Park",
+      "url": "https://lakeside.prospectpark.org/activity/fall-festival-at-lakeside/",
+      "image": "https://lakeside.prospectpark.org/wp-content/uploads/2026/09/Untitled-design-23.png",
+      "imageAlt": "Pumpkins and a corn maze at Lakeside — organizer image",
+      "checkedAt": "2026-10-23T13:15:21.644260+00:00",
+      "discovery": false,
+      "category": "Seasonal",
+      "priority": 1000
+    },
+    {
+      "id": "bbp-fall-migration-walk-20261025",
+      "title": "Spot fall migrants along the waterfront",
+      "startDate": "2026-10-25",
+      "endDate": "2026-10-25",
+      "when": "Oct 25 · 10–11:30 a.m.",
+      "where": "Pier 1 Pavilion · Brooklyn Bridge Park",
+      "neighborhood": "Brooklyn Heights waterfront",
+      "cost": "Free; registration encouraged, limited to 30 participants.",
+      "what": "A guided bird walk during fall migration. Bring binoculars if you have them, leave pets at home, and check for weather changes. Admission is first come, first served.",
+      "source": "Brooklyn Bridge Park",
+      "url": "https://brooklynbridgepark.org/event/fall-migration-bird-walk/",
+      "image": "https://brooklynbridgepark.org/wp-content/uploads/2026/09/Black-and-White-Warbler-1-scaled.jpg",
+      "imageAlt": "Spot fall migrants along the waterfront — organizer image",
+      "checkedAt": "2026-10-23T13:17:49.568Z",
+      "discovery": false,
+      "category": "Seasonal",
+      "priority": 1000
+    },
+    {
+      "id": "hrp-bulbtoberfest-2026",
+      "title": "Plant spring bulbs at BULBTOBERFest",
+      "startDate": "2026-10-24",
+      "endDate": "2026-10-24",
+      "when": "Oct 24 · confirm meeting time and location when registering",
+      "where": "Hudson River Park · Green Team volunteer program",
+      "neighborhood": "West Side waterfront",
+      "cost": "Volunteer activity; confirm registration details with the organizer.",
+      "what": "Join the park’s horticulture team for its autumn bulb-planting session. Locations vary; call 347-515-2242 for the meeting point before traveling.",
+      "source": "Hudson River Park",
+      "url": "https://hudsonriverpark.org/get-involved/volunteer/hrpk-green-team/",
+      "image": "https://hudsonriverpark.org/app/uploads/2020/06/3L1A6584.jpg",
+      "imageAlt": "Plant spring bulbs at BULBTOBERFest — organizer image",
+      "checkedAt": "2026-10-23T13:30:12.529362+00:00",
+      "discovery": false,
+      "category": "Seasonal",
+      "priority": 1000
+    },
+    {
+      "id": "hrp-release-fishes-2026",
+      "title": "Help the Wetlab fish return to the Hudson",
+      "startDate": "2026-10-28",
+      "endDate": "2026-10-28",
+      "when": "Oct 28 · 3–6 p.m.",
+      "where": "Wetlab · Pier 40 South Walkway",
+      "neighborhood": "Hudson Square waterfront",
+      "cost": "Public park program; no admission charge listed.",
+      "what": "The River Project closes the Wetlab season by releasing its fish residents. Meet the researchers, learn about local wildlife and watch or help with the release; family-friendly crafts are also offered.",
+      "source": "Hudson River Park",
+      "url": "https://hudsonriverpark.org/visit/events/event/release-of-the-fishes-2026/",
+      "image": "https://hudsonriverpark.org/app/uploads/2024/04/Release-of-the-Fishes-20251029-IMG_2699-1440x960.webp",
+      "imageAlt": "Help the Wetlab fish return to the Hudson — organizer image",
+      "checkedAt": "2026-10-23T13:30:12.529362+00:00",
+      "discovery": false,
+      "category": "Seasonal",
+      "priority": 1000
+    },
+    {
+      "id": "glass-clouds-halloween-finale-2026",
+      "title": "Chamber music and Halloween on Governors Island",
+      "startDate": "2026-10-31",
+      "endDate": "2026-10-31",
+      "when": "Oct 31 · 2–5 p.m.",
+      "where": "Nolan Park, Building 14 · Governors Island",
+      "neighborhood": "Governors Island",
+      "cost": "Free; optional donation and ferry fare extra.",
+      "what": "Glass Clouds Ensemble’s season finale combines chamber music with a Halloween celebration. An afternoon outing in the island’s historic houses; allow time for the ferry.",
+      "source": "Governors Island",
+      "url": "https://www.govisland.com/things-to-do/events/chamber-music-season-finale-halloween-bash",
+      "image": "https://gov-island-site.s3.amazonaws.com/pages/_eventDetailImage/Wreathed-in-blossom-photo.png",
+      "imageAlt": "Chamber music and Halloween on Governors Island — organizer image",
+      "checkedAt": "2026-10-23T13:13:50.382434+00:00",
+      "discovery": false,
+      "category": "Seasonal",
+      "priority": 1000
+    },
+    {
+      "id": "whitney-halloween-dj-20261030",
+      "title": "Free Halloween DJ night at the Whitney",
+      "startDate": "2026-10-30",
+      "endDate": "2026-10-30",
+      "when": "Oct 30 · 6–10 p.m.",
+      "where": "Whitney Museum · 99 Gansevoort Street",
+      "neighborhood": "Meatpacking District",
+      "cost": "Free Friday Night admission; reserve a ticket. Food and drinks extra.",
+      "what": "TYLERFROMWHERE and Lord Fascinator play throughout the evening, with gallery access and terrace views. This is the public Friday event, not the separate members-only party.",
+      "source": "Whitney Museum",
+      "url": "https://whitney.org/halloween2026",
+      "image": "https://whitneymedia.org/assets/image/834027/large_FFN-Tylerfromwhere_LF.png",
+      "imageAlt": "Free Halloween DJ night at the Whitney — organizer image",
+      "checkedAt": "2026-10-23T13:15:21.669747+00:00",
+      "discovery": false,
+      "category": "Seasonal",
+      "priority": 1000
+    },
+    {
+      "id": "mcny-halloween-bash-2026",
+      "title": "Ghosts of New York costume party",
+      "startDate": "2026-10-31",
+      "endDate": "2026-10-31",
+      "when": "Oct 31 · starts 6 p.m.",
+      "where": "Museum of the City of New York · 1220 Fifth Avenue",
+      "neighborhood": "East Harlem / Museum Mile",
+      "cost": "$20 adults and members; $15 seniors and students. Food and drinks extra.",
+      "what": "Dress as the ghost of a famous New Yorker for live tribute and drag performances, DJ Misbehaviour, dancing and costume prizes. New York at Its Core stays open for an after-hours look.",
+      "source": "Museum of the City of New York",
+      "url": "https://www.mcny.org/event/halloween-bash-ghosts-new-york",
+      "image": "https://www.mcny.org/sites/default/files/Halloween2026.jpg",
+      "imageAlt": "Ghosts of New York costume party — organizer image",
+      "checkedAt": "2026-10-23T13:15:21.625150+00:00",
+      "discovery": false,
+      "category": "Seasonal",
+      "priority": 1000
+    },
+    {
+      "id": "bfpl-halloween-2026",
+      "title": "Halloween by the harbor at Brookfield Place",
+      "startDate": "2026-10-30",
+      "endDate": "2026-10-31",
+      "when": "Oct 30 noon–store close; Oct 31 10 a.m.–store close. Brewery party Oct 31, 11:30 a.m.–10 p.m.",
+      "where": "Brookfield Place · 230 Vesey Street",
+      "neighborhood": "Battery Park City",
+      "cost": "Public complex entry free; drinks and purchases extra.",
+      "what": "The complex has family trick-or-treating, while Sixpoint Brewery adds live music, a costume contest and drink specials on Halloween. Choose the brewery portion for a more grown-up stop; families are still welcome.",
+      "source": "Brookfield Place",
+      "url": "https://www.bfplny.com/events/halloween/",
+      "image": "https://www.bfplny.com/content/uploads/2025/09/Picture4.png",
+      "imageAlt": "Halloween by the harbor at Brookfield Place — organizer image",
+      "checkedAt": "2026-10-23T13:15:21.587940+00:00",
+      "discovery": false,
+      "category": "Seasonal",
+      "priority": 1000
+    },
+    {
+      "id": "flatiron-dia-muertos-2026",
+      "title": "Día de Muertos in Flatiron",
+      "startDate": "2026-10-26",
+      "endDate": "2026-11-03",
+      "when": "Community altar Oct 26–Nov 3; celebration Oct 28, 3–7 p.m.",
+      "where": "Flatiron North Plaza · Broadway at 23rd Street",
+      "neighborhood": "Flatiron",
+      "cost": "Free; optional neighborhood food purchases extra.",
+      "what": "Visit Twenty Petal Flower, a community altar by Mestiz Studio and Powerhouse Arts. The celebration adds folkloric dance, live music, flower-making and printmaking. Photo shows a previous edition of the annual event.",
+      "source": "Flatiron NoMad Partnership",
+      "url": "https://flatironnomad.nyc/signature-event/diademuertos/",
+      "image": "https://flatironnomad.nyc/wp-content/uploads/2024/10/Dia-de-Muertos-2023-1-scaled-1.jpg",
+      "imageAlt": "Día de Muertos in Flatiron — organizer image",
+      "checkedAt": "2026-10-23T13:26:28.035586+00:00",
+      "discovery": false,
+      "category": "Seasonal",
+      "priority": 1000
+    },
+    {
+      "id": "eastmidtown-halloween-2026",
+      "title": "Carved-pumpkin display in East Midtown",
+      "startDate": "2026-10-30",
+      "endDate": "2026-10-30",
+      "when": "Oct 30 · 3–7 p.m.",
+      "where": "919 Third Avenue and surrounding participating businesses",
+      "neighborhood": "Midtown East",
+      "cost": "Free neighborhood event; optional purchases extra.",
+      "what": "See the Maniac Pumpkin jack-o’-lantern display as the neighborhood’s Halloween trail returns. This is primarily a family trick-or-treat event; the pumpkin artistry is the suggested quick stop.",
+      "source": "East Midtown Partnership",
+      "url": "https://www.eastmidtown.org/halloween",
+      "image": "https://media.eastmidtown.org/filer_public_thumbnails/filer_public/43/36/4336b2c6-164c-4503-916d-e90dce44ec3d/halloween_pumpkin_2025.jpg__2047x1351_q85_subsampling-2.jpg",
+      "imageAlt": "Carved-pumpkin display in East Midtown — organizer image",
+      "checkedAt": "2026-10-23T13:15:21.979939+00:00",
+      "discovery": false,
+      "category": "Seasonal",
+      "priority": 1000
+    },
+    {
+      "id": "forbidden-forest-westchester-2026",
+      "title": "An illuminated Forbidden Forest trail",
+      "startDate": "2026-10-23",
+      "endDate": "2026-10-31",
+      "when": "Upcoming bookable evenings Oct 23–25 & 28–31 · timed entry; later sessions also offered",
+      "where": "Franklin D. Roosevelt State Park · 2957 Crompond Road",
+      "neighborhood": "Yorktown Heights · Westchester trip",
+      "cost": "Tickets currently from $28.72 promotional price; selected nights cost more. Parking $15 online / $20 onsite.",
+      "what": "Walk through an outdoor Harry Potter-themed light trail with interactive scenes and magical creatures. Allow roughly an hour plus travel; this is a Westchester trip, not a city walk. Uneven woodland paths and flashing effects may matter.",
+      "source": "Fever / Warner Bros.",
+      "url": "https://feverup.com/m/746151",
+      "image": "https://media.feverup.com/image/upload/f_auto,w_512,h_342,q_auto:good,c_fill,g_auto/v1786707486/outdoor_trail_ujfd43.jpg",
+      "imageAlt": "An illuminated Forbidden Forest trail — organizer image",
+      "checkedAt": "2026-10-23T13:26:28.621129+00:00",
+      "discovery": false,
+      "category": "Seasonal",
+      "priority": 1000
+    },
+    {
+      "id": "lincoln-topaz-jones-20261028",
+      "title": "Topaz Jones: free hip-hop, funk and soul",
+      "startDate": "2026-10-28",
+      "endDate": "2026-10-28",
+      "when": "Oct 28 · 8 p.m.; approximately one hour",
+      "where": "David Rubenstein Atrium · 1887 Broadway",
+      "neighborhood": "Lincoln Square",
+      "cost": "Free, first come first served. Free Fast Track reservations open Oct 26 at noon.",
+      "what": "The rapper, producer and filmmaker marks ten years of Arcade with a genre-crossing set. A music discovery, not a claim that he is already a favorite artist. Arrive early if entering without Fast Track.",
+      "source": "Lincoln Center",
+      "url": "https://www.lincolncenter.org/series/lincoln-center-presents/topaz-jones-640",
+      "image": "https://images.lincolncenter.org/image/upload/v1783618486/zrkb1xhoh8gvjdnkgcjp.jpg",
+      "imageAlt": "Topaz Jones: free hip-hop, funk and soul — organizer image",
+      "checkedAt": "2026-10-23T13:17:49.774Z",
+      "discovery": true,
+      "category": "Around town",
+      "priority": 1000
+    },
+    {
+      "id": "lincoln-orchestra-miniature-20261029",
+      "title": "Orchestra in Miniature: chamber duets",
+      "startDate": "2026-10-29",
+      "endDate": "2026-10-29",
+      "when": "Oct 29 · 7:30 p.m.; approximately one hour",
+      "where": "David Rubenstein Atrium · 1887 Broadway",
+      "neighborhood": "Lincoln Square",
+      "cost": "Free, first come first served. Free Fast Track reservations open Oct 26 at noon.",
+      "what": "Festival Orchestra musicians pair up for intimate instrumental duets, including Bach and Glière. A compact classical concert with no ticket charge; entry is subject to capacity.",
+      "source": "Lincoln Center",
+      "url": "https://www.lincolncenter.org/series/lincoln-center-presents/orchestra-in-miniature-848",
+      "image": "https://images.lincolncenter.org/image/upload/v1791478916/cd282egfbxymz6ajqtps.jpg",
+      "imageAlt": "Orchestra in Miniature: chamber duets — organizer image",
+      "checkedAt": "2026-10-23T13:17:49.732Z",
+      "discovery": true,
+      "category": "Around town",
+      "priority": 1000
+    },
+    {
+      "id": "houdini-villagers-20261028",
+      "title": "Houdini’s life and afterlife in the Village",
+      "startDate": "2026-10-28",
+      "endDate": "2026-10-28",
+      "when": "Oct 28 · 6 p.m.",
+      "where": "Church of the Village · 201 West 13th Street",
+      "neighborhood": "West Village",
+      "cost": "Free; advance registration required.",
+      "what": "A panel explores Houdini’s New York career, stage magic and encounters with spiritualism, marking a century since his death. Hosted with Boroughs of the Dead and the Merchant’s House Museum.",
+      "source": "Village Preservation",
+      "url": "https://www.villagepreservation.org/event/houdini-among-the-villagers-the-magicians-life-and-afterlife-in-greenwich-village/",
+      "image": "https://media.villagepreservation.org/wp-content/uploads/2026/09/21125552/10.29.26.png",
+      "imageAlt": "Houdini’s life and afterlife in the Village — organizer image",
+      "checkedAt": "2026-10-23T13:19:21.390664+00:00",
+      "discovery": true,
+      "category": "Around town",
+      "priority": 1000
+    },
+    {
+      "id": "olly-mochi-popup-20261029",
+      "title": "A colorful OLLY pop-up at Hudson Yards",
+      "startDate": "2026-10-29",
+      "endDate": "2026-10-30",
+      "when": "Oct 29–30 · 10 a.m.–6 p.m.",
+      "where": "Hudson Yards public spaces · see organizer directions",
+      "neighborhood": "Hudson Yards",
+      "cost": "Admission charge not listed; check event details before visiting.",
+      "what": "Four immersive spaces introduce OLLY’s Mochi Bites. Treat this as a short design and brand-pop-up discovery, not a health recommendation; sampling is optional and ingredients should be checked.",
+      "source": "Hudson Yards",
+      "url": "https://www.hudsonyardsnewyork.com/events/olly-mochi-bites-pop",
+      "image": "https://www.hudsonyardsnewyork.com/sites/default/files/styles/content_detail/public/2026-10/1920%C3%971200_Mochi_Website%2BEmail.jpg?h=91b3bda6&itok=xqLtJHV7",
+      "imageAlt": "A colorful OLLY pop-up at Hudson Yards — organizer image",
+      "checkedAt": "2026-10-23T13:13:50.084613+00:00",
+      "discovery": true,
+      "category": "Around town",
+      "priority": 1000
+    },
+    {
+      "id": "scandinavia-grieg-20261029",
+      "title": "Grieg’s piano concerto in an intimate hall",
+      "startDate": "2026-10-29",
+      "endDate": "2026-10-29",
+      "when": "Oct 29 · 7:30–9:30 p.m.",
+      "where": "Victor Borge Hall · Scandinavia House, 58 Park Avenue",
+      "neighborhood": "Murray Hill",
+      "cost": "Paid concert; confirm the current ticket price at checkout.",
+      "what": "Per Tengstrand and a Princeton string quartet perform his chamber arrangement of Grieg’s concerto, alongside Mendelssohn and Schumann. Played on Victor Borge’s own Steinway.",
+      "source": "Scandinavia House",
+      "url": "https://www.scandinaviahouse.org/event/griegs-piano-concerto-with-per-tengstrand/",
+      "image": "https://www.scandinaviahouse.org/wp-content/uploads/2015/09/Courtesy-of-Per-Tengstrand2.jpg",
+      "imageAlt": "Grieg’s piano concerto in an intimate hall — organizer image",
+      "checkedAt": "2026-10-23T13:28:19.607Z",
+      "discovery": true,
+      "category": "Around town",
+      "priority": 1000
     }
   ]
 }

@@ -164,6 +164,17 @@
       "generatedAt": "2026-10-22T14:55:47.345971+00:00",
       "prompt": "Create a landscape 3:2 editorial watercolor and gouache illustration for a warm pink NYC morning newsletter. A charming outdoor autumn bookstall beside a Manhattan brownstone stoop, stacked vintage books with blank spines, a tiny butter-yellow ceramic cup, russet maple leaves and blush pink chrysanthemums. October in New York; soft pink, muted cranberry, golden ochre, cream paper texture. A small yellow heart motif on the cup. Main subjects clustered near center for a square mobile crop. Hand-painted, sophisticated and cheerful, detailed but airy. No readable text, no people, no private data. Composition clearly different from a bakery window or skyline panorama. Full opaque background.",
       "tool": "image_gen"
+    },
+    {
+      "day": "2026-10-23",
+      "src": "assets/artwork/2026-10-23-autumn-ferry.png",
+      "alt": "A pink ferry beneath the Brooklyn Bridge, with golden autumn leaves, a yellow thermos and a rose scarf beside the river.",
+      "width": 1536,
+      "height": 1024,
+      "season": "autumn",
+      "generatedAt": "2026-10-23T13:13:00.530066+00:00",
+      "prompt": "Use case: illustration-story. Create a new landscape 3:2 hand-painted gouache and watercolor editorial illustration for a pink NYC morning newsletter in late October autumn. Use the supplied image only as a palette and tactile brushwork style reference. New composition: a charming blush-pink ferry crossing the East River under the Brooklyn Bridge, viewed from a riverside railing with a butter-yellow thermos bearing a small simple heart, a folded rose scarf, and golden amber maple leaves in the centered foreground. Soft terracotta brick city buildings behind, muted pink water, cream paper texture and warm gentle morning light. Make the ferry, thermos and bridge legible in a square center crop. Sophisticated cozy painterly style, no photorealism, no readable words, logos, dates, names or private details. No tulips, no bookstall. All elements are decorative atmosphere.",
+      "tool": "image_gen"
     }
   ]
 }
