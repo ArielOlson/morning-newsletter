@@ -3,9 +3,11 @@ import {readPackages} from './packages.mjs';
 import {createPackageView} from './package-view.js';
 import {readDeviceReminders,deviceRemindersFor,deviceRemindersKey,validateDeviceReminder,reminderSaveMessage} from './device-reminders.mjs';
 import './style.css';
+import './rose-ribbons.css';
 import { decrypt, encrypt } from './crypto.mjs';
 import {historyId,readHistory,changeHistory,shipmentIdentity} from './history.mjs';
 import {artworkForEdition} from './artwork.mjs';
+import {headerPhotosForEdition} from './photography.mjs';
 let interactionHistory=readHistory();
 const shipmentKeys=new Map();
 const protectedBuild=import.meta.env.PROD;
@@ -111,11 +113,9 @@ function renderReminders(){const items=reminderData().reminders.filter(e=>viewin
 function findHTML(f){
  const selected=saved.some(x=>x.id===f.id),url=safeURL(f.url),photo=safeURL(f.image);
  const when=f.when||(f.startDate?dateRange(f):'Choose a day');
- return `<article class="find photo-card"><div class="card-photo">${photo?`<img src="${escape(photo)}" alt="${escape(f.imageAlt||f.title)}" loading="lazy" referrerpolicy="no-referrer">`:'<span class="photo-unavailable">Photo unavailable</span>'}<button class="save-button" data-save="${escape(f.id)}" aria-label="${selected?'Unsave':'Save'} ${escape(f.title)}" aria-pressed="${selected}">${selected?'♥':'♡'}</button></div><h3>${escape(f.title)}</h3>${f.kind==='idea'?'':`<p class="card-date">${escape(when)}</p>`}<p class="card-cost">${escape(f.cost||'Price not confirmed')}</p><p class="card-neighborhood">${escape(f.neighborhood||f.where||'Location not confirmed')}</p>${f.what?`<p class="card-note">${escape(f.what)}</p>`:''}${url?`<a class="text-button" href="${escape(url)}" ${external}>${escape(f.source||'Event details')} ↗</a>`:''}${f.kind==='idea'?`<button class="text-button idea-complete" data-complete="${escape(f.id)}">${interactionHistory.completed[ideaKeys.get(f.id)]?'Done ✓ · undo':'Done this'}</button>`:''}</article>`;
+ return `<article class="find photo-card"><div class="card-photo">${photo?`<img src="${escape(photo)}" alt="${escape(f.imageAlt||f.title)}" loading="lazy" referrerpolicy="no-referrer">`:'<span class="photo-unavailable">Photo unavailable</span>'}<button class="save-button" data-save="${escape(f.id)}" aria-label="${selected?'Unsave':'Save'} ${escape(f.title)}" aria-pressed="${selected}">${selected?'♥':'♡'}</button></div><div class="card-copy"><h3>${escape(f.title)}</h3>${f.kind==='idea'?`<p class="idea-origin">${f.suggested?'Suggested for you':'On your list'}</p>`:`<p class="card-date">${escape(when)}</p>`}<p class="card-cost">${escape(f.cost||'Price not confirmed')}</p><p class="card-neighborhood">${escape(f.neighborhood||f.where||'Location not confirmed')}</p>${f.what?`<p class="card-note">${escape(f.what)}</p>`:''}${url?`<a class="text-button" href="${escape(url)}" ${external}>${escape(f.source||'Event details')} ↗</a>`:''}${f.kind==='idea'?`<button class="text-button idea-complete" data-complete="${escape(f.id)}">${interactionHistory.completed[ideaKeys.get(f.id)]?'Done ✓ · undo':'Done this'}</button>`:''}</div></article>`;
 }
 function wirePhotos(container){container.querySelectorAll('img').forEach(img=>img.addEventListener('error',()=>{img.hidden=true;const label=document.createElement('span');label.className='photo-unavailable';label.textContent='Photo unavailable';img.before(label);},{once:true}));}
-function wireCarousel(id){const row=document.getElementById(id);document.querySelectorAll(`[data-scroll="${id}"]`).forEach(b=>b.addEventListener('click',()=>row.scrollBy({left:Number(b.dataset.direction)*row.clientWidth*.85,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'})));}
-wireCarousel('finds-content');wireCarousel('ideas-content');
 function wireSave(container){container.querySelectorAll('[data-save]').forEach(button=>button.addEventListener('click',async()=>{
   button.disabled=true;const generation=privacyGeneration;
   const id=button.dataset.save,index=saved.findIndex(x=>x.id===id); const next=[...saved];
@@ -142,18 +142,29 @@ function renderWeek(){
   for(const item of [...plans.map(x=>({...x,type:'plan'})),...reminders.map(x=>({...x,type:'reminder'}))]){const d=item.startDate<brief.day?brief.day:item.startDate;if(!groups.has(d))groups.set(d,[]);groups.get(d).push(item);}
   $('#week-content').innerHTML=(!brief.calendar.connected?'<p class="notice">Connect Apple or Google Calendar to include your upcoming plans here.</p>':brief.calendar.state!=='fresh'?'<p class="notice">Some calendar plans are unavailable. Check your calendar for your full schedule.</p>':'')+(groups.size?[...groups.entries()].sort(([a],[b])=>a.localeCompare(b)).map(([day,items])=>`<section class="week-day"><h3>${escape(dateLabel(day,{weekday:'long',month:'short',day:'numeric'}))}</h3>${items.map(e=>e.type==='plan'?planHTML(e):reminderHTML(e)).join('')}</section>`).join(''):empty('A fresh page ahead.','Your next two weeks of calendar plans and reminders will appear here.'));wireCompletions($('#week-content'));
 }
+function renderHeader(){
+  const photos=headerPhotosForEdition(brief),container=$('#hero-photos');
+  if(brief.photography){
+    container.classList.remove('legacy-art');
+    container.innerHTML=photos.map(p=>`<figure class="hero-photo"><div class="hero-photo-frame"><img src="${escape(p.src)}" alt="${escape(p.alt)}" width="800" height="400" fetchpriority="high" referrerpolicy="no-referrer"></div><figcaption><a href="${escape(p.url)}" ${external}>${escape(p.title)} ↗</a></figcaption></figure>`).join('');
+    wirePhotos(container);
+  }else{
+    // Old editions keep the illustration that was actually published with them.
+    const art=artworkForEdition(brief.artwork);container.classList.add('legacy-art');
+    container.innerHTML=`<figure class="hero-art"><img src="${base+art.src}" alt="${escape(art.alt)}" width="${art.width||1536}" height="${art.height||1024}"></figure>`;
+  }
+}
 function render(){
-  const art=artworkForEdition(brief.artwork),hero=$('.hero-art img');
-  hero.src=base+art.src;hero.alt=art.alt;hero.width=art.width||1536;hero.height=art.height||1024;
-  $('#edition-date').textContent=dateLabel(brief.day,{weekday:'long',month:'long',day:'numeric',year:'numeric'}).toUpperCase();
-  $('#greeting').innerHTML=`Good morning,<br><span>${escape(brief.name)}.</span>`;
+  renderHeader();
+  $('#edition-date').textContent=dateLabel(brief.day,{weekday:'long',month:'long',day:'numeric',year:'numeric'}).toUpperCase()+' · NEW YORK';
+  $('#greeting').textContent=`${brief.name}’s Morning Edit`;
   $('#freshness').textContent=`Your ${dateLabel(brief.day)} edit · Updated ${timeLabel(brief.generatedAt)}`;
   const stale=brief.day!==localToday();let notices=[];
   $('#archive-banner').hidden=!viewingArchive;$('#archive-label').textContent=viewingArchive?`Past edition · ${dateLabel(brief.day)}. Your saved and completed marks are current.`:'';
   if(protectedBuild&&!sync.connected)notices.push('Connect cross-device saving under Made for Ariel to save reminders, hearts and package choices across your devices. Existing browser-only items will be imported.');
   if(stale&&!viewingArchive)notices.push(`You’re reading the ${dateLabel(brief.day)} edition. Today’s edition hasn’t arrived yet; the forecast and plans below are for that date.`);
   if(brief.errors?.length)notices.push('Some sources couldn’t refresh. Check the availability notes below.');
-  if(brief.status?.artwork&&brief.status.artwork.state!=='fresh'&&!viewingArchive)notices.push('Today’s illustration is unavailable; the previous artwork is shown.');
+  if(!brief.photography&&brief.status?.artwork&&brief.status.artwork.state!=='fresh'&&!viewingArchive)notices.push('Today’s illustration is unavailable; the previous artwork is shown.');
   $('#notice').hidden=!notices.length;$('#notice').textContent=notices.join(' ');
   renderAgenda();renderWeather();renderReminders();renderFinds();renderIdeas();renderFinance();renderDeliveries();renderWeek();renderSaved();showView();wireLinks($('.page'));
 }
@@ -187,7 +198,7 @@ function lockNewsletter(message=''){
   if(!protectedBuild)return;
   sync.clear();syncAttempted=false;$('#sync-key').value='';$('#sync-form-status').textContent='';packageView.clear();password=null;brief=null;saved=[];deviceReminders=[];editingReminderId=null;$('#reminder-form').reset();$('#form-status').textContent='';$('#device-reminders-list').replaceChildren();savedLoaded=false;viewingArchive=false;reminderKeys.clear();ideaKeys.clear();shipmentKeys.clear();privacyGeneration++;clearTimeout(lockTimer);
   document.body.classList.add('locked');
-  for(const id of ['agenda-content','upcoming-preview','calendar-source','weather-content','reminders-content','finds-content','ideas-content','finance-content','deliveries-content','deliveries-source','week-content','saved-content','archive-list','archive-label'])$(`#${id}`).replaceChildren();
+  for(const id of ['hero-photos','agenda-content','upcoming-preview','calendar-source','weather-content','reminders-content','finds-content','ideas-content','finance-content','deliveries-content','deliveries-source','week-content','saved-content','archive-list','archive-label'])$(`#${id}`).replaceChildren();
   document.querySelectorAll('dialog[open]').forEach(d=>d.close());
   $('#unlock-password').value='';$('#unlock-status').textContent=message;$('#toast').hidden=true;
 }

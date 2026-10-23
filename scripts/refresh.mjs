@@ -9,7 +9,7 @@ import {selectIdeas} from './ideas.mjs';
 import {selectCity} from './lib.mjs';
 import {recommendationHistory} from './city-history.mjs';
 import {readRecommendationState,eligibleRecommendations} from './recommendation-state.mjs';
-import {selectArtwork} from './artwork.mjs';
+import {selectHeaderPhotos} from '../src/photography.mjs';
 import {assertPackageScan} from './package-scan.mjs';
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 process.chdir(root);
@@ -45,8 +45,6 @@ async function main() {
   const rotation=await recommendationHistory(day,old,prefs.timezone,7);
   const choices=await readRecommendationState();
   const status = {}, errors = [];
-  const art=await selectArtwork((await readJSON('config/artwork.json',{artworks:[]})).artworks,day,now);
-  status.artwork=art.status;if(art.status.state!=='fresh')errors.push('artwork');
   async function collect(name, get, fallback) {
     try { const data = await get(); status[name] = { state: 'fresh', updatedAt: now.toISOString() }; return data; }
     catch { errors.push(name); status[name] = { state: fallback ? 'stale' : 'unavailable', updatedAt: old.status?.[name]?.updatedAt || null }; return fallback ?? null; }
@@ -79,10 +77,12 @@ async function main() {
   status.city={state:city.issues.length?'partial':'fresh',updatedAt:now.toISOString(),comparedWith:rotation.days[0],repeats:city.repeats,discoveryCount:city.discoveryCount,issues:city.issues};
   if(city.issues.length)errors.push('city');
   const brief = { version:1, day, generatedAt:now.toISOString(), name:prefs.name, timezone:prefs.timezone, location:prefs.location,
-    artwork:art.artwork, weather, calendar: { connected:calendar.urls.length>0, sourceCount:calendar.urls.length, state:calendar.urls.length ? (plans.length || !errors.some(e=>e.startsWith('calendar')) ? (errors.some(e=>e.startsWith('calendar')) ? 'partial' : 'fresh') : 'unavailable') : 'not-connected', events:mergeCalendarPlans(plans) },
+    weather, calendar: { connected:calendar.urls.length>0, sourceCount:calendar.urls.length, state:calendar.urls.length ? (plans.length || !errors.some(e=>e.startsWith('calendar')) ? (errors.some(e=>e.startsWith('calendar')) ? 'partial' : 'fresh') : 'unavailable') : 'not-connected', events:mergeCalendarPlans(plans) },
     reminders:remindersFor(personal,day,prefs.timezone), upcomingReminders:personal.filter(e=>e.startDate>day && e.startDate<=addDays(day,14,prefs.timezone)),
     finds:city.items, finance, deliveries:packages, directories:sources.directories, status, errors };
   brief.ideas=selectIdeas(await eligibleRecommendations((await readJSON('config/ideas.local.json',{ideas:[]})).ideas,choices.state),day,brief.calendar,prefs.timezone,[...rotation.items,...city.items]);
+  brief.photography={mode:'editorial',photos:selectHeaderPhotos(brief)};
+  status.photography={state:brief.photography.photos.length===2?'selected':'unavailable',count:brief.photography.photos.length};
   const freeIdeas=brief.ideas.filter(x=>ideaBudget(x)==='free').length,paidIdeas=brief.ideas.filter(x=>ideaBudget(x)==='paid').length;
   status.ideas={state:brief.ideas.length===IDEA_COUNT&&freeIdeas>=MIN_FREE_IDEAS&&paidIdeas>=MIN_PAID_IDEAS?'fresh':'partial',count:brief.ideas.length,free:freeIdeas,paid:paidIdeas,comparedWith:rotation.days[0]};
   // Keep every card exposed by earlier same-day builds for tomorrow's rotation.

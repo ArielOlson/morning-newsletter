@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#fff9f6" />
+  <meta name="theme-color" content="#7d2645" />
   <meta name="description" content="Ariel's personal morning edit: the forecast, today's plans, NYC discoveries, and little things to remember." />
   <meta name="referrer" content="no-referrer" />
   <meta name="robots" content="noindex,nofollow" />
@@ -53,7 +53,7 @@
     <noscript><p>JavaScript is needed to decrypt your newsletter on this device.</p></noscript>
   </section>
   <a class="skip-link" href="#main">Skip to your morning</a>
-  <div class="ribbon">NYC · Your daily brief <span aria-hidden="true">♡</span></div>
+  
   <div class="page">
     <header class="masthead">
       <a class="wordmark" href="#today">the morning edit <span aria-hidden="true">💛</span></a>
@@ -67,13 +67,10 @@
     <main id="main">
       <section class="hero" aria-labelledby="greeting">
         <div class="hero-copy">
+          <h1 id="greeting">Ariel’s Morning Edit</h1>
           <p class="eyebrow" id="edition-date">YOUR PERSONAL MORNING NEWSLETTER</p>
-          <h1 id="greeting">Good morning,<br><span>Ariel.</span></h1>
-          <p class="hero-description">Weather, plans, city picks, finance, and deliveries.</p>
         </div>
-        <figure class="hero-art">
-          <img src="/assets/morning.png" alt="A pink morning in New York: coffee, a croissant, and tulips by a brownstone window." width="1536" height="1024" fetchpriority="high">
-        </figure>
+        <div id="hero-photos" class="hero-photos" aria-label="Places in this edition"></div>
       </section>
       <div class="edition-line"><span id="freshness" role="status">Putting your morning together…</span><button class="text-button" id="lock-button" hidden>Lock newsletter</button><button class="text-button" id="refresh-button">Refresh edition ↻</button></div>
       <div id="archive-banner" class="notice" hidden><span id="archive-label"></span> <button class="text-button" id="latest-edition">Return to latest edition ↗</button></div>
@@ -81,7 +78,7 @@
       <div id="today-view">
         <div class="daily-grid">
           <section class="agenda" aria-labelledby="agenda-heading">
-            <div class="section-heading"><div><p class="eyebrow">TODAY</p><h2 id="agenda-heading">Your schedule</h2></div><span class="small-label" id="plan-count">Calendar</span></div>
+            <div class="section-heading"><div><h2 id="agenda-heading">Today</h2></div><span class="small-label" id="plan-count">Calendar</span></div>
             <div id="agenda-content" class="loading-block" aria-live="polite">Your plans are on their way…</div>
             <div id="upcoming-preview"></div><p class="source-note" id="calendar-source"></p>
           </section>
@@ -95,13 +92,13 @@
           <div id="reminders-content"></div>
         </section>
         <section class="city-section" aria-labelledby="city-heading">
-          <div class="section-heading"><div><h2 id="city-heading">What’s happening in NYC</h2><p class="section-description" id="city-count">Twenty events for the days ahead.</p></div><div class="carousel-controls"><button data-scroll="finds-content" data-direction="-1" aria-label="Previous events">←</button><button data-scroll="finds-content" data-direction="1" aria-label="Next events">→</button></div></div>
-          <div id="finds-content" class="photo-carousel" tabindex="0" role="region" aria-label="NYC events, scroll horizontally"></div>
+          <div class="section-heading"><div><h2 id="city-heading">What’s happening in NYC</h2><p class="section-description" id="city-count">Twenty events for the days ahead.</p></div></div>
+          <div id="finds-content" class="event-stories" role="region" aria-label="NYC events"></div>
           <p class="source-note">Dates and details are shown when confirmed by the source. Unpublished prices are marked below.</p>
         </section>
-        <section class="ideas-section" aria-labelledby="ideas-heading">
-          <div class="section-heading"><div><h2 id="ideas-heading">Ideas for your free time</h2><p class="section-description">Twenty flexible ideas, with free outings and paid treats.</p></div><div class="carousel-controls"><button data-scroll="ideas-content" data-direction="-1" aria-label="Previous ideas">←</button><button data-scroll="ideas-content" data-direction="1" aria-label="Next ideas">→</button></div></div>
-          <div id="ideas-content" class="photo-carousel" tabindex="0" role="region" aria-label="Ideas, scroll horizontally"></div>
+        <section class="ideas-section" aria-labelledby="ideas-heading"><div class="ideas-paper"><img class="ribbon-bow" src="/assets/design/ribbon-bow.svg" alt="" aria-hidden="true" width="62" height="72">
+          <div class="section-heading"><div><h2 id="ideas-heading">Ideas for your free time</h2><p class="section-description">Twenty flexible ideas, with free outings and paid treats.</p></div></div>
+          <div id="ideas-content" class="idea-stories" role="region" aria-label="Free-time ideas"></div></div>
         </section>
         <section class="finance-section" aria-labelledby="finance-heading">
           <div class="section-heading"><div><h2 id="finance-heading">Three things in finance</h2><p class="section-description">The headlines, the details, and why they matter.</p></div></div>

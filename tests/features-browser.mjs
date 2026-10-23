@@ -1,3 +1,4 @@
+import {headerPhotosForEdition} from '../src/photography.mjs';
 import {syncFixture} from './sync-fixture.mjs';
 import {chromium,expect} from '@playwright/test';
 import {preview} from 'vite';
@@ -16,7 +17,7 @@ try{
  const unlock=async()=>{await page.locator('#unlock-password').fill(password);await page.locator('#unlock-form button').click();await page.locator('.page').waitFor({state:'visible'});};
  await page.goto(base+'?features='+Date.now());await unlock();
  const checkArtwork=async src=>{const art=page.locator('.hero-art img');await art.evaluate(img=>img.complete?Promise.resolve():new Promise(resolve=>{img.addEventListener('load',resolve,{once:true});img.addEventListener('error',resolve,{once:true});setTimeout(resolve,12000);}));assert.ok((await art.getAttribute('src')).endsWith(src));assert.ok(await art.evaluate(img=>img.naturalWidth>0),'Edition artwork loads');};
- await checkArtwork(brief.artwork?.src||'assets/morning.png');
+ if(brief.photography){await expect(page.locator('.hero-photo img')).toHaveCount(2);for(const [i,p] of headerPhotosForEdition(brief).entries()){await expect(page.locator('.hero-photo img').nth(i)).toHaveAttribute('src',p.src);await expect.poll(()=>page.locator('.hero-photo img').nth(i).evaluate(img=>img.naturalWidth),{timeout:20000}).toBeGreaterThan(0);}}else await checkArtwork(brief.artwork?.src||'assets/morning.png');
  assert.equal(await page.locator('#finds-content .find').count(),20);
  assert.equal(brief.ideas.length,20,'Daily edition has twenty free-time ideas');
  assert.equal(await page.locator('#ideas-content .card-date').count(),0,'Flexible ideas have no assigned time or date');
@@ -59,22 +60,27 @@ try{
  // The earliest archived edition predates daily artwork and retains its original picture.
  await checkArtwork('assets/morning.png');
  await page.locator('#latest-edition').click();await page.locator('#archive-banner').waitFor({state:'hidden'});
- await checkArtwork(brief.artwork?.src||'assets/morning.png');
+ if(brief.photography){await expect(page.locator('.hero-photo img')).toHaveCount(2);for(const [i,p] of headerPhotosForEdition(brief).entries()){await expect(page.locator('.hero-photo img').nth(i)).toHaveAttribute('src',p.src);await expect.poll(()=>page.locator('.hero-photo img').nth(i).evaluate(img=>img.naturalWidth),{timeout:20000}).toBeGreaterThan(0);}}else await checkArtwork(brief.artwork?.src||'assets/morning.png');
  assert.equal(await page.locator('.delivery-item').count(),before);
  assert.equal(await page.locator('#ideas-content .find').count(),brief.ideas.length);
  for(const width of [390,768,1440]){await page.setViewportSize({width,height:1000});assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true,`No page overflow at ${width}`);}
  const rail=page.locator('#finds-content');
- assert.ok(await rail.evaluate(e=>e.scrollWidth>e.clientWidth));
- await page.locator('[data-scroll="finds-content"][data-direction="1"]').click();assert.ok(await rail.evaluate(e=>e.scrollLeft>0));
- // Scroll each photo into view so lazy loading is checked across the entire rail.
+ assert.ok(await rail.evaluate(e=>e.scrollWidth<=e.clientWidth),'Editorial rows fit without sideways scrolling');
+ assert.equal(await page.locator('[data-scroll]').count(),0);
+ // Scroll each photo into view so lazy loading is checked through all editorial rows.
  const photos=rail.locator('img');assert.equal(await photos.count(),20);
  for(const photo of await photos.all()){await photo.evaluate(img=>{img.loading="eager";img.closest(".find").scrollIntoView({block:"nearest",inline:"nearest"});});await photo.evaluate(img=>img.complete?Promise.resolve():new Promise(resolve=>{img.addEventListener('load',resolve,{once:true});img.addEventListener('error',resolve,{once:true});setTimeout(resolve,12000);}));assert.equal(await photo.evaluate(img=>img.naturalWidth>0),true,`Event photo loads: ${await photo.getAttribute('src')}`);}
  const ideaPhotos=page.locator('#ideas-content img');assert.equal(await ideaPhotos.count(),20);
  for(const photo of await ideaPhotos.all()){await photo.evaluate(img=>{img.loading="eager";img.closest(".find").scrollIntoView({block:"nearest",inline:"nearest"});});await photo.evaluate(img=>img.complete?Promise.resolve():new Promise(resolve=>{img.addEventListener('load',resolve,{once:true});img.addEventListener('error',resolve,{once:true});setTimeout(resolve,12000);}));assert.equal(await photo.evaluate(img=>img.naturalWidth>0),true,`Free-time idea photo loads: ${await photo.getAttribute('src')}`);}
- await rail.evaluate(e=>e.scrollLeft=0);await page.evaluate(()=>document.fonts.ready);
- await page.screenshot({path:'test-results/features-desktop.png',fullPage:true});
- await page.setViewportSize({width:390,height:844});await page.screenshot({path:'test-results/features-mobile.png',fullPage:true});
+ await page.evaluate(()=>document.fonts.ready);
+ for(const width of [1440,390]){
+  await page.setViewportSize({width,height:1000});
+  for(const [name,selector] of Object.entries({hero:'.masthead',events:'.city-section',ideas:'.ideas-section',finance:'.finance-section',packages:'.deliveries-section'})){
+   await page.locator(selector).evaluate(e=>window.scrollTo(0,Math.max(0,e.getBoundingClientRect().top+window.scrollY-20)));
+   await page.screenshot({path:`test-results/rose-${width}-${name}.png`});
+  }
+ }
  const storage=await page.evaluate(()=>JSON.stringify({...localStorage}));assert.equal(storage.includes(password),false);assert.equal(storage.includes(shipment),false);assert.equal(storage.includes(brief.ideas[0].title),false);
  assert.deepEqual(errors,[]);
- console.log('Verified twenty event photos and twenty free-time photos, both calendars, responsive scrolling, persistent encrypted hearts, received packages and undo, completed ideas, link history, and encrypted archive navigation.');
+ console.log('Verified twenty event photos and twenty free-time photos, both calendars, responsive editorial rows, persistent encrypted hearts, received packages and undo, completed ideas, link history, and encrypted archive navigation.');
 }finally{await browser.close();await new Promise(resolve=>server?server.httpServer.close(resolve):resolve());}

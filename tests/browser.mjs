@@ -11,16 +11,16 @@ const eventPath='config/events.local.json',briefPath='public/data/brief.json';
 const originalEvents=await readOptional(eventPath),originalBrief=await readOptional(briefPath);
 try{
   await page.goto(url);await page.waitForFunction(()=>document.querySelector('#freshness').textContent.includes('Updated'));await page.evaluate(()=>document.fonts.ready);
-  assert.equal(await page.locator('#greeting').innerText(),'Good morning,\nAriel.');
-  assert.equal(await page.locator('.hero-art img').evaluate(img=>img.complete&&img.naturalWidth>0),true);
+  assert.equal(await page.locator('#greeting').innerText(),'Ariel’s Morning Edit');
+  assert.equal(await page.locator('.hero-photo img').first().evaluate(img=>img.complete&&img.naturalWidth>0),true);
   await page.screenshot({path:'test-results/desktop.png',fullPage:true});
   await page.locator('#settings-button').click();await page.getByRole('heading',{name:'Your morning, your way.'}).waitFor();await page.keyboard.press('Escape');assert.equal(await page.locator('#settings-dialog').isVisible(),false);
   const saves=page.locator('#finds-content .save-button');if(await saves.count()){
     const title=await saves.first().getAttribute('aria-label');await saves.first().click();await page.getByRole('link',{name:/^Saved/}).click();await page.locator('#saved-content .find').waitFor();assert.match(await page.locator('#saved-content').innerText(),new RegExp(title.slice(5,20).replace(/[.*+?^${}()|[\]\\]/g,'\\$&')));await page.reload();await page.locator('#saved-content .find').waitFor();await page.locator('#saved-content .save-button').first().click();assert.match(await page.locator('#saved-content').innerText(),/Keep the good ones/);
   }
   await page.getByRole('link',{name:'Today',exact:true}).click();assert.equal(await page.locator('[data-filter]').count(),0);
-  assert.equal(await page.locator('#finds-content .find').count(),10);
-  assert.equal(await page.locator('#finds-content .card-photo').count(),10);
+  assert.equal(await page.locator('#finds-content .find').count(),20);
+  assert.equal(await page.locator('#finds-content .card-photo').count(),20);
   assert.equal(await page.locator('#finance-content .finance-item').count(),3);
   assert.ok(await page.locator('#deliveries-content .delivery-item').count()>0);
   assert.match(await page.locator('#deliveries-content').innerText(),/live carrier status unverified/);
@@ -36,7 +36,7 @@ try{
   await page.route('**/data/brief.json*',async route=>{const fixture=JSON.parse(originalBrief);fixture.day='2001-01-01';fixture.weather=null;fixture.calendar={connected:true,state:'unavailable',events:[]};fixture.deliveries.state='stale';fixture.errors=['weather','calendar0'];await route.fulfill({json:fixture});});
   await page.reload();await page.locator('#notice').waitFor();assert.match(await page.locator('#notice').innerText(),/hasn’t arrived/);assert.match(await page.locator('#agenda-content').innerText(),/couldn’t refresh/);assert.match(await page.locator('#weather-content').innerText(),/couldn’t be refreshed/);
   assert.match(await page.locator('#deliveries-content').innerText(),/over 26 hours old/);
-  assert.deepEqual(errors,[]);console.log('Browser checks passed: desktop/mobile layout, calendar setup, saved items, ten NYC photo cards, finance, deliveries, reminder persistence, look-ahead, source failure, stale edition, private config protection, and cross-origin write protection.');
+  assert.deepEqual(errors,[]);console.log('Browser checks passed: desktop/mobile layout, calendar setup, saved items, twenty NYC photo cards, finance, deliveries, reminder persistence, look-ahead, source failure, stale edition, private config protection, and cross-origin write protection.');
 }finally{
   if(originalEvents)await writeFile(eventPath,originalEvents);else await rm(eventPath,{force:true});
   if(originalBrief)await writeFile(briefPath,originalBrief);

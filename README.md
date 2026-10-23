@@ -7,7 +7,7 @@ Ariel requires ALL saved user changes to synchronize across devices and survive 
 Use the encrypted state file in private `ArielOlson/morning-newsletter-state`, through the GitHub Contents API with a repository-limited fine-grained token entered by Ariel on each device. Never embed a token in public assets or copy the Mac's gh token into the site. Confirm each durable save before showing success; preserve drafts and old state on failures. Re-read the latest SHA and reapply only the intended mutation on conflicts. Keep deletion/undo tombstones so imports cannot resurrect older choices. Daily publication must never replace or reset this state repository. Verify clean-browser restoration and concurrent-device changes for state-related updates. Until Ariel connects a browser, legacy local data remains readable and new hosted saves require connection; do not claim sync is active on that device.
 
 
-Ariel’s personal morning newsletter. Pink editorial styling, a custom NYC breakfast illustration, a tiny Three.js heart, and useful daily information. Plain HTML, CSS, and JavaScript, with Vite for bundling and a small Node script that prepares the edition.
+Ariel’s personal morning newsletter. Rosé Ribbons editorial styling, real venue photography, a tiny Three.js heart, and useful daily information. Plain HTML, CSS, and JavaScript, with Vite for bundling and a small Node script that prepares the edition.
 
 ## Start here
 
@@ -92,7 +92,7 @@ Tell Codex **“Add [X] to the newsletter for [date or week]”** in this projec
 - **Deliveries:** Package status from the last successful connected Gmail scan, with direct tracking links.
 - **Curated events:** `config/nyc-events.json` can hold events with independently verified dates, category, source, and URL. The local Codex schedule can research these. The standalone GitHub workflow refreshes structured feeds only; it does not run Codex research.
 
-The NYC section shows twenty dated picks in a horizontal photo carousel. Every caption includes the event name, dates, cost, neighborhood, useful details, and source link. Favorite artists, Red Sox games in NYC, seasonal events, ordered-brand popups, and sample sales are prioritized. Photos come from organizers, with unavailable images labeled honestly. No category filters or extra click is required to read the details.
+The NYC section shows twenty dated picks as cream photo-and-text rows on burgundy. Every caption includes the event name, dates, cost, neighborhood, useful details, and source link. Favorite artists, Red Sox games in NYC, seasonal events, ordered-brand popups, and sample sales are prioritized. Photos come from organizers, with unavailable images labeled honestly. No category filters or extra click is required to read the details.
 
 Weather failure preserves an earlier forecast only for the **same day**, visibly marked as earlier. Calendar failures never display an empty day as if it were confirmed free. Failed news sources do not retain old leads. Every edition carries a date and refresh time. An older edition displays an explicit notice. Source timeouts and retries are bounded, and edition writes are atomic. A config error preserves the previous edition.
 
@@ -136,7 +136,7 @@ Data tests cover DST, recurrences, excluded and moved instances, all-day dates, 
 
 ## Design & references
 
-`DESIGN.md` records the visual system, based on the Taste workflow and the DESIGN.md approach. `docs/design-reference.png` is the image-first design reference; `public/assets/morning.png` is the original generated illustration, not a factual event photograph. Fonts are self-hosted. The tiny Three.js accent pauses outside the viewport and respects reduced motion; the page works without WebGL.
+`DESIGN.md` records the visual system, based on the Taste workflow and the DESIGN.md approach. The October 23 Rosé Ribbons PDF is the approved redesign. `public/assets/morning.png` and dated artwork remain only for older editions. Fonts are self-hosted. The tiny Three.js accent pauses outside the viewport and respects reduced motion; the page works without WebGL.
 
 Requested references consulted:
 - https://github.com/leonxlnx/taste-skill
@@ -178,9 +178,9 @@ Prepare twenty season-appropriate restaurant/activity ideas each day, prioritizi
 Refresh edition reloads the website and restores confirmed saves from private GitHub state. If a device loses its connection after clearing browser data, reconnect from Made for Ariel. Import old browser-only data before clearing its original browser. GitHub outages or expired keys preserve saved data and keep unsaved drafts visible. Run `node tests/sync-browser.mjs` for two-device and cleared-storage recovery in Chrome and WebKit; these are browser-engine tests, not physical iOS-device tests.
 
 
-## Daily seasonal artwork
+## Edition photography (Rosé Ribbons, October 23, 2026)
 
-Generate a new seasonal NYC header illustration each day using the built-in image-generation tool. Follow [docs/artwork.md](docs/artwork.md) for the dated asset and manifest workflow, generation failures, and archive preservation. Keep the pink editorial style and the main subject legible in the mobile crop. Never overwrite old artwork or include personal data in prompts or images. Verify status.artwork after refresh and the matching current/archive artwork after publication.
+Ariel approved Rosé Ribbons and real photography in place of daily AI header illustrations. Do not generate new header artwork. The refresh selects two distinct real organizer/venue photos from the current edition's recommendations, storing their URLs, alt text and source links in encrypted `brief.photography`. Favor season-appropriate photos when researching the daily pool. Verify both header photos load in the browser and keep image failures honest; no generated or unrelated stock fallback. Preserve all existing illustration assets and manifest entries for historical editions. `docs/artwork.md` describes this transition. The approved page uses burgundy event rows, a striped frame around cream idea panels, blush gradients, scalloped borders and serif headings; all 20 events and 20 ideas remain available without horizontal swiping. Preserve all content, durable user state and recommendation identity/cooldown rules.
 
 
 ## Package choices
