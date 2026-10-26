@@ -144,9 +144,12 @@ function renderWeek(){
 }
 function renderHeader(){
   const photos=headerPhotosForEdition(brief),container=$('#hero-photos');
+  const single=brief.photography?.mode==='atmosphere';
+  container.classList.toggle('single-photo',single);
+  container.setAttribute('aria-label',single?'Seasonal photograph':'Artwork from this edition');
   if(brief.photography){
     container.classList.remove('legacy-art');
-    container.innerHTML=photos.map(p=>`<figure class="hero-photo"><div class="hero-photo-frame"><img src="${escape(p.src)}" alt="${escape(p.alt)}" width="800" height="400" fetchpriority="high" referrerpolicy="no-referrer"></div><figcaption><a href="${escape(p.url)}" ${external}>${escape(p.title)} ↗</a></figcaption></figure>`).join('');
+    container.innerHTML=photos.map(p=>`<figure class="hero-photo"><div class="hero-photo-frame"><img src="${escape(p.src)}" alt="${escape(p.alt)}" width="1120" height="700" fetchpriority="high" referrerpolicy="no-referrer"></div><figcaption><a href="${escape(p.url)}" ${external}>${escape(single?'Photo: '+p.source:p.title+' ↗')}</a></figcaption></figure>`).join('');
     wirePhotos(container);
   }else{
     // Old editions keep the illustration that was actually published with them.

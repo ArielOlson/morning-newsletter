@@ -81,8 +81,9 @@ async function main() {
     reminders:remindersFor(personal,day,prefs.timezone), upcomingReminders:personal.filter(e=>e.startDate>day && e.startDate<=addDays(day,14,prefs.timezone)),
     finds:city.items, finance, deliveries:packages, directories:sources.directories, status, errors };
   brief.ideas=selectIdeas(await eligibleRecommendations((await readJSON('config/ideas.local.json',{ideas:[]})).ideas,choices.state),day,brief.calendar,prefs.timezone,[...rotation.items,...city.items]);
-  brief.photography={mode:'editorial',photos:selectHeaderPhotos(brief)};
-  status.photography={state:brief.photography.photos.length===2?'selected':'unavailable',count:brief.photography.photos.length};
+  brief.photography={mode:'atmosphere',photos:selectHeaderPhotos(brief,await readJSON('config/photography.json',{photos:[]}))};
+  status.photography={state:brief.photography.photos.length===1?'selected':'unavailable',count:brief.photography.photos.length};
+  if(!brief.photography.photos.length)errors.push('photography');
   const freeIdeas=brief.ideas.filter(x=>ideaBudget(x)==='free').length,paidIdeas=brief.ideas.filter(x=>ideaBudget(x)==='paid').length;
   status.ideas={state:brief.ideas.length===IDEA_COUNT&&freeIdeas>=MIN_FREE_IDEAS&&paidIdeas>=MIN_PAID_IDEAS?'fresh':'partial',count:brief.ideas.length,free:freeIdeas,paid:paidIdeas,comparedWith:rotation.days[0]};
   // Keep every card exposed by earlier same-day builds for tomorrow's rotation.

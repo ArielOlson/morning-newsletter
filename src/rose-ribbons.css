@@ -31,3 +31,9 @@ body{background:linear-gradient(180deg,#e8b5c8 0,#f8e0e3 670px,var(--paper) 1250
 .deliveries-section>.section-heading>#received-toggle{white-space:nowrap;flex-shrink:0}
 .hero h1,.section-heading h2{line-height:1.1;padding-bottom:3px}
 input::placeholder,textarea::placeholder{color:var(--muted);opacity:1}
+/* A single seasonal scene, with a quiet source credit instead of event highlights. */
+.hero-photos.single-photo{display:block;max-width:960px;margin-inline:auto}
+.single-photo .hero-photo img{height:clamp(200px,32vw,350px);object-position:center 48%}
+.single-photo .hero-photo figcaption{font:400 10px/1.5 var(--sans);text-align:right;padding-top:13px}
+.single-photo .hero-photo figcaption a{display:inline-flex;align-items:center;min-height:44px}
+.hero-photos.single-photo:empty{display:none}

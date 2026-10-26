@@ -45,7 +45,7 @@ for(const path of artworkPaths){
  assert.equal(hash(Buffer.from(await r.arrayBuffer())),hash(await readFile('dist/'+path)),'Live artwork must match the prepared image');
 }
 if(current.photography){
- const photos=headerPhotosForEdition(current);assert.equal(photos.length,2,'Two real header photos required');
+ const photos=headerPhotosForEdition(current);assert.equal(photos.length,current.photography.mode==='atmosphere'?1:2,'The edition must have its expected real header photography');
  for(const p of photos){const r=await fetch(p.src,{signal:AbortSignal.timeout(20000)});assert.equal(r.status,200,'Header photograph must load');assert.match(r.headers.get('content-type')||'',/^image\//,'Header must be an image');await r.body.cancel();}
 }
 const edition=JSON.parse(prepared);
