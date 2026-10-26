@@ -8,6 +8,7 @@ test('atmospheric header selects one eligible scene independently of recommendat
  assert.deepEqual(selectHeaderPhotos({day:'2026-11-01'},{photos:[photo]}),[]);
  assert.deepEqual(selectHeaderPhotos({day:'2026-10-24'},{photos:[photo]}),[]);
  assert.deepEqual(selectHeaderPhotos({day:'2026-10-26',ideas:[{image:photo.src}]}),[]);
+ for(const section of ['finds','ideas'])assert.deepEqual(selectHeaderPhotos({day:photo.day,[section]:[{image:photo.src+'?width=400'}]},{photos:[photo]}),[]);
  for(const src of ['http://example.com/a.jpg','javascript:alert(1)','https://user:secret@example.com/a.jpg'])assert.deepEqual(selectHeaderPhotos({day:photo.day},{photos:[{...photo,src}]}),[]);
  assert.deepEqual(headerPhotosForEdition({photography:{mode:'atmosphere',photos:[photo,older]}}),[photo]);
 });
