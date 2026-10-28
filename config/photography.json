@@ -21,6 +21,17 @@
       "width": 6000,
       "height": 4000,
       "checkedAt": "2026-10-27T12:10:38.365034+00:00"
+    },
+    {
+      "day": "2026-10-28",
+      "availableThrough": "2026-11-15",
+      "src": "https://images.pexels.com/photos/18529807/pexels-photo-18529807.jpeg?auto=compress&w=1600",
+      "url": "https://www.pexels.com/photo/scenic-view-of-a-bridge-and-river-in-autumn-18529807/",
+      "alt": "Orange and golden autumn trees frame a stone bridge reflected in the Pond in Central Park.",
+      "source": "Martii Tolentino / Pexels",
+      "width": 6000,
+      "height": 4000,
+      "checkedAt": "2026-10-28T08:22:48.033Z"
     }
   ]
 }
