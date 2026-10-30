@@ -33,8 +33,8 @@
   <meta name="twitter:image" content="https://www.arielolson.com/morning-newsletter/assets/icons/favicon-512.png" />
   <meta name="twitter:image:alt" content="Ariel Olson’s monogram icon" />
   <title>The Morning Edit 💛 For Ariel</title>
-  <script type="module" crossorigin src="./assets/index-B39LFI_-.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/index-CKLrtEMy.css">
+  <script type="module" crossorigin src="./assets/index-1i__vDxZ.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-CxXFVb9R.css">
 </head>
 <body class="locked">
   <section id="unlock-screen" class="unlock-screen" aria-labelledby="unlock-title">
@@ -57,7 +57,7 @@
   <a class="skip-link" href="#main">Skip to your morning</a>
   
   <div class="page">
-    <header class="masthead">
+    <header class="masthead" id="newsletter-top" tabindex="-1">
       <a class="wordmark" href="#today">the morning edit <span aria-hidden="true">💛</span></a>
       <nav aria-label="Your newsletter">
         <a href="#today" data-view="today" aria-current="page">Today</a>
@@ -72,6 +72,19 @@
           <h1 id="greeting">Ariel’s Morning Edit</h1>
           <p class="eyebrow" id="edition-date">YOUR PERSONAL MORNING NEWSLETTER</p>
         </div>
+        <nav class="edition-contents" aria-label="In this edition">
+          <span class="contents-label">In this edition</span>
+          <ul>
+            <li><a href="#agenda-heading" data-edition-jump>Today</a></li>
+            <li><a href="#weather-heading" data-edition-jump>Weather</a></li>
+            <li><a href="#reminders-heading" data-edition-jump>Reminders</a></li>
+            <li><a href="#city-heading" data-edition-jump data-open-section="city">NYC</a></li>
+            <li><a href="#ideas-dining-heading" data-edition-jump data-open-section="ideas">Dining</a></li>
+            <li><a href="#ideas-activity-heading" data-edition-jump data-open-section="ideas">Things to do</a></li>
+            <li><a href="#finance-heading" data-edition-jump>Finance</a></li>
+            <li><a href="#deliveries-heading" data-edition-jump>Packages</a></li>
+          </ul>
+        </nav>
         <div id="hero-photos" class="hero-photos" aria-label="Seasonal photograph"></div>
       </section>
       <div class="edition-line"><span id="freshness" role="status">Putting your morning together…</span><button class="text-button" id="lock-button" hidden>Lock newsletter</button><button class="text-button" id="refresh-button">Refresh edition ↻</button></div>
@@ -83,36 +96,45 @@
             <div class="section-heading"><div><h2 id="agenda-heading">Today</h2></div><span class="small-label" id="plan-count">Calendar</span></div>
             <div id="agenda-content" class="loading-block" aria-live="polite">Your plans are on their way…</div>
             <div id="upcoming-preview"></div><p class="source-note" id="calendar-source"></p>
+          <div class="section-return"><a class="back-to-top" href="#newsletter-top" aria-label="Back to top" title="Back to top"><span aria-hidden="true">↑</span></a></div>
           </section>
           <aside class="weather" aria-labelledby="weather-heading">
             <div class="weather-top"><h2 id="weather-heading">Outside in New York</h2><span class="small-label">°F</span></div>
             <div id="weather-content" aria-live="polite"><p class="loading-block">Checking the skies…</p></div>
+          <div class="section-return"><a class="back-to-top" href="#newsletter-top" aria-label="Back to top" title="Back to top"><span aria-hidden="true">↑</span></a></div>
           </aside>
         </div>
         <section class="reminders-section" aria-labelledby="reminders-heading">
           <div class="section-heading compact"><div><p class="eyebrow">REMINDERS</p><h2 id="reminders-heading">Don’t forget</h2></div><button class="text-button add-reminder">+ Add a reminder</button></div>
           <div id="reminders-content"></div>
+          <div class="section-return"><a class="back-to-top" href="#newsletter-top" aria-label="Back to top" title="Back to top"><span aria-hidden="true">↑</span></a></div>
         </section>
         <section class="city-section" aria-labelledby="city-heading">
           <div class="section-heading"><div><h2 id="city-heading"><button class="section-toggle" data-section-toggle="city" aria-expanded="false" aria-controls="finds-panel"><span>What’s happening in NYC</span><span class="section-toggle-action"><span data-section-action>Show</span> <span data-section-symbol aria-hidden="true">+</span></span></button></h2><p class="section-description" id="city-count">Twenty events for the days ahead.</p></div></div>
           <div id="finds-panel" hidden><div id="finds-content" class="event-stories" role="region" aria-label="NYC events"></div>
           <p class="source-note">Dates and details are shown when confirmed by the source. Unpublished prices are marked below.</p></div>
+          <div class="section-return"><a class="back-to-top" href="#newsletter-top" aria-label="Back to top" title="Back to top"><span aria-hidden="true">↑</span></a></div>
         </section>
         <section class="ideas-section" aria-labelledby="ideas-heading"><div class="ideas-paper"><img class="ribbon-bow" src="./assets/design/ribbon-bow.svg" alt="" aria-hidden="true" width="62" height="72">
           <div class="section-heading"><div><h2 id="ideas-heading"><button class="section-toggle" data-section-toggle="ideas" aria-expanded="false" aria-controls="ideas-panel"><span>Ideas for your free time</span><span class="section-toggle-action"><span data-section-action>Show</span> <span data-section-symbol aria-hidden="true">+</span></span></button></h2><p class="section-description" id="ideas-count">8 dining ideas · 12 things to do</p></div></div>
-          <div id="ideas-panel" hidden><div id="ideas-content" class="idea-groups" role="region" aria-label="Free-time ideas"></div></div></div>
+          <div id="ideas-panel" hidden><div id="ideas-content" class="idea-groups" role="region" aria-label="Free-time ideas"></div></div>
+          <div class="section-return"><a class="back-to-top" href="#newsletter-top" aria-label="Back to top" title="Back to top"><span aria-hidden="true">↑</span></a></div></div>
         </section>
         <section class="finance-section" aria-labelledby="finance-heading">
           <div class="section-heading"><div><h2 id="finance-heading">Three things in finance</h2><p class="section-description">The headlines, the details, and why they matter.</p></div></div>
           <div id="finance-content" aria-live="polite"></div>
+          <div class="section-return"><a class="back-to-top" href="#newsletter-top" aria-label="Back to top" title="Back to top"><span aria-hidden="true">↑</span></a></div>
         </section>
         <section class="deliveries-section" aria-labelledby="deliveries-heading">
           <div class="section-heading"><div><h2 id="deliveries-heading">Your packages</h2><p class="section-description" id="deliveries-source"></p></div><button class="text-button" id="received-toggle" aria-expanded="false">Show received &amp; refunded</button></div>
           <div id="deliveries-content" aria-live="polite"></div>
+          <div class="section-return"><a class="back-to-top" href="#newsletter-top" aria-label="Back to top" title="Back to top"><span aria-hidden="true">↑</span></a></div>
         </section>
       </div>
-      <section id="week-view" class="alternate-view" hidden><div class="section-heading"><div><p class="eyebrow">COMING UP</p><h2>The next two weeks</h2><p class="section-description">Your calendar and reminders for the next 14 days.</p></div><button class="text-button add-reminder">+ Add a reminder</button></div><div id="week-content"></div></section>
-      <section id="saved-view" class="alternate-view" hidden><div class="section-heading"><div><p class="eyebrow">THE KEEPERS</p><h2>Saved NYC picks</h2><p class="section-description">Your saved discoveries, restored on your connected devices.</p></div></div><div id="saved-content" class="finds-grid"></div></section>
+      <section id="week-view" class="alternate-view" hidden><div class="section-heading"><div><p class="eyebrow">COMING UP</p><h2>The next two weeks</h2><p class="section-description">Your calendar and reminders for the next 14 days.</p></div><button class="text-button add-reminder">+ Add a reminder</button></div><div id="week-content"></div>
+          <div class="section-return"><a class="back-to-top" href="#newsletter-top" aria-label="Back to top" title="Back to top"><span aria-hidden="true">↑</span></a></div></section>
+      <section id="saved-view" class="alternate-view" hidden><div class="section-heading"><div><p class="eyebrow">THE KEEPERS</p><h2>Saved NYC picks</h2><p class="section-description">Your saved discoveries, restored on your connected devices.</p></div></div><div id="saved-content" class="finds-grid"></div>
+          <div class="section-return"><a class="back-to-top" href="#newsletter-top" aria-label="Back to top" title="Back to top"><span aria-hidden="true">↑</span></a></div></section>
       <div class="signoff"><span class="heart-scene" id="heart-scene" aria-hidden="true">💛</span></div>
     </main>
     <footer><span>the morning edit <span aria-hidden="true">💛</span></span><span>Prepared daily for Ariel.</span><button class="text-button" id="past-editions-button">Past editions</button><button class="text-button" id="about-button">About your edit</button></footer>
