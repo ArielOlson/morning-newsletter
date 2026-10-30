@@ -16,6 +16,9 @@ try{for(const engine of ['chrome','webkit']){
  await a.evaluate(()=>localStorage.clear());await a.reload();await unlock(a);await connect(a);await expect(a.locator('#finds-panel')).toBeHidden();await expect(a.locator('#ideas-panel')).toBeVisible();
  remote.fail(true);await a.locator('[data-section-toggle="ideas"]').click();await expect(a.locator('#toast')).toContainText('could not confirm');await expect(a.locator('#ideas-panel')).toBeVisible();remote.fail(false);
  await expect(a.locator('#ideas-content .find')).toHaveCount(20);await expect(a.locator('#finds-content .find')).toHaveCount(20);
+ await expect(a.locator('.idea-group').first().locator('.find')).toHaveCount(8);await expect(a.locator('.idea-group').last().locator('.find')).toHaveCount(12);
+ for(const width of [320,390,768,1440]){await a.setViewportSize({width,height:900});expect(await a.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBeTruthy();}
+ await a.setViewportSize({width:390,height:844});await a.locator('.ideas-section').screenshot({path:`test-results/ideas-groups-${engine}.png`});
  await a.locator('#lock-button').click();await expect(a.locator('#ideas-content')).toBeEmpty();
  console.log(engine+': mobile collapse, keyboard, durable preferences, fresh-device restore and failed-save protection passed.');
  }finally{await browser.close();}
