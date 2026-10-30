@@ -95,3 +95,8 @@ Every new edition must contain exactly eight ideas with `ideaGroup: "dining"` an
 ## Email-confirmed return and refund details (October 30, 2026)
 
 Show `returnMethod` only in Returns and `refundEstimate` only in Refunds. Each fact requires a supporting Gmail link, actual checkedAt and sourceDate; use only explicit email evidence. Return methods cannot be inferred from the outbound carrier. Refund amounts must include the stated tax/fees and identify partial-item refunds; never assume the entire order total or use promotional product prices. Distinguish an email estimate from a retailer-issued refund, which does not confirm receipt in Ariel’s account. Omit unconfirmed values. The newest email fact wins independently of shipment update times. Preserve these minimal facts in the encrypted package ledger when saving a choice so they survive loss of the email feed and clean-browser restoration. Do not change package choices automatically or rewrite the full scan checkedAt when enriching metadata.
+
+
+## Compact edition navigation (October 30, 2026)
+
+Keep the small “In this edition” contents menu between the title/date and the header photograph. Provide direct links to Today, Weather, Reminders, NYC, Dining, Things to do, Finance and Packages. Open a collapsed recommendation section before jumping into it; connected open preferences use the existing confirmed encrypted save. Keep a small upward arrow under every main section and between the two ideas groups, with an accessible Back to top label and a 44px touch target. Returning to the top must preserve the current Today, Coming up or Saved view. Preserve this navigation in future editions.

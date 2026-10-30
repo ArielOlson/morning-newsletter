@@ -15,6 +15,25 @@ try{for(const engine of ['chrome','webkit']){
  const b=await device();await connect(b);await b.locator('[data-section-toggle="ideas"]').click();await expect(b.locator('#ideas-panel')).toBeVisible();
  await a.evaluate(()=>localStorage.clear());await a.reload();await unlock(a);await connect(a);await expect(a.locator('#finds-panel')).toBeHidden();await expect(a.locator('#ideas-panel')).toBeVisible();
  remote.fail(true);await a.locator('[data-section-toggle="ideas"]').click();await expect(a.locator('#toast')).toContainText('could not confirm');await expect(a.locator('#ideas-panel')).toBeVisible();remote.fail(false);
+ // The contents menu must open a section before jumping, through the same durable save.
+ await a.locator('[data-section-toggle="ideas"]').click();await expect(a.locator('#ideas-panel')).toBeHidden();
+ remote.fail(true);await a.locator('[data-edition-jump][href="#ideas-dining-heading"]').click();await expect(a.locator('#toast')).toContainText('could not confirm');await expect(a.locator('#ideas-panel')).toBeHidden();remote.fail(false);
+ for(const id of ['city-heading','ideas-dining-heading','ideas-activity-heading','finance-heading','deliveries-heading','agenda-heading','weather-heading','reminders-heading']){
+  await a.locator(`[data-edition-jump][href="#${id}"]`).click();
+  await expect(a.locator(`#${id}`)).toBeInViewport();
+  await expect(a.locator(`#${id} [data-section-toggle],#${id}[tabindex]`)).toBeFocused();
+ }
+ const c=await device();await connect(c);await expect(c.locator('#finds-panel')).toBeVisible();await expect(c.locator('#ideas-panel')).toBeVisible();
+ for(const view of ['today','week','saved']){
+  await a.locator(`[data-view="${view}"]`).click();
+  const arrow=a.locator(`#${view}-view .back-to-top`).last();
+  await arrow.click();expect(await a.evaluate(()=>scrollY)).toBe(0);
+  await expect(a.locator('#newsletter-top')).toBeFocused();await expect(a.locator(`#${view}-view`)).toBeVisible();
+ }
+ await a.locator('[data-edition-jump][href="#ideas-dining-heading"]').focus();await a.keyboard.press('Enter');await expect(a.locator('#ideas-dining-heading')).toBeInViewport();await expect(a.locator('#today-view')).toBeVisible();
+ // Historical editions without dining/activity group headings retain useful navigation.
+ await a.locator('#ideas-dining-heading').evaluate(el=>el.removeAttribute('id'));
+ await a.locator('[data-edition-jump][href="#ideas-dining-heading"]').click();await expect(a.locator('#ideas-heading')).toBeInViewport();
  await expect(a.locator('#ideas-content .find')).toHaveCount(20);await expect(a.locator('#finds-content .find')).toHaveCount(20);
  await expect(a.locator('.idea-group').first().locator('.find')).toHaveCount(8);await expect(a.locator('.idea-group').last().locator('.find')).toHaveCount(12);
  for(const width of [320,390,768,1440]){await a.setViewportSize({width,height:900});expect(await a.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBeTruthy();}

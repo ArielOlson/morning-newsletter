@@ -1,3 +1,4 @@
+import {setupEditionNavigation,backToTopHTML} from './edition-navigation.mjs';
 import {ideaGroup} from './idea-groups.mjs';
 import {createSectionView} from './section-view.mjs';
 import {createSync,activeValues,importLegacy,credentialKey} from './sync.mjs';
@@ -86,6 +87,7 @@ document.querySelectorAll('.close-dialog,.close-settings').forEach(button=>butto
 document.querySelectorAll('dialog').forEach(dialog=>dialog.addEventListener('click',e=>{ if(e.target===dialog){ const r=dialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom) dialog.close(); } }));
 function showView(){ const view = ['week','saved'].includes(location.hash.slice(1)) ? location.hash.slice(1) : 'today'; ['today','week','saved'].forEach(x=>{$(`#${x}-view`).hidden=x!==view; const link=$(`[data-view="${x}"]`); if(x===view)link.setAttribute('aria-current','page');else link.removeAttribute('aria-current');}); if(view==='saved')renderSaved(); }
 window.addEventListener('hashchange',showView);
+setupEditionNavigation({openSection:id=>sectionView.open(id),showView,isAvailable:()=>!!brief&&(!protectedBuild||!!password)});
 function planHTML(e){ return `<article class="plan"><time>${e.allDay?'All day':escape(timeLabel(e.start))}${!e.allDay && e.end!==e.start ? `<br><span class="small-label">to ${escape(timeLabel(e.end))}</span>`:''}</time><div class="plan-main"><h3>${escape(e.title)}</h3>${e.location?`<p>${escape(e.location)}</p>`:''}${e.deviceOnly?'<p class="small-label">Saved in this browser</p>':''}${e.note?`<p>${escape(e.note)}</p>`:''}${e.calendarLabel?`<p class="small-label">${escape(e.calendarLabel)}</p>`:''}${e.recurring?'<p>Repeats</p>':''}</div></article>`; }
 function eventOnDay(e,day){return e.startDate<=day && (e.allDay ? e.endDate>day : e.endDate>=day);}
 function renderAgenda(){
@@ -130,7 +132,7 @@ function renderIdeas(){
  if(!brief)return;
  const items=(brief.ideas||[]).filter(x=>viewingArchive||!interactionHistory.completed[ideaKeys.get(x.id)]),root=$('#ideas-content');
  const grouped=(brief.ideas||[]).every(x=>ideaGroup(x));
- const group=(kind,title,description)=>{const list=items.filter(x=>ideaGroup(x)===kind);return `<section class="idea-group" aria-labelledby="ideas-${kind}-heading"><div class="idea-group-heading"><h3 id="ideas-${kind}-heading">${title} <span>${list.length}</span></h3><p>${description}</p></div><div class="idea-stories">${list.length?list.map(findHTML).join(''):'<p class="idea-group-empty">All done here. Your saved picks are still in Saved.</p>'}</div></section>`;};
+ const group=(kind,title,description)=>{const list=items.filter(x=>ideaGroup(x)===kind);return `<section class="idea-group" aria-labelledby="ideas-${kind}-heading"><div class="idea-group-heading"><h3 id="ideas-${kind}-heading">${title} <span>${list.length}</span></h3><p>${description}</p></div><div class="idea-stories">${list.length?list.map(findHTML).join(''):'<p class="idea-group-empty">All done here. Your saved picks are still in Saved.</p>'}</div>${kind==='dining'?backToTopHTML:''}</section>`;};
  root.innerHTML=grouped?group('dining',viewingArchive?'Restaurants & dining':'Restaurants & dining for this week','Places to eat, from coffee stops to sit-down dinners. Choose a day that suits you.')+group('activity','Things to do','Museums, movies, comedy, walks and more. Free and paid options, with flexible timing.'):`<div class="idea-stories">${items.length?items.map(findHTML).join(''):empty('Room for a little inspiration','Your saved restaurant and activity ideas will appear when the timing fits.')}</div>`;
  $('#ideas-count').textContent=grouped?`${(brief.ideas||[]).filter(x=>ideaGroup(x)==='dining').length} dining ideas · ${(brief.ideas||[]).filter(x=>ideaGroup(x)==='activity').length} things to do`:`${(brief.ideas||[]).length} flexible ideas`;
  wireSave(root);wirePhotos(root);wireCompletions(root);wireLinks(root);

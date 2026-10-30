@@ -48,3 +48,20 @@ input::placeholder,textarea::placeholder{color:var(--muted);opacity:1}
 .city-section #finds-panel>.source-note{color:#f0d0da}
 
 .idea-group+.idea-group{margin-top:42px;padding-top:30px;border-top:1px solid var(--line)}.idea-group-heading{margin-bottom:24px}.idea-group-heading>h3{font:500 italic 30px/1.2 var(--serif);color:var(--rose);margin:0 0 8px}.idea-group-heading>h3>span{font:500 12px var(--sans);margin-left:8px}.idea-group-heading>p,.idea-group-empty{font-size:12px;line-height:1.7;color:var(--muted)}
+
+/* A quiet index and tiny arrows with comfortable touch targets. */
+.edition-contents{max-width:800px;margin:0 auto 28px;padding:12px 0 6px;border-block:1px solid var(--line);text-align:center;color:var(--rose)}
+.contents-label{font:500 italic 20px/1.2 var(--serif)}
+.edition-contents ul{display:flex;justify-content:center;flex-wrap:wrap;column-gap:20px;list-style:none;margin:4px 0 0;padding:0}
+.edition-contents a{display:inline-flex;align-items:center;min-height:44px;font:500 12px/1.4 var(--sans);color:inherit;text-decoration:none;text-underline-offset:4px}
+.edition-contents a:hover{text-decoration:underline}
+.section-return{display:flex;justify-content:flex-end;margin-top:10px}
+.back-to-top{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;color:var(--rose);font:400 23px/1 var(--sans);text-decoration:none;border-radius:50%}
+.back-to-top:hover{background:#7d264512}
+.city-section .back-to-top,.finance-section .back-to-top{color:var(--paper)}
+.city-section .back-to-top:hover,.finance-section .back-to-top:hover{background:#fff4ea18}
+.edition-contents a:focus-visible,.back-to-top:focus-visible{outline:2px solid currentColor;outline-offset:3px}
+:is(h2,h3)[id]{scroll-margin-top:24px}
+#newsletter-top:focus:not(:focus-visible){outline:none}
+@media(max-width:767px){.edition-contents{margin-bottom:22px;padding-top:10px}.edition-contents ul{column-gap:18px}.edition-contents a{font-size:11px}.contents-label{font-size:19px}}
+@media print{.edition-contents,.section-return{display:none!important}}
