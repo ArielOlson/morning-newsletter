@@ -9,7 +9,7 @@ try{for(const engine of ['chrome','webkit']){
  const unlock=async p=>{await p.locator('#unlock-password').fill(password);await p.locator('#unlock-form button').click();await expect(p.locator('.page')).toBeVisible();};
  const device=async()=>{const c=await browser.newContext(engine==='webkit'?devices['iPhone 13']:{viewport:{width:390,height:844}});await remote.install(c);const p=await c.newPage();await p.goto('http://127.0.0.1:4183');await unlock(p);return p;};
  const connect=async p=>{await p.locator('#settings-button').click();await p.locator('#settings-dialog summary').click();await p.locator('#sync-key').fill('github_pat_synthetic_test_only');await p.locator('#sync-form button').click();await expect(p.locator('#sync-form-status')).toContainText('Connected.');await p.locator('.close-settings').click();};
- const a=await device();await expect(a.locator('#finds-panel')).toBeHidden();await expect(a.locator('#ideas-panel')).toBeHidden();
+ const a=await device();await expect(a.locator('#hero-photos figcaption')).toHaveCount(0);await expect(a.locator('#hero-photos img')).toHaveCount(1);await expect(a.locator('#finds-panel')).toBeHidden();await expect(a.locator('#ideas-panel')).toBeHidden();
  await a.locator('[data-section-toggle="city"]').focus();await a.keyboard.press('Enter');await expect(a.locator('#finds-panel')).toBeVisible();
  await connect(a);await a.locator('[data-section-toggle="city"]').click();await expect(a.locator('#finds-panel')).toBeHidden();
  const b=await device();await connect(b);await b.locator('[data-section-toggle="ideas"]').click();await expect(b.locator('#ideas-panel')).toBeVisible();

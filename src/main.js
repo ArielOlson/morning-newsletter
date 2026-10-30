@@ -162,7 +162,7 @@ function renderHeader(){
   container.setAttribute('aria-label',single?'Seasonal photograph':'Artwork from this edition');
   if(brief.photography){
     container.classList.remove('legacy-art');
-    container.innerHTML=photos.map(p=>`<figure class="hero-photo"><div class="hero-photo-frame"><img src="${escape(p.src)}" alt="${escape(p.alt)}" width="${Number.isInteger(p.width)&&p.width>0?p.width:1120}" height="${Number.isInteger(p.height)&&p.height>0?p.height:700}" fetchpriority="high" referrerpolicy="no-referrer"></div><figcaption><a href="${escape(p.url)}" ${external}>${escape(single?'Photo: '+p.source:p.title+' ↗')}</a></figcaption></figure>`).join('');
+    container.innerHTML=photos.map(p=>`<figure class="hero-photo"><div class="hero-photo-frame"><img src="${escape(p.src)}" alt="${escape(p.alt)}" width="${Number.isInteger(p.width)&&p.width>0?p.width:1120}" height="${Number.isInteger(p.height)&&p.height>0?p.height:700}" fetchpriority="high" referrerpolicy="no-referrer"></div>${single?'':`<figcaption><a href="${escape(p.url)}" ${external}>${escape(p.title+' ↗')}</a></figcaption>`}</figure>`).join('');
     wirePhotos(container);
   }else{
     // Old editions keep the illustration that was actually published with them.
