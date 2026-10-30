@@ -1,4 +1,5 @@
 import {shipmentIdentity} from './history.mjs';
+import {newestPackageFacts} from './package-facts.mjs';
 
 const strings=values=>[...new Set(values.filter(x=>typeof x==='string'&&x.trim()))];
 const normalize=value=>String(value||'').normalize('NFKC').toLowerCase().replace(/[^a-z0-9]/g,'');
@@ -20,6 +21,9 @@ function combine(parcels){
  if(parcels.length===1)return {...parcels[0]};
  const sorted=[...parcels].sort((a,b)=>time(a)-time(b));
  const newest=sorted.at(-1),result=Object.assign({},...sorted);
+ // Return evidence has its own chronology, independent of shipping notices.
+ delete result.refundEstimate;delete result.returnMethod;
+ Object.assign(result,newestPackageFacts(parcels));
  // Delayed email arrival must not move a delivered parcel back to preparing.
  // Exceptions/returns/cancellations keep their actual newest evidence.
  if(progress[newest.status]!==undefined){

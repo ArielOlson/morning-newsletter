@@ -1,10 +1,11 @@
 import {encrypt,decrypt} from './crypto.mjs';
 import {historyId,shipmentIdentity} from './history.mjs';
 import {shipmentGroups,shipmentIdentities,reconcileShipments} from './shipment-matching.mjs';
+import {packageFacts} from './package-facts.mjs';
 export const packagesKey='morning-edit-packages-v1';
 const stages=['incoming','received','return','refund','refunded'];
 const fields=['id','merchant','orderNumber','orderItemKey','itemName','caption','detail','note','status','updatedAt','carrierCheckedAt','expectedDate','expectedLabel','carrier','trackingNumber','trackingURL','emailURL'];
-const snapshot=p=>({...Object.fromEntries(fields.filter(k=>typeof p[k]==='string').map(k=>[k,p[k]])),...Object.fromEntries(['sourceIds','identityAliases'].filter(k=>Array.isArray(p[k])).map(k=>[k,p[k].filter(x=>typeof x==='string')]))});
+const snapshot=p=>({...Object.fromEntries(fields.filter(k=>typeof p[k]==='string').map(k=>[k,p[k]])),...Object.fromEntries(['sourceIds','identityAliases'].filter(k=>Array.isArray(p[k])).map(k=>[k,p[k].filter(x=>typeof x==='string')])),...packageFacts(p)});
 const latestChoice=entries=>entries.sort((a,b)=>Date.parse(b[1].changedAt)-Date.parse(a[1].changedAt)||a[0].localeCompare(b[0]))[0];
 export async function readPackages(password,storage=localStorage,key=packagesKey){
  const raw=storage.getItem(key);if(!raw)return {};

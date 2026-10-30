@@ -8,6 +8,9 @@ const {password}=JSON.parse(await readFile('config/security.local.json','utf8'))
 const base=JSON.parse(await readFile('public/data/brief.json','utf8'));
 const parcel=(id)=>({id,merchant:`Example shop ${id}`,itemName:'Cotton sweater',status:'delivered',updatedAt:'2026-10-02T08:00:00Z',carrier:'UPS',trackingNumber:`TEST${id}`,note:'Delivery confirmed by email; collection not confirmed.'});
 const orderedB={...parcel('B'),orderNumber:'ORDER-B',trackingNumber:undefined,status:'ordered',updatedAt:'2026-10-01T08:00:00Z'};
+const evidence={emailURL:'https://mail.google.com/mail/u/0/#all/test',sourceDate:'2026-10-03T08:00:00Z',checkedAt:'2026-10-04T08:00:00Z'};
+orderedB.returnMethod={...evidence,label:'FedEx drop-off with a QR code.'};
+orderedB.refundEstimate={...evidence,amount:55.25,currency:'USD',basis:'email-estimate',note:'Partial-order refund.'};
 const shippedB={...orderedB,id:'B-shipping',trackingNumber:'TESTB',status:'shipped',updatedAt:'2026-10-02T08:00:00Z'};
 const deliveredB={...shippedB,id:'B-delivery',status:'delivered',updatedAt:'2026-10-03T08:00:00Z'};
 const fixtures=await Promise.all([[parcel('A'),orderedB,parcel('C')],[parcel('A'),orderedB,shippedB,deliveredB,parcel('C')],[]].map(shipments=>encrypt(JSON.stringify({...base,deliveries:{state:'ready',checkedAt:'2026-10-03T08:00:00Z',scope:'Test accounts',shipments}}),password)));
@@ -36,11 +39,14 @@ try{for(const engine of ['chrome','webkit']){
  await cleanPage.goto('http://127.0.0.1:4178/');await cleanPage.locator('#unlock-password').fill(password);await cleanPage.locator('#unlock-form button').click();
  await expect(cleanPage.locator('#packages-returns .delivery-item')).toHaveCount(1);await expect(cleanPage.locator('#packages-incoming .delivery-item')).toHaveCount(1);
  await expect(cleanPage.locator('#packages-returns')).toContainText('ORDER-B');await clean.close();
+ await expect(page.locator('#packages-returns')).toContainText('Return method: FedEx drop-off with a QR code.');
  await page.locator('#packages-incoming [data-package-action="return"]').click();await expect(group('returns')).toHaveCount(2);
  await page.locator('#packages-returns [data-package-action="refund"]').first().click();await expect(group('refunds')).toHaveCount(1);
  for(const width of [320,390,768,1440]){await page.setViewportSize({width,height:900});assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),`No overflow ${engine} ${width}`);}
  await page.setViewportSize({width:390,height:844});await page.locator('#deliveries-content').screenshot({path:`test-results/packages-${engine}.png`});
  edition=2;await reload();await expect(group('incoming')).toHaveCount(0);await expect(group('returns')).toHaveCount(1);await expect(group('refunds')).toHaveCount(1);
+ await expect(page.locator('#packages-refunds')).toContainText('Estimated refund: $55.25');await expect(page.locator('#packages-refunds')).toContainText('Partial-order refund.');
+ await expect(page.locator('#packages-returns')).not.toContainText('Return method:');
  // Block writes: a failed save must not move the parcel or erase its previous encrypted record.
  remote.fail(true);
  await page.locator('#packages-returns [data-package-action="refund"]').click();await expect(page.locator('#packages-returns [data-package-action="refund"]')).toBeEnabled();await expect(group('returns')).toHaveCount(1);

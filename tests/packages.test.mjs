@@ -2,9 +2,21 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readPackages,changePackageStage,packageRows,packagesKey} from '../src/packages.mjs';
 import {historyId,shipmentIdentity} from '../src/history.mjs';
+import {packageFacts,refundLabel} from '../src/package-facts.mjs';
 const store=()=>{const values=new Map();return {getItem:k=>values.get(k),setItem:(k,v)=>values.set(k,v)};};
 const parcel={id:'notice-one',merchant:'PRIVATE RETAILER',carrier:'UPS',trackingNumber:'PRIVATE123',updatedAt:'2026-10-02T08:00:00Z',detail:'A parcel',rawEmail:'Never retain this'};
 const password='test-only-packages-key';
+test('email-backed refund and return facts survive encrypted restoration and use their own newest evidence',async()=>{
+ const evidence={emailURL:'https://mail.google.com/mail/u/0/#all/example',sourceDate:'2026-10-03T08:00:00Z',checkedAt:'2026-10-04T08:00:00Z'};
+ const confirmed={...parcel,refundEstimate:{...evidence,amount:39.99,currency:'USD',basis:'retailer-issued',note:'One item only.',rawEmail:'Do not retain'},returnMethod:{...evidence,label:'Returned in store.'}};
+ const storage=store();await changePackageStage(password,confirmed,'return',{storage});
+ const restored=await readPackages(password,storage),rows=await packageRows([{...parcel,updatedAt:'2026-10-05T08:00:00Z',refundEstimate:{...confirmed.refundEstimate,amount:32.99,sourceDate:'2026-10-01T08:00:00Z'}}],restored);
+ assert.equal(rows[0].shipment.refundEstimate.amount,39.99);assert.equal(rows[0].shipment.returnMethod.label,'Returned in store.');
+ assert.equal((await packageRows([],restored))[0].shipment.refundEstimate.amount,39.99);
+ assert.equal(JSON.stringify(restored).includes('rawEmail'),false);assert.equal(refundLabel(rows[0].shipment.refundEstimate),'Retailer-issued refund: $39.99');
+ assert.deepEqual(packageFacts({...parcel,returnMethod:{label:'UPS'},refundEstimate:{amount:100,currency:'USD'}}),{});
+ assert.deepEqual(packageFacts({returnMethod:{...evidence,emailURL:'javascript:alert(1)',label:'UPS'}}),{});
+});
 test('return and refund stages outlive the shipment feed; completion persists and keeps contents encrypted',async()=>{
  const storage=store(),options={storage};
  let ledger=await changePackageStage(password,parcel,'return',options);
