@@ -1,3 +1,4 @@
+import {DINING_COUNT,ACTIVITY_COUNT,ideaGroup} from '../src/idea-groups.mjs';
 import {IDEA_COUNT,MIN_FREE_IDEAS,MIN_PAID_IDEAS,ideaBudget} from './recommendation-policy.mjs';
 import {readCalendarSource} from './calendar-source.mjs';
 import { readFile, writeFile, mkdir, rename } from 'node:fs/promises';
@@ -85,7 +86,8 @@ async function main() {
   status.photography={state:brief.photography.photos.length===1?'selected':'unavailable',count:brief.photography.photos.length};
   if(!brief.photography.photos.length)errors.push('photography');
   const freeIdeas=brief.ideas.filter(x=>ideaBudget(x)==='free').length,paidIdeas=brief.ideas.filter(x=>ideaBudget(x)==='paid').length;
-  status.ideas={state:brief.ideas.length===IDEA_COUNT&&freeIdeas>=MIN_FREE_IDEAS&&paidIdeas>=MIN_PAID_IDEAS?'fresh':'partial',count:brief.ideas.length,free:freeIdeas,paid:paidIdeas,comparedWith:rotation.days[0]};
+  const diningIdeas=brief.ideas.filter(x=>ideaGroup(x)==='dining').length,activityIdeas=brief.ideas.filter(x=>ideaGroup(x)==='activity').length;
+  status.ideas={dining:diningIdeas,activities:activityIdeas,state:brief.ideas.length===IDEA_COUNT&&diningIdeas===DINING_COUNT&&activityIdeas===ACTIVITY_COUNT&&freeIdeas>=MIN_FREE_IDEAS&&paidIdeas>=MIN_PAID_IDEAS?'fresh':'partial',count:brief.ideas.length,free:freeIdeas,paid:paidIdeas,comparedWith:rotation.days[0]};
   // Keep every card exposed by earlier same-day builds for tomorrow's rotation.
   brief.recommendationExposures=[...(rotation.observed||[]),...(old.day===day?[...(old.recommendationExposures||[]),...(old.finds||[]),...(old.ideas||[])]:[]),...brief.finds,...brief.ideas].map(({id,url,recommendationKey})=>({id,url,...(recommendationKey?{recommendationKey}:{})})).filter((item,index,items)=>items.findIndex(x=>x.id===item.id&&x.url===item.url&&x.recommendationKey===item.recommendationKey)===index);
   if(status.ideas.state!=='fresh')errors.push('ideas');

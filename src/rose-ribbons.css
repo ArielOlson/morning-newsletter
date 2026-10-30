@@ -46,3 +46,5 @@ input::placeholder,textarea::placeholder{color:var(--muted);opacity:1}
 @media print{#finds-panel[hidden],#ideas-panel[hidden]{display:block!important}.section-toggle-action{display:none}}
 
 .city-section #finds-panel>.source-note{color:#f0d0da}
+
+.idea-group+.idea-group{margin-top:42px;padding-top:30px;border-top:1px solid var(--line)}.idea-group-heading{margin-bottom:24px}.idea-group-heading>h3{font:500 italic 30px/1.2 var(--serif);color:var(--rose);margin:0 0 8px}.idea-group-heading>h3>span{font:500 12px var(--sans);margin-left:8px}.idea-group-heading>p,.idea-group-empty{font-size:12px;line-height:1.7;color:var(--muted)}

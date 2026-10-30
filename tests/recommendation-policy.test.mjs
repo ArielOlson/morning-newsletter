@@ -6,7 +6,7 @@ import {eligibleRecommendations} from '../scripts/recommendation-state.mjs';
 import {assertRecommendations} from '../scripts/recommendation-check.mjs';
 import {historyId} from '../src/history.mjs';
 import {emptyState} from '../src/sync.mjs';
-const card=(id,extra={})=>({id,title:id,url:'https://example.com/'+id,startDate:'2026-10-07',endDate:'2026-10-20',...extra});
+const card=(id,extra={})=>({id,title:id,url:'https://example.com/'+id,ideaGroup:'activity',startDate:'2026-10-07',endDate:'2026-10-20',...extra});
 test('sample sales remain capped at two even when they dominate priority and feed',()=>{
  const sales=Array.from({length:20},(_,i)=>card('260:'+i,{priority:1000}));
  const other=Array.from({length:18},(_,i)=>card('event'+i,{discovery:i<6}));
@@ -29,8 +29,9 @@ test('completed and visited preferences exclude renamed cards; unrelated state a
  assert.equal((await eligibleRecommendations(input,s)).length,3);
 });
 test('publication guard rejects previous-week repeats, excess sales, cross-section duplicates and short editions',()=>{
- const brief={finds:Array.from({length:20},(_,i)=>card('event'+i,{discovery:i<6})),ideas:Array.from({length:20},(_,i)=>({id:'idea'+i,title:'Idea',url:'https://example.com/idea'+i,costType:i<10?'free':'paid'})),status:{recommendations:{cooldownDays:7}}};
+ const brief={finds:Array.from({length:20},(_,i)=>card('event'+i,{discovery:i<6})),ideas:Array.from({length:20},(_,i)=>({id:'idea'+i,title:'Idea',url:'https://example.com/idea'+i,costType:i<10?'free':'paid',ideaGroup:i>=12?'dining':'activity'})),status:{recommendations:{cooldownDays:7}}};
  assert.doesNotThrow(()=>assertRecommendations(brief,[]));
+ assert.throws(()=>assertRecommendations({...brief,ideas:brief.ideas.map(x=>({...x,ideaGroup:'activity'}))},[]),/eight dining/);
  assert.throws(()=>assertRecommendations(brief,[brief.ideas[0]]),/seven days/);
  assert.throws(()=>assertRecommendations({...brief,ideas:brief.ideas.map((x,i)=>({...x,id:brief.finds[i].id,url:brief.finds[i].url}))},[]),/duplicated/);
  assert.throws(()=>assertRecommendations({...brief,ideas:[]},[]),/twenty eligible/);

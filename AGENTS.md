@@ -83,3 +83,10 @@ Only after verification, exclude ALL known historical recommendations for the re
 ## Complete package discovery (October 15, 2026)
 
 Use the versioned discovery query and coverage validator in scripts/package-scan.mjs for every configured Gmail account. Search order confirmations and ordinary on-the-way/ready-to-ship subjects as well as shipment notices, with no category/unread/domain exclusion. Read MIME content, reconcile every candidate to a parcel or a specific exclusion, and preserve the private audit in deliveries.local.json. Follow docs/daily-refresh.md; never call a scan complete when matches were silently omitted. Retain delivered parcels until explicit Received/Refunded choices, with stable identities and all durable choices preserved.
+
+
+## Compact reading and idea groups (October 30, 2026)
+
+What’s happening in NYC and Ideas for your free time are independently collapsible. They default closed on phones and open on desktop. Connected browsers save explicit open/closed preferences in encrypted private state; unconnected reading controls are temporary and do not claim a durable save. Preserve keyboard controls, section counts, hearts and completions.
+
+Every new edition must contain exactly eight ideas with `ideaGroup: "dining"` and twelve with `ideaGroup: "activity"`. Render these under Restaurants & dining for this week and Things to do. Dining includes restaurants and intentional food/coffee outings; activities include movies, theater, comedy, museums, galleries, walks and other experiences. The headings do not schedule a visit or permit weekly repeats: all twenty remain flexible and follow the existing seven-day cooldown across both sections. Keep at least eight free and eight paid ideas, aiming for ten each, with clear costs. Research additional dining options when fewer than eight qualify; never mislabel an activity to satisfy the quota. Old archives keep their original counts and content.

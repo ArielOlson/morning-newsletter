@@ -1,3 +1,4 @@
+import {DINING_COUNT,ACTIVITY_COUNT,ideaGroup} from '../src/idea-groups.mjs';
 import {safeURL,cityKeys} from './lib.mjs';
 import {IDEA_COUNT,MIN_FREE_IDEAS,MIN_PAID_IDEAS,ideaBudget} from './recommendation-policy.mjs';
 export function selectIdeas(items,day,calendar,zone='America/New_York',previous=[]){
@@ -11,11 +12,21 @@ export function selectIdeas(items,day,calendar,zone='America/New_York',previous=
   for(const key of ['when','timing','suggestedDate','startDate','endDate'])delete idea[key];
   return idea;
  });
- // Reserve room for both budgets, then preserve editorial/wish ranking within each.
- const selected=new Set();
- for(const [budget,count] of [['free',MIN_FREE_IDEAS],['paid',MIN_PAID_IDEAS]])for(const x of eligible.filter(x=>ideaBudget(x)===budget).slice(0,count))selected.add(x);
- for(const x of eligible)if(selected.size<IDEA_COUNT&&ideaBudget(x))selected.add(x);
- const free=eligible.filter(x=>selected.has(x)&&ideaBudget(x)==='free'),paid=eligible.filter(x=>selected.has(x)&&ideaBudget(x)==='paid');
- const result=[];while(free.length||paid.length){if(free.length)result.push(free.shift());if(paid.length)result.push(paid.shift());}
- return result;
+ // Solve both category and price quotas; unknown groups never silently count.
+ const buckets={dining:{free:[],paid:[]},activity:{free:[],paid:[]}};
+ for(const x of eligible){const group=ideaGroup(x),budget=ideaBudget(x);if(group&&budget)buckets[group][budget].push(x);}
+ let best=null;
+ for(let diningFree=0;diningFree<=DINING_COUNT;diningFree++)for(let activityFree=0;activityFree<=ACTIVITY_COUNT;activityFree++){
+  const totalFree=diningFree+activityFree;
+  if(totalFree<MIN_FREE_IDEAS||IDEA_COUNT-totalFree<MIN_PAID_IDEAS)continue;
+  const needs=[['dining','free',diningFree],['dining','paid',DINING_COUNT-diningFree],['activity','free',activityFree],['activity','paid',ACTIVITY_COUNT-activityFree]];
+  if(needs.some(([g,b,n])=>buckets[g][b].length<n))continue;
+  const chosen=new Set(needs.flatMap(([g,b,n])=>buckets[g][b].slice(0,n)));
+  const picks=eligible.filter(x=>chosen.has(x)),wishCount=picks.filter(x=>!x.suggested).length;
+  const score=picks.reduce((sum,x)=>sum+eligible.indexOf(x),0),balance=Math.abs(totalFree-10);
+  if(!best||wishCount>best.wishCount||wishCount===best.wishCount&&(balance<best.balance||balance===best.balance&&score<best.score))best={picks,wishCount,balance,score};
+ }
+ if(best)return best.picks;
+ // A partial result remains visibly partial and is blocked by publication guards.
+ return ['dining','activity'].flatMap(group=>eligible.filter(x=>ideaGroup(x)===group&&ideaBudget(x)).slice(0,group==='dining'?DINING_COUNT:ACTIVITY_COUNT));
 }

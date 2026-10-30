@@ -1,3 +1,4 @@
+import {ideaGroup} from './idea-groups.mjs';
 import {createSectionView} from './section-view.mjs';
 import {createSync,activeValues,importLegacy,credentialKey} from './sync.mjs';
 import {readPackages} from './packages.mjs';
@@ -125,7 +126,15 @@ function wireSave(container){container.querySelectorAll('[data-save]').forEach(b
   try{if(protectedBuild){const state=await sync.change(state=>{state.saved[id]=next.find(x=>x.id===id)||null;return state;});if(generation!==privacyGeneration)return;saved=activeValues(state.saved);}else{await persistSaved(next);saved=next;}toast(index>=0?'Removed from your saved finds.':'Saved.');}catch(error){toast(error.message);button.disabled=false;return;}
   renderFinds();renderIdeas();renderSaved();
 }));}
-function renderIdeas(){if(!brief)return;const items=(brief.ideas||[]).filter(x=>viewingArchive||!interactionHistory.completed[ideaKeys.get(x.id)]);$('#ideas-content').innerHTML=items.length?items.map(findHTML).join(''):empty('Room for a little inspiration','Your saved restaurant and activity ideas will appear when the timing fits.');wireSave($('#ideas-content'));wirePhotos($('#ideas-content'));wireCompletions($('#ideas-content'));wireLinks($('#ideas-content'));}
+function renderIdeas(){
+ if(!brief)return;
+ const items=(brief.ideas||[]).filter(x=>viewingArchive||!interactionHistory.completed[ideaKeys.get(x.id)]),root=$('#ideas-content');
+ const grouped=(brief.ideas||[]).every(x=>ideaGroup(x));
+ const group=(kind,title,description)=>{const list=items.filter(x=>ideaGroup(x)===kind);return `<section class="idea-group" aria-labelledby="ideas-${kind}-heading"><div class="idea-group-heading"><h3 id="ideas-${kind}-heading">${title} <span>${list.length}</span></h3><p>${description}</p></div><div class="idea-stories">${list.length?list.map(findHTML).join(''):'<p class="idea-group-empty">All done here. Your saved picks are still in Saved.</p>'}</div></section>`;};
+ root.innerHTML=grouped?group('dining',viewingArchive?'Restaurants & dining':'Restaurants & dining for this week','Places to eat, from coffee stops to sit-down dinners. Choose a day that suits you.')+group('activity','Things to do','Museums, movies, comedy, walks and more. Free and paid options, with flexible timing.'):`<div class="idea-stories">${items.length?items.map(findHTML).join(''):empty('Room for a little inspiration','Your saved restaurant and activity ideas will appear when the timing fits.')}</div>`;
+ $('#ideas-count').textContent=grouped?`${(brief.ideas||[]).filter(x=>ideaGroup(x)==='dining').length} dining ideas · ${(brief.ideas||[]).filter(x=>ideaGroup(x)==='activity').length} things to do`:`${(brief.ideas||[]).length} flexible ideas`;
+ wireSave(root);wirePhotos(root);wireCompletions(root);wireLinks(root);
+}
 function renderFinds(){if(!brief)return;
   $('#finds-content').innerHTML=brief.finds.length?brief.finds.map(findHTML).join(''):empty('No verified picks available.','NYC sources could not provide current events. Try the next edition.');wireSave($('#finds-content'));wirePhotos($('#finds-content'));wireLinks($('#finds-content'));$('#city-count').textContent=`${brief.finds.length} events for the days ahead`; 
 }
