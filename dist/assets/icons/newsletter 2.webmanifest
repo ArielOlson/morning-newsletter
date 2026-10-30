@@ -1,0 +1,31 @@
+{
+  "id": "../../",
+  "name": "The Morning Edit \u2014 For Ariel",
+  "short_name": "Morning Edit",
+  "description": "Ariel\u2019s personal daily morning newsletter.",
+  "start_url": "../../",
+  "scope": "../../",
+  "display": "standalone",
+  "background_color": "#f7dce4",
+  "theme_color": "#7d2645",
+  "icons": [
+    {
+      "src": "morning-edit-20261030-180.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "morning-edit-20261030-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "morning-edit-20261030-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
