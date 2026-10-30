@@ -25,7 +25,7 @@ Keep full details directly on the page: event dates/cost/neighborhood/source; fr
 
 ## Site identity and link previews
 
-Browser tab icons (SVG, ICO, and PNG), the Apple touch icon, and the 512px sharing icon are copied unchanged from `ArielOlson/arielolson.github.io/docs/assets/icons`. The newsletter has its own title, description, canonical URL, and scoped web manifest. Open Graph and Twitter summary cards use the square monogram icon with absolute public URLs so previews work outside the browser. Keep these tags in the static HTML head so sharing services can read them without running JavaScript.
+Browser tab icons (SVG, ICO, and PNG) and the 512px sharing icon are copied unchanged from `ArielOlson/arielolson.github.io/docs/assets/icons`. The newsletter Home Screen icon uses the blush-pink and burgundy ME serif monogram with a small ribbon, approved October 30. Its dated 180px Apple touch icon and 180/192/512px manifest icons live under `public/assets/icons/morning-edit-20261030-*.png`. Keep the manifest id, scope and start URL stable; retain the prior icon assets and preserve the private saved-state connection. Use new icon filenames when changing the icon so future Home Screen additions receive the current artwork. The newsletter has its own title, description, canonical URL, and scoped web manifest. Open Graph and Twitter summary cards use the square monogram icon with absolute public URLs so previews work outside the browser. Keep these tags in the static HTML head so sharing services can read them without running JavaScript.
 
 ## Private edition
 
