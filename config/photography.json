@@ -32,6 +32,17 @@
       "width": 6000,
       "height": 4000,
       "checkedAt": "2026-10-28T08:22:48.033Z"
+    },
+    {
+      "day": "2026-10-30",
+      "availableThrough": "2026-11-15",
+      "src": "https://images.pexels.com/photos/29146524/pexels-photo-29146524.jpeg?auto=compress&w=1600",
+      "url": "https://www.pexels.com/photo/autumn-in-new-york-city-park-with-golden-foliage-29146524/",
+      "alt": "Sunlight catches golden autumn leaves beside an East River path, with apartment buildings across the water.",
+      "source": "Oscar Portan / Pexels",
+      "width": 6000,
+      "height": 4000,
+      "checkedAt": "2026-10-30T16:26:43.231979+00:00"
     }
   ]
 }
