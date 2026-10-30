@@ -1,3 +1,4 @@
+import {createSectionView} from './section-view.mjs';
 import {createSync,activeValues,importLegacy,credentialKey} from './sync.mjs';
 import {readPackages} from './packages.mjs';
 import {createPackageView} from './package-view.js';
@@ -21,6 +22,7 @@ let brief = null, saved = [], toastTimer, viewingArchive=false, savedLoaded=fals
 const reminderKeys=new Map(),ideaKeys=new Map();
 let deviceReminders=[],editingReminderId=null;
 const sync=createSync({isCurrent:()=>!!password,onChange:()=>updateSyncStatus()});
+const sectionView=createSectionView({sync,notify:message=>toast(message)});
 let syncAttempted=false;
 function updateSyncStatus(){
  const el=document.querySelector('#sync-status');if(el)el.textContent=sync.connected?'Connected · your saves are kept privately on GitHub and restored on other connected devices.':'Connect cross-device saving before making changes. Existing browser-only items are kept for import.';
@@ -158,6 +160,7 @@ function renderHeader(){
   }
 }
 function render(){
+  sectionView.render();
   renderHeader();
   $('#edition-date').textContent=dateLabel(brief.day,{weekday:'long',month:'long',day:'numeric',year:'numeric'}).toUpperCase()+' · NEW YORK';
   $('#greeting').textContent=`${brief.name}’s Morning Edit`;
@@ -199,7 +202,7 @@ $('#reminder-form').addEventListener('submit',async e=>{
 });
 function lockNewsletter(message=''){
   if(!protectedBuild)return;
-  sync.clear();syncAttempted=false;$('#sync-key').value='';$('#sync-form-status').textContent='';packageView.clear();password=null;brief=null;saved=[];deviceReminders=[];editingReminderId=null;$('#reminder-form').reset();$('#form-status').textContent='';$('#device-reminders-list').replaceChildren();savedLoaded=false;viewingArchive=false;reminderKeys.clear();ideaKeys.clear();shipmentKeys.clear();privacyGeneration++;clearTimeout(lockTimer);
+  sync.clear();sectionView.clear();syncAttempted=false;$('#sync-key').value='';$('#sync-form-status').textContent='';packageView.clear();password=null;brief=null;saved=[];deviceReminders=[];editingReminderId=null;$('#reminder-form').reset();$('#form-status').textContent='';$('#device-reminders-list').replaceChildren();savedLoaded=false;viewingArchive=false;reminderKeys.clear();ideaKeys.clear();shipmentKeys.clear();privacyGeneration++;clearTimeout(lockTimer);
   document.body.classList.add('locked');
   for(const id of ['hero-photos','agenda-content','upcoming-preview','calendar-source','weather-content','reminders-content','finds-content','ideas-content','finance-content','deliveries-content','deliveries-source','week-content','saved-content','archive-list','archive-label'])$(`#${id}`).replaceChildren();
   document.querySelectorAll('dialog[open]').forEach(d=>d.close());

@@ -37,3 +37,12 @@ input::placeholder,textarea::placeholder{color:var(--muted);opacity:1}
 .single-photo .hero-photo figcaption{font:400 10px/1.5 var(--sans);text-align:right;padding-top:13px}
 .single-photo .hero-photo figcaption a{display:inline-flex;align-items:center;min-height:44px}
 .hero-photos.single-photo:empty{display:none}
+
+/* Compact reading controls keep the approved paper and ribbon treatment. */
+.section-toggle{font:inherit;color:inherit;letter-spacing:inherit;text-align:left;display:flex;align-items:center;justify-content:space-between;gap:18px;width:100%;min-height:44px;padding:0;border:0;background:transparent;cursor:pointer}
+.section-heading:has(.section-toggle)>div{width:100%}.section-toggle-action{font:500 12px/1.4 var(--sans);letter-spacing:0;white-space:nowrap;display:flex;align-items:center;gap:10px}.section-toggle [data-section-symbol]{font-size:24px}.section-toggle:disabled{opacity:.6;cursor:wait}.section-toggle:focus-visible{outline:2px solid currentColor;outline-offset:5px}.city-section .section-toggle{color:var(--paper)}
+.city-section:has(#finds-panel[hidden])>.section-heading,.ideas-paper:has(#ideas-panel[hidden])>.section-heading{margin-bottom:0}
+@media(max-width:767px){.section-toggle{gap:12px}.section-toggle-action{font-size:11px;gap:5px}}
+@media print{#finds-panel[hidden],#ideas-panel[hidden]{display:block!important}.section-toggle-action{display:none}}
+
+.city-section #finds-panel>.source-note{color:#f0d0da}

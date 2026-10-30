@@ -52,3 +52,12 @@ test('two devices preserve package aliases on conflict and reject outdated stage
  const clean=createSync({fetcher:r.fetch});await clean.connect('test',password);
  const rows=await packageRows([order,shipping],clean.state.packages);assert.equal(rows.length,1);assert.equal(rows[0].stage,'refund');
 });
+test('section preferences restore on clean devices and concurrent changes keep both sections',async()=>{
+ const r=await remote(),a=createSync({fetcher:r.fetch}),b=createSync({fetcher:r.fetch});
+ await a.connect('test',password);await b.connect('test',password);
+ await a.change(s=>{s.sectionPreferences={city:false};return s;});
+ r.conflict();await b.change(s=>{s.sectionPreferences??={};s.sectionPreferences.ideas=true;return s;});
+ const clean=createSync({fetcher:r.fetch});await clean.connect('test',password);
+ assert.deepEqual(clean.state.sectionPreferences,{city:false,ideas:true});assert.ok(clean.state.saved.other);
+ r.fail(true);await assert.rejects(clean.change(s=>{s.sectionPreferences.city=true;return s;}));assert.equal(clean.state.sectionPreferences.city,false);
+});
