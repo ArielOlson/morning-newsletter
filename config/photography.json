@@ -43,6 +43,17 @@
       "width": 6000,
       "height": 4000,
       "checkedAt": "2026-10-30T16:26:43.231979+00:00"
+    },
+    {
+      "day": "2026-11-02",
+      "availableThrough": "2026-11-20",
+      "src": "https://www.arielolson.com/morning-newsletter/assets/photography/2026-11-02-central-park-pool.jpg",
+      "url": "https://www.centralparknyc.org/activities/guides/fall-foliage-tracker",
+      "alt": "People cross a rustic wooden bridge beside the Pool in Central Park, framed by golden and orange autumn leaves.",
+      "source": "Central Park Conservancy",
+      "width": 2500,
+      "height": 1667,
+      "checkedAt": "2026-11-02T06:03:36.353780+00:00"
     }
   ]
 }
