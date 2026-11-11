@@ -2,9 +2,12 @@
 // CDN error must never count as a missing plaintext endpoint.
 export async function requestLive(path, website, {fetcher=fetch, sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms)), now=Date.now, cacheBust=true}={}) {
  for(let attempt=0;attempt<2;attempt++) {
-  const url=new URL(path,website);if(cacheBust)url.searchParams.set('verify',`${now()}-${attempt}`);
+  const url=new URL(path,website),base=new URL(website);
+  const hosted=url.origin===base.origin&&url.pathname.startsWith(base.pathname);
+  // Third-party photo URLs may be signed or reject unfamiliar query parameters.
+  if(cacheBust&&hosted)url.searchParams.set('verify',`${now()}-${attempt}`);
   let response;
-  try { response=await fetcher(url,{cache:'no-store',headers:{'Cache-Control':'no-cache'},signal:AbortSignal.timeout(20000)}); }
+  try { response=await fetcher(url,{cache:hosted?'no-store':'default',headers:hosted?{'Cache-Control':'no-cache'}:{},signal:AbortSignal.timeout(20000)}); }
   catch(error) { if(attempt)throw error;await sleep(2000);continue; }
   if(attempt||![408,429,500,502,503,504].includes(response.status))return response;
   const retry=response.headers.get('retry-after');

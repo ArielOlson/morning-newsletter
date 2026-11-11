@@ -19,3 +19,9 @@ test('plaintext checks use the canonical URL with cache revalidation and retain 
  const calls=[];const r=await requestLive('data/brief.json',site,{cacheBust:false,sleep:async()=>{},fetcher:async(u,options)=>{calls.push([u.href,options.headers['Cache-Control']]);return new Response('',{status:calls.length===1?503:404})}});
  assert.equal(r.status,404);assert.deepEqual(calls,[[site+'data/brief.json','no-cache'],[site+'data/brief.json','no-cache']]);
 });
+
+test('external artwork retains its exact URL and normal cache behavior',async()=>{
+ const src='https://photo.example/image.jpg?width=1600&signature=abc';let seen;
+ const r=await requestLive(src,site,{fetcher:async(u,options)=>{seen={url:u.href,cache:options.cache,headers:options.headers};return new Response('photo',{status:200})}});
+ assert.equal(r.status,200);assert.deepEqual(seen,{url:src,cache:'default',headers:{}});
+});
