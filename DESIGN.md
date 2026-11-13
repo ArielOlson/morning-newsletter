@@ -29,7 +29,7 @@ Browser tab icons (SVG, ICO, and PNG) and the 512px sharing icon are copied unch
 
 ## Private edition
 
-Production opens on a compact pink password screen using the existing serif and monogram. No personal content is present before successful decryption. Keep Apple Passwords autofill compatible, provide a Lock button, and lock after 15 minutes of inactivity or a reload. Do not call this native passkey authentication. The public local-development preview remains bound to loopback only.
+Production opens on a compact pink password screen using the existing serif and the same Ribbon edition newspaper icon as the newsletter Home Screen shortcut. No personal content is present before successful decryption. Keep Apple Passwords autofill compatible, provide a Lock button, and lock after 15 minutes of inactivity or a reload. Do not call this native passkey authentication. The public local-development preview remains bound to loopback only.
 
 
 ## Edition photography (Rosé Ribbons, October 23, 2026)
