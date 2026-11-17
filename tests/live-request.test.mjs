@@ -4,8 +4,8 @@ import {requestLive} from '../scripts/live-request.mjs';
 const site='https://example.test/newsletter/';
 test('transient CDN failure retries once with a new cache key and honors Retry-After',async()=>{
  const calls=[],waits=[];let time=100;
- const r=await requestLive('data/old.json',site,{now:()=>time++,sleep:async ms=>waits.push(ms),fetcher:async u=>{calls.push(u.href);return new Response('',{status:calls.length===1?503:404,headers:{'retry-after':'3'}})}});
- assert.equal(r.status,404);assert.equal(calls.length,2);assert.notEqual(calls[0],calls[1]);assert.deepEqual(waits,[3000]);
+ const r=await requestLive('data/old.json',site,{now:()=>time++,sleep:async ms=>waits.push(ms),fetcher:async u=>{calls.push(u.href);return new Response('',{status:calls.length===1?503:404,headers:{'retry-after':'45'}})}});
+ assert.equal(r.status,404);assert.equal(calls.length,2);assert.notEqual(calls[0],calls[1]);assert.deepEqual(waits,[45000]);
 });
 test('an exposed plaintext response and persistent server failures are never accepted as 404',async()=>{
  for(const status of [200,404,503]){let calls=0;const r=await requestLive('data/old.json',site,{sleep:async()=>{},fetcher:async()=>{calls++;return new Response('',{status})}});assert.equal(r.status,status);assert.equal(calls,status===503?2:1);}

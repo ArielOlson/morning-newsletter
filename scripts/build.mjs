@@ -17,6 +17,8 @@ if(await decrypt(envelope,config.password)!==text)throw new Error('Encrypted edi
 await rm('.cache/build-public',{recursive:true,force:true});
 await mkdir('.cache/build-public/assets',{recursive:true});
 await cp('public/assets','.cache/build-public/assets',{recursive:true});
+// Ship a local error page so missing URLs do not depend on the shared Pages error template.
+await cp("src/not-found.html",".cache/build-public/404.html");
 await build({publicDir:resolve('.cache/build-public')});
 await mkdir('dist/data',{recursive:true});
 await writeFile('dist/data/brief.enc.json',JSON.stringify(envelope));

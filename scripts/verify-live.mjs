@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import {requestLive} from './live-request.mjs';
+import {verifyPlaintextAbsent} from './live-privacy-check.mjs';
 import {readFile} from 'node:fs/promises';
 import {decrypt} from '../src/crypto.mjs';
 import {createHash} from 'node:crypto';
@@ -12,7 +13,7 @@ const prepared=await readFile('public/data/brief.json','utf8');
 // Pace the archive walk and release status-only responses so CDN errors do not
 // leave unread bodies/connections accumulating during verification.
 let lastRequest=0;
-const request=async(path,options)=>{const delay=750-(Date.now()-lastRequest);if(delay>0)await new Promise(r=>setTimeout(r,delay));lastRequest=Date.now();return requestLive(path,website,options);};
+const request=async(path,options)=>{const delay=5000-(Date.now()-lastRequest);if(delay>0)await new Promise(r=>setTimeout(r,delay));try{return await requestLive(path,website,options);}finally{lastRequest=Date.now();}};
 const expectStatus=async(path,status,message,options)=>{const r=await request(path,options);try{assert.equal(r.status,status,message);}finally{await r.body?.cancel();}};
 const encrypted=await request('data/brief.enc.json');
 assert.equal(encrypted.status,200,'Encrypted edition must load');
@@ -20,7 +21,7 @@ assert.ok(await decrypt(await encrypted.json(),password)===prepared,'Live editio
 const current=JSON.parse(prepared);
 const artworkPaths=new Set(current.photography?[]:[artworkForEdition(current.artwork).src]);
 const photoPaths=new Set(headerPhotosForEdition(current).map(p=>p.src));
-await expectStatus('data/brief.json',404,'Plaintext edition must not be publicly accessible',{cacheBust:false});
+const plaintextPaths=['data/brief.json'];
 const page=await request('./');assert.equal(page.status,200,'Newsletter must load');
 const html=await page.text();assert.match(html,/class="locked"/);
 assert.equal(html.includes(password),false,'Password must never appear in HTML');
@@ -39,8 +40,11 @@ for(const entry of liveIndex.editions){
  const historical=JSON.parse(liveText);
  if(!historical.photography)artworkPaths.add(artworkForEdition(historical.artwork).src);
  for(const p of headerPhotosForEdition(historical))photoPaths.add(p.src);
- await expectStatus(`data/editions/${entry.day}.json`,404,`Plaintext archive must return 404: ${entry.day}`,{cacheBust:false});
+ plaintextPaths.push(`data/editions/${entry.day}.json`);
 }
+console.log(`Encrypted current edition and ${liveIndex.editions.length} archives match. Checking canonical plaintext URLs.`);
+const privacy=await verifyPlaintextAbsent(plaintextPaths,request,{log:console.log});
+console.log(`Verified ${privacy.checked} plaintext URLs; ${privacy.retried} required one delayed retry.`);
 for(const path of artworkPaths){
  const r=await request(path);assert.equal(r.status,200,'Edition artwork must load');
  const hash=data=>createHash('sha256').update(data).digest('hex');

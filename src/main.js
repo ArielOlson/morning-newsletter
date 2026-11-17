@@ -155,6 +155,11 @@ function renderWeek(){
   for(const item of [...plans.map(x=>({...x,type:'plan'})),...reminders.map(x=>({...x,type:'reminder'}))]){const d=item.startDate<brief.day?brief.day:item.startDate;if(!groups.has(d))groups.set(d,[]);groups.get(d).push(item);}
   $('#week-content').innerHTML=(!brief.calendar.connected?'<p class="notice">Connect Apple or Google Calendar to include your upcoming plans here.</p>':brief.calendar.state!=='fresh'?'<p class="notice">Some calendar plans are unavailable. Check your calendar for your full schedule.</p>':'')+(groups.size?[...groups.entries()].sort(([a],[b])=>a.localeCompare(b)).map(([day,items])=>`<section class="week-day"><h3>${escape(dateLabel(day,{weekday:'long',month:'short',day:'numeric'}))}</h3>${items.map(e=>e.type==='plan'?planHTML(e):reminderHTML(e)).join('')}</section>`).join(''):empty('A fresh page ahead.','Your next two weeks of calendar plans and reminders will appear here.'));wireCompletions($('#week-content'));
 }
+// Site-owned photographs also resolve in the loopback preview before publication.
+function headerPhotoSrc(src){
+  const site='https://www.arielolson.com/morning-newsletter/';
+  return src.startsWith(site+'assets/') ? base+src.slice(site.length) : src;
+}
 function renderHeader(){
   const photos=headerPhotosForEdition(brief),container=$('#hero-photos');
   const single=brief.photography?.mode==='atmosphere';
@@ -162,7 +167,7 @@ function renderHeader(){
   container.setAttribute('aria-label',single?'Seasonal photograph':'Artwork from this edition');
   if(brief.photography){
     container.classList.remove('legacy-art');
-    container.innerHTML=photos.map(p=>`<figure class="hero-photo"><div class="hero-photo-frame"><img src="${escape(p.src)}" alt="${escape(p.alt)}" width="${Number.isInteger(p.width)&&p.width>0?p.width:1120}" height="${Number.isInteger(p.height)&&p.height>0?p.height:700}" fetchpriority="high" referrerpolicy="no-referrer"></div>${single?'':`<figcaption><a href="${escape(p.url)}" ${external}>${escape(p.title+' ↗')}</a></figcaption>`}</figure>`).join('');
+    container.innerHTML=photos.map(p=>`<figure class="hero-photo"><div class="hero-photo-frame"><img src="${escape(headerPhotoSrc(p.src))}" alt="${escape(p.alt)}" width="${Number.isInteger(p.width)&&p.width>0?p.width:1120}" height="${Number.isInteger(p.height)&&p.height>0?p.height:700}" fetchpriority="high" referrerpolicy="no-referrer"></div>${single?'':`<figcaption><a href="${escape(p.url)}" ${external}>${escape(p.title+' ↗')}</a></figcaption>`}</figure>`).join('');
     wirePhotos(container);
   }else{
     // Old editions keep the illustration that was actually published with them.

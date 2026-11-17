@@ -4,6 +4,7 @@ import {execFileSync} from 'node:child_process';
 import {createHash} from 'node:crypto';
 import {decrypt} from '../src/crypto.mjs';
 import {addDays} from './lib.mjs';
+import {requestLive} from './live-request.mjs';
 
 const cards=e=>[...(e.finds||[]),...(e.ideas||[]),...(e.recommendationExposures||[])];
 const identity=({id,url,recommendationKey})=>({id,url,...(recommendationKey?{recommendationKey}:{})});
@@ -84,8 +85,7 @@ export async function recoverPublicationGap(day,zone='America/New_York'){
   versions.push({sha,current,editions});
  }
  const get=async path=>{
-  const url=new URL(path,config.website);url.searchParams.set('historyCheck',Date.now());
-  const r=await fetch(url,{cache:'no-store',signal:AbortSignal.timeout(20000)});assert.equal(r.status,200,'Live history unavailable');
+  const r=await requestLive(path,config.website);assert.equal(r.status,200,`Live history unavailable: ${path}`);
   return decode(await r.text());
  };
  const live=await get('data/brief.enc.json'),liveIndex=await get('data/archive.enc.json');
