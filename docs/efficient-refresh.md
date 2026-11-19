@@ -88,3 +88,7 @@ For an explicitly requested code/tooling improvement, `pnpm publish:newsletter -
 The Pages workflow names its uploaded artifact by workflow run and attempt, then waits briefly for that exact artifact to appear before deployment. Retrying cannot confuse an earlier upload with the new attempt. Only the prepared encrypted dist site is uploaded.
 
 Numbered source conflict copies such as `scripts/example 2.mjs` are excluded from source fingerprints and publication. Preserve unexpected copies privately and reconcile the canonical file; never let them reintroduce old instructions or duplicate scripts.
+
+## macOS generated-output location
+
+On this Mac, Documents synchronization recreated hundreds of numbered copies inside `dist`, including encrypted archive copies, during a build. Builds now retain the conventional `dist` path as a local link to `~/Library/Caches/ArielMorningEdit/build-dist-*`, with temporary public staging in the same local cache. The entire previous output is preserved alongside it as `*-previous` during the one-time migration. All canonical current/archive payloads are authenticated and loaded before the move and written unchanged when content is unchanged. This does not move source research or user state, change hosting, or delete historical source assets. The publisher resolves the output link and copies ordinary files to its Git checkout; it never commits the local link. Subsequent builds reuse the same output location and avoid synchronized conflict copies.

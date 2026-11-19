@@ -2,7 +2,7 @@ import {assertActiveReferenceCoverage} from './active-package-references.mjs';
 import {loadPreparation, digest} from './prepared-research.mjs';
 import {isSourceDuplicate} from './workflow-utils.mjs';
 import {assertMaintenanceEdition} from './maintenance-check.mjs';
-import { readFile, writeFile, mkdir, readdir, cp, rm } from 'node:fs/promises';
+import { readFile, writeFile, mkdir, readdir, cp, rm, realpath } from 'node:fs/promises';
 import { execFileSync } from 'node:child_process';
 import { resolve, dirname, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -88,7 +88,7 @@ try{
  await rm(resolve(checkout,'dist'),{recursive:true,force:true});
  const copied=[];
  for(const path of paths){
-  try{await cp(resolve(root,path),resolve(checkout,path),{recursive:true,filter:source=>!isSourceDuplicate(relative(root,source))});copied.push(path);}catch(e){if(e.code==='ENOENT'&&path==='.node-version')continue;throw e;}
+  try{await cp(path==='dist'?await realpath(resolve(root,path)):resolve(root,path),resolve(checkout,path),{recursive:true,filter:source=>!isSourceDuplicate(relative(root,source))});copied.push(path);}catch(e){if(e.code==='ENOENT'&&path==='.node-version')continue;throw e;}
  }
  run('git',['add','--',...copied]);
  const staged=run('git',['diff','--cached','--name-only','--diff-filter=ACMR']).split('\n').filter(Boolean);

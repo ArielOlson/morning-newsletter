@@ -1,5 +1,6 @@
+import {ensureBuildLocation, localBuildCache} from './build-location.mjs';
 import {build} from 'vite';
-import {readFile,writeFile,mkdir,cp,rm} from 'node:fs/promises';
+import {readFile,writeFile,mkdir,cp,rm,mkdtemp} from 'node:fs/promises';
 import {resolve} from 'node:path';
 import {prepareArchive} from './archive.mjs';
 import {encrypt,decrypt} from '../src/crypto.mjs';
@@ -15,13 +16,16 @@ let envelope;
 try { const old=JSON.parse(await readFile('dist/data/brief.enc.json','utf8'));if(await decrypt(old,config.password)===text)envelope=old; } catch(error) { if(error.code!=='ENOENT')throw error; }
 envelope ||= await encrypt(text,config.password);
 if(await decrypt(envelope,config.password)!==text)throw new Error('Encrypted edition verification failed.');
-// Do not let Vite copy the plaintext public/data directory into the release, even briefly.
-await rm('.cache/build-public',{recursive:true,force:true});
-await mkdir('.cache/build-public/assets',{recursive:true});
-await cp('public/assets','.cache/build-public/assets',{recursive:true});
-// Ship a local error page so missing URLs do not depend on the shared Pages error template.
-await cp("src/not-found.html",".cache/build-public/404.html");
-await build({publicDir:resolve('.cache/build-public')});
+// Keep generated output and staging away from macOS Documents synchronization.
+// The prior output is preserved by ensureBuildLocation before any cleanup.
+const output = await ensureBuildLocation(process.cwd());
+await mkdir(localBuildCache(), {recursive:true});
+const staging = await mkdtemp(resolve(localBuildCache(), 'build-public-'));
+try {
+  await cp('public/assets', resolve(staging,'assets'), {recursive:true});
+  await cp('src/not-found.html', resolve(staging,'404.html'));
+  await build({publicDir:staging, outDir:output, emptyOutDir:true});
+} finally { await rm(staging,{recursive:true,force:true}); }
 await mkdir('dist/data',{recursive:true});
 await writeFile('dist/data/brief.enc.json',JSON.stringify(envelope));
 await mkdir('dist/data/editions',{recursive:true});
