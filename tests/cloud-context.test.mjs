@@ -1,0 +1,61 @@
+import {createHash} from 'node:crypto';
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {mkdtemp, mkdir, writeFile, readFile, rm, symlink} from 'node:fs/promises';
+import {tmpdir} from 'node:os';
+import {join} from 'node:path';
+import {packContext, restoreContext, validateContext, readRepositoryFile} from '../scripts/cloud-context.mjs';
+import {encrypt, decrypt} from '../src/crypto.mjs';
+import {publicationDeadline, deadlineResult} from '../scripts/publication-deadline.mjs';
+const password = 'test-only-long-encryption-password';
+test('private context restores in a fresh workspace with original evidence times and no secret file', async t => {
+  const root = await mkdtemp(join(tmpdir(), 'morning-cloud-'));
+  t.after(() => rm(root, {recursive:true,force:true}));
+  const source = join(root,'source'), target = join(root,'target');
+  await mkdir(join(source,'config'), {recursive:true});
+  const data = JSON.stringify({checkedAt:'2026-11-18T20:00:00Z',ideas:[{id:'stable-id',title:'Retained preference'}]});
+  await writeFile(join(source,'config/ideas.local.json'),data);
+  await writeFile(join(source,'config/security.local.json'),JSON.stringify({password}));
+  await writeFile(join(source,'config/unapproved.local.json'),'{}');
+  const packed = await packContext(source,password);
+  const plain = JSON.parse(await decrypt(packed.envelope,password));
+  assert.deepEqual(Object.keys(plain.files),['config/ideas.local.json']);
+  assert.equal(JSON.stringify(plain).includes(password),false);
+  await assert.rejects(restoreContext(target,packed.envelope,'wrong-secret'));
+  const restored = await restoreContext(target,packed.envelope,password);
+  assert.equal(restored.restored,1);
+  assert.equal(await readFile(join(target,'config/ideas.local.json'),'utf8'),data);
+  assert.equal((await restoreContext(target,packed.envelope,password)).restored,0);
+  await assert.rejects(readFile(join(target,'config/security.local.json')), {code:'ENOENT'});
+});
+test('restore refuses conflicting local state, path traversal, credential fields and symlinks', async t => {
+  const root=await mkdtemp(join(tmpdir(),'morning-conflict-'));
+  t.after(()=>rm(root,{recursive:true,force:true}));
+  const bundle={version:1,kind:'morning-edit-private-operations',createdAt:new Date().toISOString(),files:{'config/ideas.local.json':'{"ideas":[]}','config/calendar.local.json':'{"lookAheadDays":15}'}};
+  for(const files of [{'../escaped.json':'{}'},{'config/security.local.json':'{}'},{'config/ideas.local.json':'{"access_token":"secret"}'}])assert.throws(()=>validateContext({...bundle,files}));
+  await mkdir(join(root,'config'));
+  await writeFile(join(root,'config/ideas.local.json'),'{"ideas":[{"id":"keep"}]}');
+  await assert.rejects(restoreContext(root,await encrypt(JSON.stringify(bundle),password),password));
+  await assert.rejects(readFile(join(root,'config/calendar.local.json')), {code:'ENOENT'});
+  assert.equal(await readFile(join(root,'config/ideas.local.json'),'utf8'),'{"ideas":[{"id":"keep"}]}');
+  const other=join(root,'other');await mkdir(other);
+  const linked=join(root,'linked');await mkdir(linked);await symlink(other,join(linked,'config'),'dir');
+  await assert.rejects(restoreContext(linked,await encrypt(JSON.stringify(bundle),password),password),/symlink/);
+});
+test('publication deadline follows New York daylight saving and measures actual completion',()=>{
+  assert.equal(publicationDeadline(new Date('2026-10-31T06:00:00Z')).deadlineAt,'2026-10-31T09:00:00.000Z');
+  assert.equal(publicationDeadline(new Date('2026-11-19T06:00:00Z')).deadlineAt,'2026-11-19T10:00:00.000Z');
+  assert.equal(publicationDeadline(new Date('2026-11-01T04:30:00Z')).deadlineAt,'2026-11-01T10:00:00.000Z');
+  assert.equal(publicationDeadline(new Date('2027-03-14T05:30:00Z')).deadlineAt,'2027-03-14T09:00:00.000Z');
+  assert.equal(deadlineResult('2026-11-19T10:00:00Z','2026-11-19T09:59:59Z').publishedBeforeDeadline,true);
+  assert.deepEqual(deadlineResult('2026-11-19T10:00:00Z','2026-11-19T10:01:00Z'),{publishedBeforeDeadline:false,lateSeconds:60});
+});
+
+test('large GitHub files load through their authenticated blob when Contents omits inline data',async()=>{
+ const text='x'.repeat(1_100_000),bytes=Buffer.from(text),sha=createHash('sha1').update('blob '+bytes.length+'\0').update(bytes).digest('hex');
+ const metadata={sha,size:bytes.length,encoding:'none',content:''};
+ let calls=0;
+ const api=async path=>{calls++;assert.ok(path.endsWith('/git/blobs/'+sha));return {sha,encoding:'base64',content:bytes.toString('base64')};};
+ assert.equal(await readRepositoryFile(api,metadata),text);assert.equal(calls,1);
+ await assert.rejects(readRepositoryFile(async()=>({sha,encoding:'base64',content:Buffer.from('truncated').toString('base64')}),metadata));
+});

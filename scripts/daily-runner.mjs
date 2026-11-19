@@ -1,3 +1,4 @@
+import {publicationDeadline, deadlineResult} from './publication-deadline.mjs';
 import {loadPreparation, digest} from './prepared-research.mjs';
 import {waitForPages} from './pages-deployment.mjs';
 import {spawn} from 'node:child_process';
@@ -58,9 +59,10 @@ try {
   if(command==='start'){
     const run=await readJSON(path,{version:1,day,stages:{}});
     run.morningStartedAt ||= new Date().toISOString();
-    run.targetMinutes=15;
+    delete run.targetMinutes;
+    run.publicationDeadlineAt=publicationDeadline().deadlineAt;
     await atomicJSON(path,run);
-    console.log(JSON.stringify({day,startedAt:run.morningStartedAt,targetMinutes:15}));
+    console.log(JSON.stringify({day,startedAt:run.morningStartedAt,publicationDeadlineAt:run.publicationDeadlineAt}));
   }else if(command==='reviewed'){
     const key=args[1];if(!reviewKeys.includes(key))throw Error('Unknown editorial review stage');
     const editorial=await readJSON(directory+'/editorial.local.json',{});
@@ -102,6 +104,8 @@ try {
       await stage('verify', hash(publication.commit + await fingerprintPaths(['dist'])), () => execute('pnpm',['verify:live']), {maxAge: 15 * 60000});
       const completed=await readJSON(path,{});
       completed.morningCompletedAt=new Date().toISOString();
+      completed.publicationDeadlineAt ||= publicationDeadline().deadlineAt;
+      Object.assign(completed,deadlineResult(completed.publicationDeadlineAt,completed.morningCompletedAt));
       if(completed.morningStartedAt)completed.morningElapsedSeconds=(Date.now()-Date.parse(completed.morningStartedAt))/1000;
       await atomicJSON(path,completed);
     }
