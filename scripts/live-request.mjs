@@ -1,6 +1,7 @@
+import {transientStatus, retryDelay} from './retry-policy.mjs';
 // Bounded GET retries preserve strict status checks in the caller. A transient
 // CDN error must never count as a missing plaintext endpoint.
-export async function requestLive(path, website, {fetcher=fetch, sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms)), now=Date.now, cacheBust=true, attempts=2}={}) {
+export async function requestLive(path, website, {fetcher=fetch, sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms)), now=Date.now, cacheBust=true, attempts=2, onBackoff=()=>{}}={}) {
  if(![1,2].includes(attempts))throw new Error('Live requests permit at most one retry.');
  for(let attempt=0;attempt<attempts;attempt++) {
   const url=new URL(path,website),base=new URL(website);
@@ -8,14 +9,12 @@ export async function requestLive(path, website, {fetcher=fetch, sleep=ms=>new P
   // Third-party photo URLs may be signed or reject unfamiliar query parameters.
   if(cacheBust&&hosted)url.searchParams.set('verify',`${now()}-${attempt}`);
   let response;
-  try { response=await fetcher(url,{cache:hosted?'no-store':'default',headers:hosted?{'Cache-Control':'no-cache'}:{},signal:AbortSignal.timeout(20000)}); }
-  catch(error) { if(attempt+1===attempts)throw error;await sleep(30000);continue; }
-  if(attempt+1===attempts||![408,429,500,502,503,504].includes(response.status))return response;
-  const retry=response.headers.get('retry-after');
-  const seconds=retry===null?NaN:Number(retry);
-  const wait=Number.isFinite(seconds)?seconds*1000:Date.parse(retry)-now();
+  try { response=await fetcher(url,{cache:hosted?'no-store':'default',headers:hosted?{'Cache-Control':'no-cache'}:{},signal:AbortSignal.timeout(20000),redirect:'manual'}); }
+  catch(error) { if(attempt+1===attempts)throw error;onBackoff(30000);await sleep(30000);continue; }
+  if(attempt+1===attempts||!transientStatus(response.status))return response;
+  const wait=retryDelay(response.headers.get('retry-after'),{now:now()});
   // Long Retry-After responses remain failures for the caller to report.
   if(wait>60000)return response;
-  await response.body?.cancel();await sleep(Math.max(30000,Number.isFinite(wait)?wait:30000));
+  await response.body?.cancel();onBackoff(wait);await sleep(wait);
  }
 }

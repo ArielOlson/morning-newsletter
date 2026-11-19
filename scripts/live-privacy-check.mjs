@@ -1,3 +1,4 @@
+import {transientStatus, retryDelay} from './retry-policy.mjs';
 import assert from 'node:assert/strict';
 
 // Keep successful canonical checks only for this invocation. Retry each failed
@@ -15,8 +16,8 @@ export async function verifyPlaintextAbsent(paths,request,{sleep=ms=>new Promise
   const status=r.status,header=r.headers.get('retry-after');
   await r.body?.cancel();
   if(status===404){log(`Verified absent: ${path}`);return;}
-  if(!retry&&[408,429,500,502,503,504].includes(status)){
-   const seconds=header===null?NaN:Number(header),wait=Number.isFinite(seconds)?seconds*1000:Date.parse(header)-now();
+  if(!retry&&transientStatus(status)){
+   const wait=retryDelay(header,{now:now()});
    assert.ok(!(wait>60000),`Live privacy check unavailable (HTTP ${status}; Retry-After exceeds one minute): ${path}`);
    pending.push({path,after:now()+Math.max(30000,Number.isFinite(wait)?wait:30000)});log(`Retry queued after HTTP ${status}: ${path}`);return;
   }
