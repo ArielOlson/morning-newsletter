@@ -1,10 +1,12 @@
+import {activePackageReferences} from './active-package-references.mjs';
+import {readRecommendationState} from './recommendation-state.mjs';
 import {resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {readFile, open, unlink} from 'node:fs/promises';
 import {mergePackageEvidence} from './package-scan.mjs';
 import {dayInZone} from './lib.mjs';
 import {readJSON, atomicJSON} from './workflow-utils.mjs';
-import {createPackageQueue, claimRequest, queueNext, recordResult, reviewEvidence, finalizeQueue} from './package-queue.mjs';
+import {createPackageQueue, claimRequest, queueNext, recordResult, reviewEvidence, finalizeQueue, extendReferenceCoverage} from './package-queue.mjs';
 process.chdir(fileURLToPath(new URL('..', import.meta.url)));
 const day = dayInZone(new Date(), 'America/New_York');
 const path = '.cache/gmail-queue.local.json', command = process.argv[2] || 'status';
@@ -25,7 +27,10 @@ try {
       await atomicJSON(`.cache/daily/${priorQueue.day}/gmail-${priorQueue.runId}.local.json`,priorQueue);
       previous = {...previous, shipments: mergePackageEvidence(previous.shipments,priorQueue.baseline), scanAccounts: priorQueue.accounts};
     }
-    queue = createPackageQueue(accounts, previous, day);
+    const choices = await readRecommendationState();
+    const active = await activePackageReferences(previous.shipments, choices.state);
+    queue = createPackageQueue(accounts, previous, day, Date.now(), active);
+    queue.activeChoices = {sha: choices.sha, checkedAt: choices.checkedAt, count: active.length};
     if(priorQueue) {queue.interval=priorQueue.interval;queue.readyAt=Math.max(queue.readyAt,priorQueue.readyAt);}
     await atomicJSON(path, queue);
   }
@@ -43,6 +48,12 @@ try {
     if (command === 'record') recordResult(queue, value); else reviewEvidence(queue, value);
     await atomicJSON(path, queue); console.log(JSON.stringify(queueNext(queue)));
   } else if (command === 'finalize') {
+    // Undo or a retained return added on another device must be searched too.
+    const choices = await readRecommendationState();
+    const active = await activePackageReferences(queue.baseline, choices.state);
+    extendReferenceCoverage(queue, active);
+    queue.activeChoices = {sha: choices.sha, checkedAt: choices.checkedAt, count: active.length};
+    await atomicJSON(path, queue);
     const snapshot = finalizeQueue(queue, accounts);
     await atomicJSON('config/deliveries.local.json', snapshot);
     queue.completedAt = snapshot.checkedAt; await atomicJSON(path, queue);

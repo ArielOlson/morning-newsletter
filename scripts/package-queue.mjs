@@ -16,16 +16,16 @@ export function referenceQueries(shipments) {
   if (group.length) groups.push('{'+group.join(' ')+'}');
   return groups;
 }
-export function createPackageQueue(accounts, previous, day, now = Date.now()) {
+export function createPackageQueue(accounts, previous, day, now = Date.now(), activeShipments = previous.shipments || []) {
   assert.ok(accounts.length && new Set(accounts).size === accounts.length);
-  const searches = [PACKAGE_DISCOVERY_QUERY, ...referenceQueries(previous.shipments || [])];
+  const searches = [PACKAGE_DISCOVERY_QUERY, ...referenceQueries(activeShipments)];
   const queues = accounts.map(account => {
     const prior = previous.scanAccounts?.find(a => a.account === account);
     return {account, readIds: [...(prior?.readIds || [])], reviews: structuredClone(prior?.reviews || []), searches: []};
   });
   // Broad searches in every account first, then reference groups. No category/domain filters.
   searches.forEach(query => queues.forEach(a => a.searches.push({id: hash(JSON.stringify([a.account, query])), query, pages: [], complete: false, failures: 0})));
-  return {version: 1, runId: randomUUID(), scope: previous.scope || 'All configured email accounts', day, startedAt: new Date(now).toISOString(), interval: 15000, readyAt: now, accounts: queues, inFlight: null, references: [...new Set((previous.shipments || []).flatMap(s => [s.orderNumber,s.trackingNumber]).filter(Boolean).map(String))], baseline: structuredClone(previous.shipments || [])};
+  return {version: 1, runId: randomUUID(), scope: previous.scope || 'All configured email accounts', day, startedAt: new Date(now).toISOString(), interval: 15000, readyAt: now, accounts: queues, inFlight: null, references: [...new Set(activeShipments.flatMap(s => [s.orderNumber,s.trackingNumber]).filter(Boolean).map(String))], knownReferences: [...new Set((previous.shipments || []).flatMap(s => [s.orderNumber,s.trackingNumber]).filter(Boolean).map(String))], baseline: structuredClone(previous.shipments || [])};
 }
 export function queueNext(queue, now = Date.now()) {
   if (queue.blocked) return {state: 'blocked', reason: queue.blocked};
@@ -97,12 +97,20 @@ export function reviewEvidence(queue, evidence) {
   }
   queue.baseline = mergePackageEvidence(queue.baseline, evidence.shipments || []);
   const references = [...new Set(queue.baseline.flatMap(s => [s.orderNumber,s.trackingNumber]).filter(Boolean).map(String))];
+  const known = queue.knownReferences || queue.references;
+  extendReferenceCoverage(queue, references.filter(value => !known.includes(value)).map(orderNumber => ({orderNumber})));
+  queue.knownReferences = references;
+}
+export function extendReferenceCoverage(queue, shipments) {
+  const references = [...new Set(shipments.flatMap(s => [s.orderNumber,s.trackingNumber]).filter(Boolean).map(String))];
   const added = references.filter(value => !queue.references.includes(value));
   for (const query of referenceQueries(added.map(orderNumber => ({orderNumber})))) for (const account of queue.accounts) {
     if (!account.searches.some(q => q.query === query)) account.searches.push({id: hash(JSON.stringify([account.account,query])), query, pages: [], complete: false, failures: 0});
   }
-  queue.references = references;
+  queue.references = [...new Set([...queue.references, ...references])];
+  return added.length;
 }
+
 export function finalizeQueue(queue, expectedAccounts, now = Date.now()) {
   assert.ok(!queue.blocked && !queue.inFlight && !queue.completedAt, 'Incomplete or already finalized package scan');
   const snapshot = {scope: queue.scope, scanVersion: PACKAGE_SCAN_VERSION, checkedAt: new Date(now).toISOString(), scanAccounts: queue.accounts.map(a => ({account: a.account, readIds: a.readIds, reviews: a.reviews, searches: a.searches.map(q => ({query: q.query, complete: q.complete, ...(q.nextPageToken ? {nextPageToken: q.nextPageToken} : {}), checkedAt: q.pages.at(-1)?.checkedAt, messageIds: [...new Set(q.pages.flatMap(p => p.messageIds))]}))})), shipments: queue.baseline};
