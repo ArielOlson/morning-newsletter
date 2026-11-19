@@ -22,7 +22,8 @@
     "daily": "node scripts/daily-runner.mjs",
     "package:queue": "node scripts/package-queue-cli.mjs",
     "research:plan": "node scripts/research-plan.mjs",
-    "research:check": "node scripts/research-plan.mjs --check-links"
+    "research:check": "node scripts/research-plan.mjs --check-links",
+    "research:prepare": "node scripts/prepare-research-cli.mjs"
   },
   "dependencies": {
     "three": "^0.180.0",

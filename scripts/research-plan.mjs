@@ -1,3 +1,4 @@
+import {preparationDay} from './prepared-research.mjs';
 import {resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {dayInZone, addDays, selectCity, cityKeys} from './lib.mjs';
@@ -29,7 +30,7 @@ export async function probe(url, image = false, fetcher = fetch) {
 }
 async function main() {
   process.chdir(fileURLToPath(new URL('..', import.meta.url)));
-  const day = dayInZone(new Date(), 'America/New_York'), old = await readJSON('public/data/brief.json', {});
+  const day = preparationDay(process.argv.slice(2)), old = await readJSON('public/data/brief.json', {});
   const history = await recommendationHistory(day, old), choices = await readRecommendationState();
   const events = (await readJSON('config/nyc-events.json', {events: []})).events;
   const interests = await readJSON('config/interests.local.json', {});
@@ -40,8 +41,9 @@ async function main() {
   const cards = [...city.items, ...ideas], fingerprint = hash(JSON.stringify([cards, header]));
   const report = {version: 1, day, checkedAt: new Date().toISOString(), fingerprint, stateCheckedAt: choices.checkedAt, city: {selected: city.items.length, issues: city.issues}, ideas: inventory(pool, ideas, day, [...history.items, ...city.items]), cards, header};
   const path = `.cache/daily/${day}/research.local.json`;
+  const previous = await readJSON(path, {}), cached = previous.fingerprint === fingerprint ? previous.links || [] : [];
+  if (cached.length) report.links = cached;
   if (process.argv.includes('--check-links')) {
-    const previous = await readJSON(path, {}), cached = previous.fingerprint === fingerprint ? previous.links || [] : [];
     const links = [...new Map([...cards.flatMap(x => [{url: x.url, image: false}, {url: x.image, image: true}]), ...header.map(x => ({url: x.src, image: true}))].filter(x => x.url).map(x => [JSON.stringify(x), x])).values()];
     report.links = await mapBounded(links, 2, async item => {
       const old = cached.find(x => x.url === item.url && x.image === item.image && x.ok && Date.now() - Date.parse(x.checkedAt) < 3600000);

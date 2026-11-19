@@ -21,3 +21,7 @@ Append an entry to config/artwork.json under artworks: day, src (relative assets
 Run pnpm refresh, inspect status.artwork and brief.artwork, then use the normal encrypted build/publication process. The selected artwork is stored with the encrypted edition, so opening a past edition restores its own image. Images themselves are nonprivate decorative public assets. Browser and live checks verify that current and archived artwork loads and that the deployed image bytes match the build.
 
 If generation fails, retry a transient failure once. Keep the previous valid image with its original date/time; the refresh marks artwork stale or unavailable rather than pretending it was generated today. Publish the useful newsletter with that honest status and report the artwork failure. Do not use a paid API fallback without Ariel's authorization.
+
+## Selecting tomorrow's scene in advance
+
+For evening preparation, keep `day` as the actual first-selection New York date and use optional `editionDay` for the first intended edition date. The selector will not use it before that date. Later eligible fallback retains the original dates. Keep actual checkedAt, native dimensions and availableThrough. Review the original and source in the evening, then inspect the actual built phone and desktop header in the morning. Never backdate/future-date evidence or overwrite older artwork.

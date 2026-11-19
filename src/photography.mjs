@@ -6,9 +6,9 @@ export function selectHeaderPhotos(brief, catalog = {}) {
   // Choose independent photography, including when a card uses a resized variant.
   const cardImages=new Set([...(brief.finds||[]),...(brief.ideas||[])].map(item=>imageIdentity(item.image)).filter(Boolean));
   return (catalog.photos || []).filter(photo => valid(photo) && photo.source && !cardImages.has(imageIdentity(photo.src)) &&
-    /^\d{4}-\d{2}-\d{2}$/.test(photo.day) && photo.day <= brief.day &&
+    /^\d{4}-\d{2}-\d{2}$/.test(photo.day) && photo.day <= brief.day && (!photo.editionDay || photo.editionDay <= brief.day) &&
     /^\d{4}-\d{2}-\d{2}$/.test(photo.availableThrough) && photo.availableThrough >= brief.day)
-    .sort((a,b) => b.day.localeCompare(a.day)).slice(0,1);
+    .sort((a,b) => (b.editionDay || b.day).localeCompare(a.editionDay || a.day) || b.day.localeCompare(a.day)).slice(0,1);
 }
 export function headerPhotosForEdition(brief) {
   const single = brief.photography?.mode === 'atmosphere';

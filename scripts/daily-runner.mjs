@@ -1,3 +1,4 @@
+import {loadPreparation, digest} from './prepared-research.mjs';
 import {waitForPages} from './pages-deployment.mjs';
 import {spawn} from 'node:child_process';
 import {fileURLToPath} from 'node:url';
@@ -11,6 +12,8 @@ import {fingerprintPaths, runStage} from './daily-stages.mjs';
 process.chdir(fileURLToPath(new URL('..', import.meta.url)));
 const day = dayInZone(new Date(), 'America/New_York'), directory = `.cache/daily/${day}`, path = directory + '/run.local.json';
 const args = process.argv.slice(2).filter(x => x !== '--'), command = args[0] || 'status';
+if(args.includes('--prepared'))process.env.MORNING_PREPARED='1';
+const usingPreparation = process.env.MORNING_PREPARED === '1';
 const execute = (program, arguments_, capture = false) => new Promise((resolve, reject) => {
   const child = spawn(program, arguments_, {stdio: capture ? ['ignore','pipe','pipe'] : ['ignore','inherit','inherit'], timeout: program==='gh'?30000:180000}); let output = '';
   if (capture) { child.stdout.on('data', b => output += b); child.stderr.resume(); }
@@ -47,11 +50,18 @@ async function preflight() {
     if(!scan || dayInZone(new Date(scan.checkedAt),'America/New_York')!==day)needsCalendarAttemptRecord=true;
   }
   if(needsCalendarAttemptRecord)await checkReviews(['calendarAttempts']);
-  await checkReviews(['chatReview','financeReview','recommendationFacts']);
+  await checkReviews(['chatReview','financeReview', ...(usingPreparation ? [] : ['recommendationFacts'])]);
+  return usingPreparation ? await loadPreparation(day) : null;
 }
 let lock;
 try {
-  if(command==='reviewed'){
+  if(command==='start'){
+    const run=await readJSON(path,{version:1,day,stages:{}});
+    run.morningStartedAt ||= new Date().toISOString();
+    run.targetMinutes=15;
+    await atomicJSON(path,run);
+    console.log(JSON.stringify({day,startedAt:run.morningStartedAt,targetMinutes:15}));
+  }else if(command==='reviewed'){
     const key=args[1];if(!reviewKeys.includes(key))throw Error('Unknown editorial review stage');
     const editorial=await readJSON(directory+'/editorial.local.json',{});
     editorial[key]={complete:true,checkedAt:new Date().toISOString(),input:await reviewFingerprint(key)};
@@ -62,12 +72,12 @@ try {
     if (!['prepare','release'].includes(command)) throw Error('Use daily status, prepare or release');
     await atomicJSON(directory + '/.directory.local.json', {day});
     lock = await open('.cache/daily-run.lock', 'wx', 0o600);await lock.writeFile(JSON.stringify({pid:process.pid,startedAt:new Date().toISOString()}));
-    await preflight();
+    const preparation = await preflight();
     const source = await fingerprintPaths(['src','scripts','tests','package.json','pnpm-lock.yaml','index.html','vite.config.js']);
     const historyFiles=(await readdir('dist/data/editions')).filter(x=>x.endsWith('.enc.json')&&!x.startsWith(day)).map(x=>'dist/data/editions/'+x);
-    const input = await fingerprintPaths(['config',...historyFiles]);
+    const input = await fingerprintPaths(['config',...historyFiles,...(usingPreparation ? [`.cache/prepared/${day}/research.local.json`] : [])]);
     const stage = (name, key, work, options) => runStage(path, name, key, work, options).then(r => console.log(`${name}: ${r.reused ? 'reused verified result' : 'complete'}`));
-    await stage('refresh', hash(day + source + input), () => execute('pnpm',['refresh']), {maxAge: 60 * 60000, outputFingerprint: () => fingerprintPaths(['public/data/brief.json'])});
+    await stage('refresh', hash(day + source + input + (preparation ? digest(preparation.selection) : 'full-refresh')), () => execute('pnpm',['refresh']), {maxAge: 60 * 60000, outputFingerprint: () => fingerprintPaths(['public/data/brief.json'])});
     const brief = await readJSON('public/data/brief.json');
     if (brief.day !== day || brief.errors?.length) throw Error('Resolve edition source/selection failures before publishing');
     assertRecommendations(brief, (await recommendationHistory(day)).items);
@@ -90,6 +100,10 @@ try {
         rerun:id=>execute('gh',['run','rerun',String(id),'--repo',config.repository,'--failed'],true)
       }));
       await stage('verify', hash(publication.commit + await fingerprintPaths(['dist'])), () => execute('pnpm',['verify:live']), {maxAge: 15 * 60000});
+      const completed=await readJSON(path,{});
+      completed.morningCompletedAt=new Date().toISOString();
+      if(completed.morningStartedAt)completed.morningElapsedSeconds=(Date.now()-Date.parse(completed.morningStartedAt))/1000;
+      await atomicJSON(path,completed);
     }
   }
 } catch (error) { console.error(error.code === 'EEXIST' ? 'A daily run is already active; inspect a stale lock before restarting.' : error.message); process.exitCode = 1; }

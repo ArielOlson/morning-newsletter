@@ -1,3 +1,5 @@
+import {assertActiveReferenceCoverage} from './active-package-references.mjs';
+import {loadPreparation, digest} from './prepared-research.mjs';
 import {isSourceDuplicate} from './workflow-utils.mjs';
 import {assertMaintenanceEdition} from './maintenance-check.mjs';
 import { readFile, writeFile, mkdir, readdir, cp, rm } from 'node:fs/promises';
@@ -41,9 +43,15 @@ try{
  assertPackageScan(deliveryScan,connections.gmail.map(x=>x.account));
  if(JSON.stringify(deliverySnapshot(deliveryScan,new Date(brief.generatedAt)))!==JSON.stringify(brief.deliveries))throw new Error('Package scan changed after refresh. Refresh and rebuild before publishing.');
  if(brief.day!==dayInZone(new Date(),brief.timezone)||!Number.isFinite(age)||age<0||age>90*60*1000)throw new Error('Refresh today’s edition before publishing (maximum age: 90 minutes).');
- assertRecommendations(brief,(await recommendationHistory(brief.day,{},brief.timezone)).items);
+ const history=await recommendationHistory(brief.day,{},brief.timezone);
+ assertRecommendations(brief,history.items);
  const choices=await readRecommendationState(),cards=[...brief.finds,...brief.ideas];
+ await assertActiveReferenceCoverage(deliveryScan,choices.state);
  if((await eligibleRecommendations(cards,choices.state)).length!==cards.length)throw Error('A recommendation was completed or excluded since refresh. Refresh and rebuild before publishing.');
+ if(brief.status?.preparation){
+  const prepared=await loadPreparation(brief.day,{history,choices});
+  if(brief.status.preparation.fingerprint!==prepared.bundle.fingerprint||digest([brief.finds,brief.ideas,brief.photography.photos])!==digest([prepared.selection.city.items,prepared.selection.ideas,[prepared.selection.photo]]))throw Error('Prepared selection changed; refresh and rebuild before publishing');
+ }
  }else await readRecommendationState();
  const security=await optionalJSON(resolve(root,'config/security.local.json'));
  if(!security?.password)throw new Error('Newsletter encryption must be configured before publication.');

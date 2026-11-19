@@ -1,3 +1,4 @@
+import {loadPreparation} from './prepared-research.mjs';
 import {DINING_COUNT,ACTIVITY_COUNT,ideaGroup} from '../src/idea-groups.mjs';
 import {IDEA_COUNT,MIN_FREE_IDEAS,MIN_PAID_IDEAS,ideaBudget} from './recommendation-policy.mjs';
 import {readCalendarSource} from './calendar-source.mjs';
@@ -45,7 +46,9 @@ async function main() {
   const old = await readJSON('public/data/brief.json', {});
   const rotation=await recommendationHistory(day,old,prefs.timezone,7);
   const choices=await readRecommendationState();
+  const prepared = process.env.MORNING_PREPARED === '1' ? await loadPreparation(day, {history: rotation, choices}) : null;
   const status = {}, errors = [];
+  if (prepared) status.preparation = {day, fingerprint: prepared.bundle.fingerprint, preparedAt: prepared.bundle.sealedAt, factsReviewedAt: prepared.bundle.review.checkedAt};
   async function collect(name, get, fallback) {
     try { const data = await get(); status[name] = { state: 'fresh', updatedAt: now.toISOString() }; return data; }
     catch { errors.push(name); status[name] = { state: fallback ? 'stale' : 'unavailable', updatedAt: old.status?.[name]?.updatedAt || null }; return fallback ?? null; }
@@ -69,7 +72,7 @@ async function main() {
   const plans = results.slice(1,1+calendar.urls.length).flatMap(x=>x||[]);
   const personal = events.filter(e => !e.category || e.category === 'personal');
   const cityEvents = events.filter(e => e.category && e.category !== 'personal' && (e.endDate || e.startDate) >= day && e.startDate <= addDays(day,14,prefs.timezone)).map(e => ({...e,kind:'event',source:e.source || 'Your picks'}));
-  const city=selectCity(await eligibleRecommendations([...cityEvents,...(games||[]),...(sales||[])],choices.state),day,interests,rotation.items);
+  const city=prepared?.selection.city || selectCity(await eligibleRecommendations([...cityEvents,...(games||[]),...(sales||[])],choices.state),day,interests,rotation.items);
   status.recommendations={state:'fresh',updatedAt:choices.checkedAt,historyDays:rotation.days,cooldownDays:7,maxSampleSales:2};
   if(rotation.recovery)status.recommendations.recovery=rotation.recovery;
   status.city={state:city.issues.length?'partial':'fresh',updatedAt:now.toISOString(),comparedWith:rotation.days[0],repeats:city.repeats,discoveryCount:city.discoveryCount,issues:city.issues};
@@ -78,8 +81,8 @@ async function main() {
     weather, calendar: { connected:calendar.urls.length>0, sourceCount:calendar.urls.length, state:calendar.urls.length ? (plans.length || !errors.some(e=>e.startsWith('calendar')) ? (errors.some(e=>e.startsWith('calendar')) ? 'partial' : 'fresh') : 'unavailable') : 'not-connected', events:mergeCalendarPlans(plans) },
     reminders:remindersFor(personal,day,prefs.timezone), upcomingReminders:personal.filter(e=>e.startDate>day && e.startDate<=addDays(day,14,prefs.timezone)),
     finds:city.items, finance, deliveries:packages, directories:sources.directories, status, errors };
-  brief.ideas=selectIdeas(await eligibleRecommendations((await readJSON('config/ideas.local.json',{ideas:[]})).ideas,choices.state),day,brief.calendar,prefs.timezone,[...rotation.items,...city.items]);
-  brief.photography={mode:'atmosphere',photos:selectHeaderPhotos(brief,await readJSON('config/photography.json',{photos:[]}))};
+  brief.ideas=prepared?.selection.ideas || selectIdeas(await eligibleRecommendations((await readJSON('config/ideas.local.json',{ideas:[]})).ideas,choices.state),day,brief.calendar,prefs.timezone,[...rotation.items,...city.items]);
+  brief.photography={mode:'atmosphere',photos:prepared ? [prepared.selection.photo] : selectHeaderPhotos(brief,await readJSON('config/photography.json',{photos:[]}))};
   status.photography={state:brief.photography.photos.length===1?'selected':'unavailable',count:brief.photography.photos.length};
   if(!brief.photography.photos.length)errors.push('photography');
   const freeIdeas=brief.ideas.filter(x=>ideaBudget(x)==='free').length,paidIdeas=brief.ideas.filter(x=>ideaBudget(x)==='paid').length;
