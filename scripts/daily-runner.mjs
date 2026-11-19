@@ -1,3 +1,4 @@
+import {waitForPages} from './pages-deployment.mjs';
 import {spawn} from 'node:child_process';
 import {fileURLToPath} from 'node:url';
 import {open, unlink, readdir} from 'node:fs/promises';
@@ -5,7 +6,7 @@ import {dayInZone} from './lib.mjs';
 import {assertPackageScan} from './package-scan.mjs';
 import {assertRecommendations} from './recommendation-check.mjs';
 import {recommendationHistory} from './city-history.mjs';
-import {readJSON, atomicJSON, sleep, hash} from './workflow-utils.mjs';
+import {readJSON, atomicJSON, hash} from './workflow-utils.mjs';
 import {fingerprintPaths, runStage} from './daily-stages.mjs';
 process.chdir(fileURLToPath(new URL('..', import.meta.url)));
 const day = dayInZone(new Date(), 'America/New_York'), directory = `.cache/daily/${day}`, path = directory + '/run.local.json';
@@ -79,16 +80,15 @@ try {
       await stage('publish', buildInput, () => execute('pnpm',['publish:newsletter']), {maxAge: 0});
       const publication = await readJSON('.cache/publish-state.json');
       const config = await readJSON('config/publishing.json');
-      await stage('pages', publication.commit, async () => {
-        const until = Date.now() + 10 * 60000;
-        while (Date.now() < until) {
-          const data = JSON.parse(await execute('gh',['run','list','--repo',config.repository,'--workflow','static.yml','--commit',publication.commit,'--limit','10','--json','headSha,status,conclusion,databaseId'], true));
-          const run = data.find(x => x.headSha === publication.commit);
-          if (run?.status === 'completed') { if (run.conclusion !== 'success') throw Error('The exact Pages deployment failed'); return; }
-          await sleep(10000);
-        }
-        throw Error('Pages has not finished; resume release to check this commit again');
-      });
+      await stage('pages', publication.commit, () => waitForPages({
+        commit:publication.commit, checkpoint:directory+'/pages-retry.local.json',
+        getRun:async()=>{
+          const data=JSON.parse(await execute('gh',['api',`repos/${config.repository}/actions/workflows/static.yml/runs?head_sha=${publication.commit}&per_page=5`],true));
+          return data.workflow_runs.find(x=>x.head_sha===publication.commit);
+        },
+        failedLog:id=>execute('gh',['run','view',String(id),'--repo',config.repository,'--log-failed'],true),
+        rerun:id=>execute('gh',['run','rerun',String(id),'--repo',config.repository,'--failed'],true)
+      }));
       await stage('verify', hash(publication.commit + await fingerprintPaths(['dist'])), () => execute('pnpm',['verify:live']), {maxAge: 15 * 60000});
     }
   }

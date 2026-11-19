@@ -49,7 +49,7 @@ pnpm daily release
 
 The visual review is bound to the actual header selection and built page. Release reuses unchanged, recent preparation stages, always runs the publisher's fresh private-state/remote/coverage guards, waits for the Pages workflow for the exact commit, and verifies live. A changed config, missing output, failed stage, expired refresh or new commit invalidates the appropriate checkpoint. Once daily release succeeds, no additional manual refresh/build/push/verify loop is needed.
 
-The runner records timings and stage outcomes in `.cache/daily/YYYY-MM-DD/run.local.json`. Re-running resumes valid stages; it does not weaken the 90-minute publication freshness limit. The publisher still refuses unreconciled remote changes and force-pushes. Retry a transient deployment failure once; retain the prepared results and report an unresolved failure.
+The runner records timings and stage outcomes in `.cache/daily/YYYY-MM-DD/run.local.json`. Re-running resumes valid stages; it does not weaken the 90-minute publication freshness limit. The publisher still refuses unreconciled remote changes and force-pushes. The runner retries a recognized transient Pages artifact/hosting failure once per commit, preserving that retry allowance across resumes. Unknown failures, cancellations and a failed retry stop for inspection; retain prepared results and report an unresolved failure.
 
 ## Live verification and immutable history
 
@@ -62,3 +62,5 @@ Builds authenticate/decrypt existing archives before retaining identical encrypt
 ## Code-only maintenance
 
 For an explicitly requested code/tooling improvement, `pnpm publish:newsletter --maintenance` can publish without pretending yesterday's edition is new. It compares the prepared current edition, archive membership, timestamps and every historical plaintext against the immutable previously published commit. Any content change fails. It still reads private state, enforces privacy/remote guards, deploys to GitHub and requires exact-commit Pages success plus `pnpm verify:live`. This mode must never substitute for a daily refresh.
+
+The Pages workflow names its uploaded artifact by workflow run and attempt, then waits briefly for that exact artifact to appear before deployment. Retrying cannot confuse an earlier upload with the new attempt. Only the prepared encrypted dist site is uploaded.

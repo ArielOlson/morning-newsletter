@@ -5,6 +5,7 @@ on:
   workflow_dispatch:
 permissions:
   contents: read
+  actions: read
   pages: write
   id-token: write
 concurrency:
@@ -14,6 +15,8 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    env:
+      PAGES_ARTIFACT: github-pages-${{ github.run_id }}-${{ github.run_attempt }}
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -28,6 +31,29 @@ jobs:
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
+          name: ${{ env.PAGES_ARTIFACT }}
+      - name: Wait for uploaded artifact visibility
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          for attempt in {1..12}; do
+            if artifact_count=$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/artifacts" --paginate | jq -s --arg name "$PAGES_ARTIFACT" '[.[].artifacts[] | select(.name == $name and .expired == false)] | length'); then
+              if [ "$artifact_count" -eq 1 ]; then
+                echo "Prepared site artifact is available."
+                exit 0
+              fi
+              if [ "$artifact_count" -gt 1 ]; then
+                echo "Unexpected duplicate artifact for this deployment attempt."
+                exit 1
+              fi
+            fi
+            sleep 5
+          done
+          echo "Pages artifact did not become available within the bounded wait."
+          exit 1
       - name: Publish
         id: deployment
         uses: actions/deploy-pages@v4
+        with:
+          artifact_name: ${{ env.PAGES_ARTIFACT }}
