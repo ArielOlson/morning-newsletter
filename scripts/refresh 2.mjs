@@ -1,0 +1,96 @@
+import {DINING_COUNT,ACTIVITY_COUNT,ideaGroup} from '../src/idea-groups.mjs';
+import {IDEA_COUNT,MIN_FREE_IDEAS,MIN_PAID_IDEAS,ideaBudget} from './recommendation-policy.mjs';
+import {readCalendarSource} from './calendar-source.mjs';
+import { readFile, writeFile, mkdir, rename } from 'node:fs/promises';
+import { fileURLToPath } from 'node:url';
+import { resolve, dirname } from 'node:path';
+import { randomUUID } from 'node:crypto';
+import { dayInZone, addDays, remindersFor, validateEvents, weatherSummary, parseSales, parseFinance, topFinance, curatedFinance, deliverySnapshot, mergeCalendarPlans, redSoxEvents } from './lib.mjs';
+import {selectIdeas} from './ideas.mjs';
+import {selectCity} from './lib.mjs';
+import {recommendationHistory} from './city-history.mjs';
+import {readRecommendationState,eligibleRecommendations} from './recommendation-state.mjs';
+import {selectHeaderPhotos} from '../src/photography.mjs';
+import {assertPackageScan} from './package-scan.mjs';
+const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
+process.chdir(root);
+const readJSON = async (path, fallback) => { try { return JSON.parse(await readFile(path, 'utf8')); } catch(e) { if (e.code === 'ENOENT' && fallback !== undefined) return fallback; throw new Error(`Cannot read ${path}: check JSON syntax`); } };
+const atomic = async (path, data) => { await mkdir(dirname(path), { recursive: true }); const temp = `${path}.${randomUUID()}.tmp`; await writeFile(temp, JSON.stringify(data, null, 2)); await rename(temp,path); };
+export async function download(url) {
+  for (let attempt=0;attempt<2;attempt++) {
+    try {
+      const response = await fetch(url, { signal: AbortSignal.timeout(20000), headers: { 'User-Agent': 'ArielsMorningEdit/1.0 (personal daily reader)' } });
+      if (!response.ok) throw new Error('Source unavailable');
+      const bytes = await response.text();
+      if (bytes.length > 6_000_000) throw new Error('Source too large');
+      return bytes;
+    } catch { if (attempt === 1) throw new Error('Could not refresh this source'); }
+  }
+}
+async function main() {
+  const prefs = await readJSON('config/preferences.json');
+  if (!dayInZone(new Date(), prefs.timezone)) throw new Error('Invalid timezone');
+  process.env.TZ = prefs.timezone;
+  const now = new Date(), day = dayInZone(now, prefs.timezone);
+  const sources = await readJSON('config/sources.json');
+  const interests=await readJSON('config/interests.local.json',{});
+  const calendar = await readJSON('config/calendar.local.json', await readJSON('config/calendar.example.json'));
+  if (process.env.ICAL_URLS) calendar.urls = JSON.parse(process.env.ICAL_URLS);
+  if (!Array.isArray(calendar.urls) || calendar.urls.some(u => typeof u !== 'string' || !/^((https:\/\/)|(webcal:\/\/))/.test(u))) throw new Error('Calendar urls must be an array of HTTPS or webcal links');
+  const linkedCalendar = await readJSON('config/calendar-snapshot.local.json', {});
+  const deliveryData=await readJSON('config/deliveries.local.json',null);
+  if(deliveryData){const connections=await readJSON('config/connections.local.json');assertPackageScan(deliveryData,connections.gmail.map(x=>x.account));}
+  const packages = deliverySnapshot(deliveryData, now);
+  const events = validateEvents([...(await readJSON('config/events.json')).events, ...(await readJSON('config/events.local.json', {events:[]})).events, ...(await readJSON('config/nyc-events.json', {events:[]})).events]);
+  const old = await readJSON('public/data/brief.json', {});
+  const rotation=await recommendationHistory(day,old,prefs.timezone,7);
+  const choices=await readRecommendationState();
+  const status = {}, errors = [];
+  async function collect(name, get, fallback) {
+    try { const data = await get(); status[name] = { state: 'fresh', updatedAt: now.toISOString() }; return data; }
+    catch { errors.push(name); status[name] = { state: fallback ? 'stale' : 'unavailable', updatedAt: old.status?.[name]?.updatedAt || null }; return fallback ?? null; }
+  }
+  const forecastURL = new URL('https://api.open-meteo.com/v1/forecast');
+  forecastURL.search = new URLSearchParams({ latitude: prefs.latitude, longitude: prefs.longitude, timezone: prefs.timezone,
+    temperature_unit:'fahrenheit', wind_speed_unit:'mph', forecast_days:'2',
+    daily:'weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,uv_index_max,wind_speed_10m_max', hourly:'temperature_2m,precipitation_probability' }).toString();
+  async function readCalendar(input,i){
+    const result=await readCalendarSource({input,snapshot:linkedCalendar,day,now,zone:prefs.timezone,lookAheadDays:Math.min(90,Math.max(1,calendar.lookAheadDays||14)),includeDescriptions:calendar.includeDescriptions,label:calendar.labels?.[i],download});
+    status[`calendar${i}`]=result.status;
+    if(result.status.state!=='fresh')errors.push(`calendar${i}`);
+    return result.events;
+  }
+  const jobs = [collect('weather', async()=> weatherSummary(JSON.parse(await download(forecastURL)), prefs, day), old.weather?.day === day ? old.weather : null),
+    ...calendar.urls.map(readCalendar)];
+  const [results, sales, financeResults] = await Promise.all([Promise.all(jobs), collect('sampleSales', async()=>parseSales(await download(sources.sampleSalesFeed),day,prefs.timezone), null), Promise.all((sources.financeFeeds||[]).map((source,i)=>collect(`finance${i}`,async()=>parseFinance(await download(source.url),source,now),null)))]);
+  const games=await collect('redSox',async()=>redSoxEvents(JSON.parse(await download(`https://statsapi.mlb.com/api/v1/schedule?sportId=1&teamId=111&startDate=${day}&endDate=${addDays(day,14)}`)),day,prefs.timezone),null);
+  const finance=topFinance([...financeResults.flatMap(x=>x||[]),...curatedFinance(await readJSON('config/finance.local.json',{}),now)]);
+  const weather = results[0];
+  const plans = results.slice(1,1+calendar.urls.length).flatMap(x=>x||[]);
+  const personal = events.filter(e => !e.category || e.category === 'personal');
+  const cityEvents = events.filter(e => e.category && e.category !== 'personal' && (e.endDate || e.startDate) >= day && e.startDate <= addDays(day,14,prefs.timezone)).map(e => ({...e,kind:'event',source:e.source || 'Your picks'}));
+  const city=selectCity(await eligibleRecommendations([...cityEvents,...(games||[]),...(sales||[])],choices.state),day,interests,rotation.items);
+  status.recommendations={state:'fresh',updatedAt:choices.checkedAt,historyDays:rotation.days,cooldownDays:7,maxSampleSales:2};
+  if(rotation.recovery)status.recommendations.recovery=rotation.recovery;
+  status.city={state:city.issues.length?'partial':'fresh',updatedAt:now.toISOString(),comparedWith:rotation.days[0],repeats:city.repeats,discoveryCount:city.discoveryCount,issues:city.issues};
+  if(city.issues.length)errors.push('city');
+  const brief = { version:1, day, generatedAt:now.toISOString(), name:prefs.name, timezone:prefs.timezone, location:prefs.location,
+    weather, calendar: { connected:calendar.urls.length>0, sourceCount:calendar.urls.length, state:calendar.urls.length ? (plans.length || !errors.some(e=>e.startsWith('calendar')) ? (errors.some(e=>e.startsWith('calendar')) ? 'partial' : 'fresh') : 'unavailable') : 'not-connected', events:mergeCalendarPlans(plans) },
+    reminders:remindersFor(personal,day,prefs.timezone), upcomingReminders:personal.filter(e=>e.startDate>day && e.startDate<=addDays(day,14,prefs.timezone)),
+    finds:city.items, finance, deliveries:packages, directories:sources.directories, status, errors };
+  brief.ideas=selectIdeas(await eligibleRecommendations((await readJSON('config/ideas.local.json',{ideas:[]})).ideas,choices.state),day,brief.calendar,prefs.timezone,[...rotation.items,...city.items]);
+  brief.photography={mode:'atmosphere',photos:selectHeaderPhotos(brief,await readJSON('config/photography.json',{photos:[]}))};
+  status.photography={state:brief.photography.photos.length===1?'selected':'unavailable',count:brief.photography.photos.length};
+  if(!brief.photography.photos.length)errors.push('photography');
+  const freeIdeas=brief.ideas.filter(x=>ideaBudget(x)==='free').length,paidIdeas=brief.ideas.filter(x=>ideaBudget(x)==='paid').length;
+  const diningIdeas=brief.ideas.filter(x=>ideaGroup(x)==='dining').length,activityIdeas=brief.ideas.filter(x=>ideaGroup(x)==='activity').length;
+  status.ideas={dining:diningIdeas,activities:activityIdeas,state:brief.ideas.length===IDEA_COUNT&&diningIdeas===DINING_COUNT&&activityIdeas===ACTIVITY_COUNT&&freeIdeas>=MIN_FREE_IDEAS&&paidIdeas>=MIN_PAID_IDEAS?'fresh':'partial',count:brief.ideas.length,free:freeIdeas,paid:paidIdeas,comparedWith:rotation.days[0]};
+  // Keep every card exposed by earlier same-day builds for tomorrow's rotation.
+  brief.recommendationExposures=[...(rotation.observed||[]),...(old.day===day?[...(old.recommendationExposures||[]),...(old.finds||[]),...(old.ideas||[])]:[]),...brief.finds,...brief.ideas].map(({id,url,recommendationKey})=>({id,url,...(recommendationKey?{recommendationKey}:{})})).filter((item,index,items)=>items.findIndex(x=>x.id===item.id&&x.url===item.url&&x.recommendationKey===item.recommendationKey)===index);
+  if(status.ideas.state!=='fresh')errors.push('ideas');
+  await atomic('public/data/brief.json',brief);
+  // Private calendar details are intentionally excluded from logs and history.
+  console.log(`Morning edit updated for ${day}. Weather: ${status.weather.state}. Calendar: ${brief.calendar.state}. NYC finds: ${brief.finds.length}.`);
+  if (errors.length) console.warn(`Sources needing attention: ${errors.join(', ')}. The page shows their availability accurately.`);
+}
+main().catch(() => { console.error('Refresh failed. Check config JSON, calendar URL format, and network access. The previous edition was preserved.'); process.exitCode=1; });
