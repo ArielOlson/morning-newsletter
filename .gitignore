@@ -13,3 +13,8 @@ test-results/
 config/*.local.json
 
 # The prepared dist/ site is intentionally committed for GitHub Pages.
+
+# Numbered source conflict copies are not release inputs.
+scripts/* [0-9]*.mjs
+tests/* [0-9]*.mjs
+docs/* [0-9]*.md

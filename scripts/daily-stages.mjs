@@ -1,9 +1,10 @@
-import {atomicJSON, readJSON, hash} from './workflow-utils.mjs';
+import {atomicJSON, readJSON, hash, isSourceDuplicate} from './workflow-utils.mjs';
 import {readFile, readdir} from 'node:fs/promises';
 import {join} from 'node:path';
 export async function fingerprintPaths(paths) {
   const entries = [];
   async function visit(path) {
+    if(isSourceDuplicate(path))return;
     try { entries.push([path, hash(await readFile(path))]); }
     catch (error) {
       if (error.code === 'ENOENT') { entries.push([path, 'absent']); return; }

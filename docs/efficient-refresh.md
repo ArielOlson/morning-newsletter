@@ -61,6 +61,8 @@ Builds authenticate/decrypt existing archives before retaining identical encrypt
 
 ## Code-only maintenance
 
-For an explicitly requested code/tooling improvement, `pnpm publish:newsletter --maintenance` can publish without pretending yesterday's edition is new. It compares the prepared current edition, archive membership, timestamps and every historical plaintext against the immutable previously published commit. Any content change fails. It still reads private state, enforces privacy/remote guards, deploys to GitHub and requires exact-commit Pages success plus `pnpm verify:live`. This mode must never substitute for a daily refresh.
+For an explicitly requested code/tooling improvement, `pnpm publish:newsletter --maintenance` can publish without pretending yesterday's edition is new. It compares the prepared current edition, archive membership, timestamps and every historical plaintext against the immutable commit recorded by the last successful live verification (not merely the last push). Any content change fails. It still reads private state, enforces privacy/remote guards, deploys to GitHub and requires exact-commit Pages success plus `pnpm verify:live`. This mode must never substitute for a daily refresh.
 
 The Pages workflow names its uploaded artifact by workflow run and attempt, then waits briefly for that exact artifact to appear before deployment. Retrying cannot confuse an earlier upload with the new attempt. Only the prepared encrypted dist site is uploaded.
+
+Numbered source conflict copies such as `scripts/example 2.mjs` are excluded from source fingerprints and publication. Preserve unexpected copies privately and reconcile the canonical file; never let them reintroduce old instructions or duplicate scripts.

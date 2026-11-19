@@ -39,3 +39,6 @@ export function requestGate({interval = 250, now = Date.now, wait = sleep} = {})
     }
   };
 }
+
+// Finder/sync conflict copies are not executable project inputs or publishable source.
+export const isSourceDuplicate = path => /^(scripts|tests|docs)\/.* \d+\.(mjs|js|md|json|css)$/.test(path);

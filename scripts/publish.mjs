@@ -1,3 +1,4 @@
+import {isSourceDuplicate} from './workflow-utils.mjs';
 import {assertMaintenanceEdition} from './maintenance-check.mjs';
 import { readFile, writeFile, mkdir, readdir, cp, rm } from 'node:fs/promises';
 import { execFileSync } from 'node:child_process';
@@ -25,6 +26,7 @@ let passwordBytes;
 async function checkTree(path){
  for(const entry of await readdir(path,{withFileTypes:true})){
   const full=resolve(path,entry.name),rel=relative(root,full);
+  if(isSourceDuplicate(rel))continue;
   if(entry.isSymbolicLink()||privatePath(rel)||(rel.startsWith('dist/data/')&&entry.isFile()&&!rel.endsWith('.enc.json')))throw new Error(`Refusing unexpected private file or symlink in publication: ${rel}`);
   if(entry.isDirectory())await checkTree(full);
   else if((await readFile(full)).includes(passwordBytes))throw new Error(`Refusing a file containing the newsletter password: ${rel}`);
@@ -47,8 +49,8 @@ try{
  if(!security?.password)throw new Error('Newsletter encryption must be configured before publication.');
  passwordBytes=Buffer.from(security.password);
  if(maintenance){
-  const baseline=await optionalJSON(statePath);
-  if(!baseline?.commit)throw Error('A previously published commit is required for maintenance');
+  const baseline=await optionalJSON(resolve(root,'.cache/live-verification/result.local.json'));
+  if(!/^[a-f0-9]{40}$/.test(baseline?.commit||'')||!baseline.checkedAt)throw Error('Verify the current live edition before a maintenance release');
   await assertMaintenanceEdition({prepared:briefText,password:security.password,local:path=>readFile(resolve(root,'dist/data',path),'utf8'),published:async path=>run('git',['show',`${baseline.commit}:dist/data/${path}`])});
  }
  const encrypted=await optionalJSON(resolve(root,'dist/data/brief.enc.json'));
@@ -78,11 +80,11 @@ try{
  await rm(resolve(checkout,'dist'),{recursive:true,force:true});
  const copied=[];
  for(const path of paths){
-  try{await cp(resolve(root,path),resolve(checkout,path),{recursive:true});copied.push(path);}catch(e){if(e.code==='ENOENT'&&path==='.node-version')continue;throw e;}
+  try{await cp(resolve(root,path),resolve(checkout,path),{recursive:true,filter:source=>!isSourceDuplicate(relative(root,source))});copied.push(path);}catch(e){if(e.code==='ENOENT'&&path==='.node-version')continue;throw e;}
  }
  run('git',['add','--',...copied]);
  const staged=run('git',['diff','--cached','--name-only','--diff-filter=ACMR']).split('\n').filter(Boolean);
- if(staged.some(privatePath))throw new Error('Private files were staged unexpectedly; refusing publication.');
+ if(staged.some(path=>privatePath(path)||isSourceDuplicate(path)))throw new Error('Private files were staged unexpectedly; refusing publication.');
  if(run('git',['diff','--cached','--name-only'])){
   run('git',['-c','user.name=Ariel Olson','-c','user.email=arielolson@users.noreply.github.com','commit','-m',maintenance?'Improve newsletter daily workflow':`Update morning newsletter for ${brief.day}`]);
  }
