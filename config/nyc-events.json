@@ -17,18 +17,18 @@
       "supportingURL": "https://whitney.org/visit",
       "category": "Around town",
       "discovery": true,
-      "priority": 0,
-      "checkedAt": "2026-10-28T08:21:14.337Z"
+      "priority": 80,
+      "checkedAt": "2026-11-18T23:46:36.426993+00:00"
     },
     {
       "id": "moma-surrealist-book-2026",
       "title": "The Surrealist Book: Tomorrow Lives in Mirrors",
       "category": "Around town",
       "discovery": true,
-      "priority": 0,
+      "priority": 80,
       "startDate": "2026-10-04",
       "endDate": "2027-01-23",
-      "what": "Newly opened: unusual artists’ books, collage-filled sketchbooks and sculptural bindings by Surrealists including Dalí, Cahun and Unica Zürn. Explore how a book can become an artwork.",
+      "what": "Artists’ books, collage-filled sketchbooks and sculptural bindings show how Surrealists turned books into artworks. The exhibition includes work by Dalí, Cahun and Unica Zürn.",
       "where": "MoMA · Floor 3 · 11 West 53rd Street",
       "when": "Oct 4, 2026–Jan 23, 2027 · 10:30 a.m.–5:30 p.m.; Fridays until 8:30 p.m.",
       "cost": "Adult admission $30; special exhibitions included. NY State residents can reserve free Friday evening tickets.",
@@ -38,15 +38,15 @@
       "supportingURL": "https://www.moma.org/visit/",
       "image": "https://www.moma.org/d/assets/W1siZiIsIjIwMjYvMDUvMjEvOHBkOHZmcjdrM19adXJuX09yYWNsZV9hbmRfU3BlY3RhY2xlX0hfU0laRUQuanBnIl0sWyJwIiwiY29udmVydCIsIi1xdWFsaXR5IDkwIC1yZXNpemUgMjAwMHg2NjdeIC1ncmF2aXR5IFNvdXRoIC1jcm9wIDIwMDB4NjY3KzArODAiXV0/Zurn_Oracle-and-Spectacle_H_SIZED.jpg?sha=7d5815443ce3ea9b",
       "imageAlt": "Unica Zürn, Oracle and Spectacle, Book IV, 1960. MoMA; gift of Helen and Sam Zell. Photo: Ben Blackwell. © Verlag Brinkmann & Bose, Berlin.",
-      "checkedAt": "2026-10-28T08:39:26.301045+00:00"
+      "checkedAt": "2026-11-19T00:04:55.460493+00:00"
     },
     {
       "id": "afam-locating-girlhood-2026",
-      "title": "Locating Girlhood opens at AFAM",
+      "title": "Locating Girlhood at AFAM",
       "startDate": "2026-10-09",
       "endDate": "2027-02-28",
       "category": "Free & lovely",
-      "priority": 0,
+      "priority": 80,
       "where": "American Folk Art Museum · 2 Lincoln Square",
       "neighborhood": "Lincoln Square",
       "when": "Oct 9–Feb 28 · Wed–Sun 11:30 a.m.–6 p.m.; closed Mon–Tue",
@@ -56,14 +56,14 @@
       "source": "American Folk Art Museum",
       "image": "https://folkartmuseum.org/content/uploads/2026/09/Faith-Trumbull_Connecticut-Museum.jpg",
       "imageAlt": "Needlework picture attributed to Faith Trumbull; Connecticut Museum / AFAM exhibition image",
-      "checkedAt": "2026-10-28T08:21:14.042Z",
+      "checkedAt": "2026-11-18T23:46:37.280967+00:00",
       "discovery": true
     },
     {
       "id": "rockefeller-rink-2026-opening",
       "title": "Outdoor skating at Rockefeller Center",
       "when": "Season open through March 27, 2027 · daily sessions; check the booking calendar",
-      "cost": "Skating from $22; skate rental $12 extra. Prices vary by session.",
+      "cost": "Skating from $22; rental costs extra. Prices vary by session.",
       "neighborhood": "Midtown · Rockefeller Center",
       "where": "Midtown · Rockefeller Center",
       "what": "The outdoor rink is open for the season. Reserve a 60-minute session and check the arrival instructions on your ticket; session prices and availability vary.",
@@ -74,9 +74,9 @@
       "discovery": false,
       "image": "https://cdn.sanity.io/images/bs9rmafh/ecomm-main/7306719725b5b80938fe6e13ed80aa883e5968b7-4000x2667.jpg",
       "imageAlt": "The Rink at Rockefeller Center at night, organizer promotional photograph",
-      "checkedAt": "2026-10-28T08:39:26.301047+00:00",
+      "checkedAt": "2026-11-19T00:04:55.460493+00:00",
       "category": "Seasonal",
-      "priority": 0
+      "priority": 80
     },
     {
       "id": "nuulee-winter-popup-2026",
@@ -84,19 +84,21 @@
       "startDate": "2026-10-14",
       "endDate": "2026-12-23",
       "when": "Oct 14–Dec 23; confirm daily shop hours",
-      "what": "Browse Mongolian cashmere and winter knitwear at a temporary Nolita shop. A seasonal shopping discovery; this is not a claim that you have purchased from the brand.",
+      "what": "Browse Mongolian cashmere and winter knitwear at the temporary Nolita shop at 173 Elizabeth Street. Check the current shop hours before making a special trip.",
       "where": "173 Elizabeth Street",
       "neighborhood": "Nolita",
       "cost": "Items priced individually; admission charge not listed.",
       "url": "https://www.parasolprojects.com/parasol-popup-live.html?id=recaGTYpzS5WnhDMs",
       "source": "Parasol Projects",
-      "image": "https://www.parasolprojects.com/.netlify/functions/popup-photo?rec=recaGTYpzS5WnhDMs&i=0&size=large",
-      "imageAlt": "Nuulee product photograph supplied by its pop-up organizer.",
+      "image": "https://www.arielolson.com/morning-newsletter/assets/photos/2026-11-18/nuulee-cashmere.jpg",
+      "imageAlt": "A model wears Nuulee’s pale-yellow cashmere and a blue patterned hat in the brand’s product photograph.",
       "discovery": true,
       "category": "Around town",
-      "checkedAt": "2026-10-21T13:01:27.610252+00:00",
-      "priority": 0,
-      "supportingURL": "https://www.parasolprojects.com/nyc-pop-ups-this-weekend"
+      "checkedAt": "2026-11-18T23:46:36.119030+00:00",
+      "priority": 80,
+      "supportingURL": "https://www.parasolprojects.com/nyc-pop-ups-this-weekend",
+      "imageSource": "https://www.nuulee.nyc/cdn/shop/files/nuulee_x_fwa_ecomm8879.jpg?v=1791235727&width=1000",
+      "imageCheckedAt": "2026-11-19T00:08:53.757219+00:00"
     },
     {
       "id": "nyc:jem-perucchini-sospiro-2026",
@@ -150,13 +152,15 @@
       "cost": "Free to browse; purchases optional.",
       "what": "Browse handmade jewelry, pottery, art and gifts beneath Vanderbilt Hall’s chandeliers. The indoor setting makes it a useful cold-weather market. Hours extend near Christmas; the organizer lists the later holiday schedule.",
       "url": "https://grandcentralterminal.com/holiday-fair/",
-      "image": "https://grandcentralterminal.com/wp-content/uploads/2023/12/KEH_7060.jpg",
-      "imageAlt": "Grand Central’s photograph of its Holiday Fair in a previous season",
+      "image": "https://www.arielolson.com/morning-newsletter/assets/photos/2026-11-18/grandcentral-holiday-fair.jpg",
+      "imageAlt": "Grand Central’s main concourse with Holiday Fair banners in 2023; organizer photograph from an earlier season.",
       "source": "grandcentralterminal.com",
-      "checkedAt": "2026-10-30T16:29:42Z",
-      "priority": 0,
+      "checkedAt": "2026-11-19T00:04:55.460493+00:00",
+      "priority": 80,
       "category": "Seasonal",
-      "discovery": false
+      "discovery": false,
+      "imageSource": "https://grandcentralterminal.com/wp-content/uploads/2023/12/111423-GC-HF-Signage-08.jpg",
+      "imageCheckedAt": "2026-11-19T00:08:53.757219+00:00"
     },
     {
       "id": "nyc:collective-soho-holiday-2026",
@@ -173,8 +177,8 @@
       "image": "https://popupcollectivenyc.com/_next/image?url=%2Fimages%2Fcollective%2Fcrowd-main-aisle.jpg&w=3840&q=75",
       "imageAlt": "Shoppers browsing The Collective SoHo, photographed by the organizer",
       "source": "popupcollectivenyc.com",
-      "checkedAt": "2026-10-30T16:12:57.121Z",
-      "priority": 0,
+      "checkedAt": "2026-11-18T23:46:37.528836+00:00",
+      "priority": 80,
       "category": "Seasonal",
       "discovery": false
     },
@@ -193,8 +197,8 @@
       "image": "https://www.arielolson.com/morning-newsletter/assets/photos/2026-10-30/grace-carney-to-the-bone-2026.jpg",
       "imageAlt": "Grace Carney artwork photographed for P·P·O·W",
       "source": "www.ppowgallery.com",
-      "checkedAt": "2026-10-30T16:19:54.485Z",
-      "priority": 0,
+      "checkedAt": "2026-11-18T23:46:37.697938+00:00",
+      "priority": 80,
       "category": "Around town",
       "discovery": true,
       "imageSource": "https://static-assets.artlogic.net/w_1600,h_1600,c_limit/exhibit-e/61945b4c94b78824b9217367/a0e8e8e0c80447e0123a2fefe65ad460.jpeg",
@@ -210,13 +214,13 @@
       "neighborhood": "Upper East Side",
       "when": "Nov 12–Jan 11 · Wed–Mon 10 a.m.–6 p.m.; closed Tuesdays.",
       "cost": "$28 general admission; seniors $18; students and educators $15.",
-      "what": "The museum’s 25th-anniversary display brings Austrian and German art back into its restored building, including Klimt’s Portrait of Adele Bloch-Bauer I. Galleries are still closed until November 12; this is a plan-ahead option.",
+      "what": "The museum’s 25th-anniversary display brings Austrian and German masterworks into its restored building, including Klimt’s Portrait of Adele Bloch-Bauer I. The galleries have reopened; closed Tuesdays.",
       "url": "https://www.neuegalerie.org/exhibitions/25thanniversary",
       "image": "https://neue-gallery-images.b-cdn.net/1d788a60f6020a4f7d511e847ba37416dcdccfea-1500x1504.jpg",
       "imageAlt": "Gustav Klimt’s Portrait of Adele Bloch-Bauer I, courtesy of Neue Galerie New York",
       "source": "www.neuegalerie.org",
-      "checkedAt": "2026-10-30T16:21:03.198Z",
-      "priority": 0,
+      "checkedAt": "2026-11-18T23:46:38.368804+00:00",
+      "priority": 80,
       "category": "Around town",
       "discovery": true
     },
@@ -230,14 +234,14 @@
       "neighborhood": "Bronx",
       "when": "Nov 14–Jan 10 · choose a timed admission.",
       "cost": "Paid All-Garden Pass; price varies by date and ticket type.",
-      "what": "Miniature trains run through a landscape of roughly 200 New York landmarks made from botanical materials, with One Vanderbilt joining the display. Evening Holiday Train Nights begin later, on November 27.",
+      "what": "Miniature trains travel among nearly 200 New York landmarks made from botanical materials. Selected extended evenings begin November 27, with the displays lit after dark, live music and photo opportunities.",
       "url": "https://www.nybg.org/event/holiday-train-show-2026/",
       "source": "www.nybg.org",
       "imageAlt": "Miniature buildings and lush planting at NYBG’s Holiday Train Show",
-      "checkedAt": "2026-11-02T06:01:47.502354+00:00",
+      "checkedAt": "2026-11-18T23:46:38.742835+00:00",
       "category": "Seasonal",
       "discovery": false,
-      "priority": 0,
+      "priority": 80,
       "image": "https://www.arielolson.com/morning-newsletter/assets/photos/2026-11-02/train.jpg",
       "imageSource": "https://www.nybg.org/content/uploads/2025/09/404705-1.1.jpg",
       "imageCheckedAt": "2026-11-02T13:35:43.518864+00:00"
@@ -245,7 +249,7 @@
     {
       "id": "nyc:union-square-holiday-market-2026",
       "recommendationKey": "union-square-holiday-market-2026",
-      "title": "Union Square’s holiday market opens",
+      "title": "Union Square’s holiday market",
       "startDate": "2026-11-12",
       "endDate": "2026-12-24",
       "where": "Union Square Park",
@@ -256,10 +260,10 @@
       "url": "https://urbanspacemarkets.com/pages/union-square",
       "source": "urbanspacemarkets.com",
       "imageAlt": "A shopper browsing art prints at the Union Square Holiday Market",
-      "checkedAt": "2026-11-02T15:46:59.425Z",
+      "checkedAt": "2026-11-18T23:46:38.337256+00:00",
       "category": "Seasonal",
       "discovery": false,
-      "priority": 0,
+      "priority": 80,
       "image": "https://www.arielolson.com/morning-newsletter/assets/photos/2026-11-02/union-market.jpg",
       "imageSource": "https://urbanspacemarkets.com/cdn/shop/files/Picicci_UrbanspaceHolidayMarkets_2025-86.jpg?v=1766509841&width=1920",
       "imageCheckedAt": "2026-11-02T16:36:54.911651+00:00"
@@ -278,10 +282,10 @@
       "url": "https://wollmanrinknyc.com/plan/",
       "source": "wollmanrinknyc.com",
       "imageAlt": "An aerial evening view of skaters at Wollman Rink",
-      "checkedAt": "2026-11-02T06:04:27.521178+00:00",
+      "checkedAt": "2026-11-18T23:46:37.071162+00:00",
       "category": "Seasonal",
       "discovery": false,
-      "priority": 0,
+      "priority": 80,
       "image": "https://www.arielolson.com/morning-newsletter/assets/photos/2026-11-02/wollman.jpg",
       "imageSource": "https://wollmanrinknyc.com/content/uploads/2026/10/wollman-rink-night-aerial-mono.jpg",
       "imageCheckedAt": "2026-11-02T13:35:41.069568+00:00"
@@ -296,13 +300,13 @@
       "neighborhood": "Midtown",
       "when": "Nov 4–Jan 4; select a performance time.",
       "cost": "Paid reserved seats; prices and fees vary by performance.",
-      "what": "The new “Ring” number joins the precision dance production, with expanded immersive effects inside Radio City. Compare seat prices before booking; this is a theater outing rather than a free holiday display.",
+      "what": "The Rockettes return to Radio City with precision dance, familiar holiday scenes and a new number with immersive effects. Compare seat prices and fees when choosing a performance.",
       "url": "https://www.rockettes.com/blog/the-christmas-spectacular-just-got-even-more-spectacular/",
       "source": "rockettes.com",
-      "checkedAt": "2026-11-10T13:10:46.952461+00:00",
+      "checkedAt": "2026-11-18T23:46:37.825898+00:00",
       "category": "Seasonal",
       "discovery": false,
-      "priority": 0,
+      "priority": 80,
       "image": "https://www.arielolson.com/morning-newsletter/assets/photos/2026-11-10/rockettes.png",
       "imageAlt": "The Rockettes pose together outdoors in sparkling silver costumes.",
       "imageSource": "https://assets.rockettes.com/wp-content/uploads/2026/07/On-Sale-Blog-Hero-Image.png",
@@ -316,15 +320,15 @@
       "endDate": "2027-01-18",
       "where": "Museum of the City of New York · 1220 Fifth Avenue",
       "neighborhood": "East Harlem",
-      "when": "Nov 6–Jan 18 during museum hours. Nov 18 closes at 2 p.m.; Nov 21 closed.",
+      "when": "Nov 6–Jan 18 during museum hours; check holiday and private-event closures. Nov 18 closes at 2 p.m.",
       "cost": "Adult admission $23; NYC residents pay what they can with ID. Wednesday admission is free at the counter.",
       "what": "Explore edible interpretations of iconic New York buildings, made by bakers representing the five boroughs, and vote for a favorite. Holiday closures apply; free Wednesday admission is a specific offer, not the everyday price.",
       "url": "https://www.mcny.org/exhibition/gingerbread-nyc-2026",
       "source": "mcny.org",
-      "checkedAt": "2026-11-10T13:10:46.135225+00:00",
+      "checkedAt": "2026-11-18T23:46:38.516862+00:00",
       "category": "Seasonal",
       "discovery": false,
-      "priority": 0,
+      "priority": 80,
       "image": "https://www.arielolson.com/morning-newsletter/assets/photos/2026-11-10/gingerbread.jpg",
       "imageAlt": "Visitors examine architectural gingerbread creations on long tables in the Museum of the City of New York.",
       "imageSource": "https://www.mcny.org/sites/default/files/GingerbreadNYC2026-Install1.jpg",
@@ -339,14 +343,14 @@
       "where": "Brooklyn Botanic Garden · 990 Washington Avenue",
       "neighborhood": "Prospect Heights",
       "when": "Selected evenings Nov 20–Jan 3; timed entry.",
-      "cost": "Adults $39 off-peak / $44 peak, including fees; separate evening ticket.",
+      "cost": "Adults $29 value nights, $39 off-peak or $44 peak; fees included. Daytime garden admission does not include Lightscape.",
       "what": "Follow the outdoor illuminated trail through the garden. Book the date and entry window you want and dress for a long walk outside; daytime garden admission does not include this event.",
       "url": "https://www.bbg.org/lightscape",
       "source": "bbg.org",
-      "checkedAt": "2026-11-10T13:10:46.172071+00:00",
+      "checkedAt": "2026-11-18T23:46:38.735574+00:00",
       "category": "Seasonal",
       "discovery": false,
-      "priority": 0,
+      "priority": 80,
       "image": "https://www.arielolson.com/morning-newsletter/assets/photos/2026-11-10/lightscape.jpg",
       "imageAlt": "Visitors walk beneath a tunnel of golden lights at Brooklyn Botanic Garden.",
       "imageSource": "https://www.bbg.org/img/uploads/lightscape/social_fb.jpg",
@@ -387,10 +391,10 @@
       "what": "See the Great Room’s glowing hot-air-balloon centerpiece and the seasonal lighting across Hudson Yards. A good indoor option when the weather makes an outdoor lights walk less appealing.",
       "url": "https://www.hudsonyardsnewyork.com/events/shine-bright-hudson-yards-presented-wells-fargo",
       "source": "hudsonyardsnewyork.com",
-      "checkedAt": "2026-11-10T13:10:46.690681+00:00",
+      "checkedAt": "2026-11-18T23:46:38.962677+00:00",
       "category": "Seasonal",
       "discovery": false,
-      "priority": 0,
+      "priority": 80,
       "image": "https://www.arielolson.com/morning-newsletter/assets/photos/2026-11-10/shine.jpg",
       "imageAlt": "The illuminated balloon installation and golden lights inside Hudson Yards.",
       "imageSource": "https://www.hudsonyardsnewyork.com/sites/default/files/styles/image_megamenu/public/2025-11/2023FD81_417_RT_HR_FD-RGB-Edit-v3-people%20-%20Copy.jpg?h=d4b13fbc&itok=f_zy33ZZ",
@@ -409,36 +413,14 @@
       "what": "The waterfront venue fills with Christmas trees and seasonal decorations. General admission is an outdoor visit with hot chocolate; a heated glasshouse meal is a separate reservation, so compare the two experiences before buying.",
       "url": "https://theseaport.nyc/events/watermark/",
       "source": "theseaport.nyc",
-      "checkedAt": "2026-11-10T13:33:21.284176+00:00",
+      "checkedAt": "2026-11-19T00:04:55.460493+00:00",
       "category": "Seasonal",
       "discovery": false,
-      "priority": 0,
+      "priority": 80,
       "image": "https://www.arielolson.com/morning-newsletter/assets/photos/2026-11-10/watermark.jpg",
       "imageAlt": "Santa poses amid Christmas decorations at Watermark on the waterfront.",
       "imageSource": "https://theseaport.nyc/wp-content/uploads/2025/12/Santas-Winter-Wonderland-at-Watermark-c-Watermark-4-2500x3748.jpg",
       "imageCheckedAt": "2026-11-10T13:28:50.518351+00:00"
-    },
-    {
-      "id": "nyc:harlem-holiday-lights-2026",
-      "recommendationKey": "harlem-holiday-lights-2026",
-      "title": "Harlem Holiday Lights parade",
-      "startDate": "2026-11-17",
-      "endDate": "2026-11-17",
-      "where": "125th Street; parade begins at Broadway",
-      "neighborhood": "Harlem",
-      "when": "Nov 17 · 6–8:30 p.m.; announced rain date Nov 24.",
-      "cost": "Free public parade.",
-      "what": "Watch the illuminated floats along 125th Street. Belongó’s Fat Cats youth ensemble is among the participating musicians; check the organizer’s route and rain updates before choosing a viewing spot.",
-      "url": "https://www.afrolatinjazz.org/events/belongo-at-harlem-holiday-lights-2026",
-      "source": "afrolatinjazz.org",
-      "checkedAt": "2026-11-10T13:22:48.345809+00:00",
-      "category": "Seasonal",
-      "discovery": false,
-      "priority": 0,
-      "image": "https://www.arielolson.com/morning-newsletter/assets/photos/2026-11-10/harlem.jpg",
-      "imageAlt": "Participants gather beside a light-covered vehicle at Harlem Holiday Lights.",
-      "imageSource": "https://cdn.prod.website-files.com/64af8bece332fcdec6122d69/6aecdc29ac1e53888db073ea_holiday-lights-banner.jpg",
-      "imageCheckedAt": "2026-11-10T13:28:50.494926+00:00"
     },
     {
       "id": "nyc:grand-central-thanksgiving-market-2026",
@@ -475,10 +457,10 @@
       "what": "Pull a festive keepsake on a historic printing press, browse paper goods and enjoy light refreshments. The museum exhibitions remain open until 8:30 p.m., with a type-focused tour at 7:45 p.m.",
       "url": "https://theseaport.nyc/events/wayzgoose-holiday-kick-off-at-the-seaport-museum/",
       "source": "theseaport.nyc",
-      "checkedAt": "2026-11-10T13:33:21.284176+00:00",
+      "checkedAt": "2026-11-19T00:04:55.460493+00:00",
       "category": "Seasonal",
       "discovery": false,
-      "priority": 0,
+      "priority": 80,
       "image": "https://www.arielolson.com/morning-newsletter/assets/photos/2026-11-10/wayzgoose.jpg",
       "imageAlt": "Ink is rolled onto equipment at a historic printing press.",
       "imageSource": "https://southstreetseaportmuseum.org/wp-content/uploads/2021/01/i-hCkL8RJ-XL.jpg",
@@ -527,28 +509,6 @@
       "imageAlt": "Three people with martinis in a photograph featured by the Museum of the City of New York.",
       "imageSource": "https://www.mcny.org/sites/default/files/Triennial-0097-Nordeman-Web.jpg",
       "imageCheckedAt": "2026-11-10T13:28:50.887883+00:00"
-    },
-    {
-      "id": "nyc:seaport-revolutionary-ink-20261117",
-      "recommendationKey": "seaport-revolutionary-ink-20261117",
-      "title": "Revolutionary Ink book launch",
-      "startDate": "2026-11-17",
-      "endDate": "2026-11-17",
-      "where": "South Street Seaport Museum · 213 Water Street",
-      "neighborhood": "Seaport",
-      "when": "Nov 17 · 6:30 p.m.",
-      "cost": "Free; RSVP requested.",
-      "what": "Historian Mark J. Noonan discusses the New York printers who helped circulate revolutionary ideas, and the gap between democratic language and who could exercise those rights. The reception accompanies the museum’s printing-history exhibition.",
-      "url": "https://theseaport.nyc/events/revolutionary-ink-book-launch-at-the-seaport-museum/",
-      "source": "theseaport.nyc",
-      "checkedAt": "2026-11-10T13:33:21.284176+00:00",
-      "category": "Around town",
-      "discovery": true,
-      "priority": 0,
-      "image": "https://www.arielolson.com/morning-newsletter/assets/photos/2026-11-10/ink.jpg",
-      "imageAlt": "The interior of Bowne & Co.’s historic printing shop.",
-      "imageSource": "https://southstreetseaportmuseum.org/wp-content/uploads/2020/03/20190413_Seaport_0033-1.jpg",
-      "imageCheckedAt": "2026-11-10T13:28:51.005543+00:00"
     },
     {
       "id": "moma-brancusi-studio-2026",
@@ -1298,7 +1258,7 @@
       "image": "https://www.arielolson.com/morning-newsletter/assets/photos/2026-11-13/events-00.jpg",
       "imageAlt": "John Kevin Jones and Vince Gatton in the producer’s cast photograph",
       "checkedAt": "2026-11-13T12:31:01.429211+00:00",
-      "priority": 3000,
+      "priority": 0,
       "imageSource": "https://www.summonersensemble.org/uploads/7/9/0/0/79003810/2025gatton-jones.jpg",
       "imageCheckedAt": "2026-11-13T12:46:52.184958+00:00"
     },
@@ -1320,7 +1280,7 @@
       "image": "https://www.arielolson.com/morning-newsletter/assets/photos/2026-11-13/events-01.jpg",
       "imageAlt": "Actors in an earlier PAC NYC staging of A Christmas Carol",
       "checkedAt": "2026-11-13T12:46:03.256870+00:00",
-      "priority": 2999,
+      "priority": 0,
       "dateSource": "https://www.business.nyctourism.com/press-media/press-releases/holidays-in-nyc-press-release-november-2026",
       "imageSource": "https://images.pacnyc.org/uploads/2025/12/AH1_1501-scaled.jpg",
       "imageCheckedAt": "2026-11-13T12:46:52.326743+00:00"
@@ -1343,7 +1303,7 @@
       "image": "https://www.arielolson.com/morning-newsletter/assets/photos/2026-11-13/events-02.jpg",
       "imageAlt": "A Blue Man Group performer in the official show photograph",
       "checkedAt": "2026-11-13T12:36:00.844353+00:00",
-      "priority": 2998,
+      "priority": 0,
       "dateSource": "https://broadwaydirect.com/jv9sn3nc7s/",
       "imageSource": "https://www.blueman.com/-/media/bmg/images/about/homepage_box.png?db=web&h=205&vs=1&w=332&hash=C9580E29BF75D3A382DC13407D9ECE8F",
       "imageCheckedAt": "2026-11-13T12:46:52.183782+00:00"
@@ -1366,7 +1326,7 @@
       "image": "https://www.arielolson.com/morning-newsletter/assets/photos/2026-11-13/events-03.jpg",
       "imageAlt": "A scene from New York City Ballet’s The Nutcracker",
       "checkedAt": "2026-11-13T12:35:17.221926+00:00",
-      "priority": 2997,
+      "priority": 0,
       "imageSource": "https://res.cloudinary.com/new-york-city-ballet/image/upload/f_auto/q_auto/v1658331348/Ballets/Nutcracker/Nut%2022/Nutcracker_-_C21009-14?_a=BAAAV6GY",
       "imageCheckedAt": "2026-11-13T12:46:52.183309+00:00"
     },
@@ -1388,7 +1348,7 @@
       "image": "https://www.arielolson.com/morning-newsletter/assets/photos/2026-11-13/events-04.jpg",
       "imageAlt": "The Cardenas Brothers in an official Big Apple Circus photograph",
       "checkedAt": "2026-11-13T12:35:17.091799+00:00",
-      "priority": 2996,
+      "priority": 0,
       "imageSource": "https://bigapplecircus.com/wp-content/uploads/2026/10/cardenas-bros-1.jpg",
       "imageCheckedAt": "2026-11-13T12:46:52.364461+00:00"
     },
@@ -1410,7 +1370,7 @@
       "image": "https://www.arielolson.com/morning-newsletter/assets/photos/2026-11-13/events-05.jpg",
       "imageAlt": "An earlier Holiday Express miniature train display; photo credited to the New York Historical Society",
       "checkedAt": "2026-11-13T12:46:03.256870+00:00",
-      "priority": 2995,
+      "priority": 0,
       "dateSource": "https://www.business.nyctourism.com/press-media/press-releases/holidays-in-nyc-press-release-november-2026",
       "imageSource": "https://mommyp-prod.s3.amazonaws.com/styles/image620x420/s3/credit_holiday-express_toys-and-trains-from-the-jerni-collection-photo-credit_new-york-historical-society.jpg?itok=pqNwXOGN",
       "imageCheckedAt": "2026-11-13T12:46:52.547936+00:00"
@@ -1433,7 +1393,7 @@
       "image": "https://www.arielolson.com/morning-newsletter/assets/photos/2026-11-13/events-06.jpg",
       "imageAlt": "The museum’s 2023 Origami Holiday Tree, shown as an example of the annual tradition",
       "checkedAt": "2026-11-13T12:46:03.256870+00:00",
-      "priority": 2994,
+      "priority": 0,
       "imageSource": "https://www.amnh.org/var/ezflow_site/storage/images/media/amnh/images/exhibitions/current-exhibitions/origami-tree-2023/origami-tree-2023-1600-1200/6042202-4-eng-US/origami-tree-2023-1600-1200_full_1220.jpg",
       "imageCheckedAt": "2026-11-13T12:46:52.460716+00:00"
     },
@@ -1455,7 +1415,7 @@
       "image": "https://www.arielolson.com/morning-newsletter/assets/photos/2026-11-13/events-07.jpg",
       "imageAlt": "The Met’s decorated Christmas tree and nativity display",
       "checkedAt": "2026-11-13T12:46:03.256870+00:00",
-      "priority": 2993,
+      "priority": 0,
       "imageSource": "https://cdn.sanity.io/images/cctd4ker/production/0d03ec60380a5c74e787daaf46bf082dfcd0abe3-5120x5120.jpg?auto=format&fit=clip&q=75&w=1600",
       "imageCheckedAt": "2026-11-13T12:46:52.847898+00:00"
     },
@@ -1477,7 +1437,7 @@
       "image": "https://www.arielolson.com/morning-newsletter/assets/photos/2026-11-13/events-08.jpg",
       "imageAlt": "A previous Downtown Brooklyn holiday-lighting celebration",
       "checkedAt": "2026-11-13T12:36:00.748944+00:00",
-      "priority": 2992,
+      "priority": 0,
       "imageSource": "https://www.downtownbrooklyn.com/wp-content/uploads/2025/10/DTBK-Gets-Lit-header.jpg",
       "imageCheckedAt": "2026-11-13T12:46:53.129097+00:00"
     },
@@ -1499,7 +1459,7 @@
       "image": "https://www.arielolson.com/morning-newsletter/assets/photos/2026-11-13/events-09.jpg",
       "imageAlt": "Official Saks Fifth Avenue 2026 holiday campaign photograph",
       "checkedAt": "2026-11-13T12:38:14.622706+00:00",
-      "priority": 2991,
+      "priority": 0,
       "imageSource": "https://mmx.prnewswire.com/media/MS2011736/Saks-Fifth-Avenue-Holiday-Campaign-2026-Hero-Shot.jpg?id=OA3014253&p=facebook",
       "imageCheckedAt": "2026-11-13T12:46:53.151807+00:00"
     },
@@ -1521,7 +1481,7 @@
       "image": "https://www.arielolson.com/morning-newsletter/assets/photos/2026-11-13/events-10.jpg",
       "imageAlt": "An illuminated lantern display photographed for the festival’s official website",
       "checkedAt": "2026-11-13T12:37:21.886647+00:00",
-      "priority": 2990,
+      "priority": 0,
       "imageSource": "https://winterlanternfestival.com/_astro/exp-01_jypwf7_Z1Dd9r2.webp",
       "imageCheckedAt": "2026-11-13T12:46:52.685425+00:00"
     },
@@ -1543,7 +1503,7 @@
       "image": "https://www.arielolson.com/morning-newsletter/assets/photos/2026-11-13/events-11.jpg",
       "imageAlt": "Autumn foliage photographed for The Forest Park Trust’s walk",
       "checkedAt": "2026-11-13T12:38:14.461607+00:00",
-      "priority": 2989,
+      "priority": 0,
       "imageSource": "http://static1.squarespace.com/static/5f2b0fb8e4b73c703250481c/5f74d7b1c9100c20ef2228c9/6ae35273b866fe37e6320e03/1793283190855/R62_6076.jpg?format=1500w",
       "imageCheckedAt": "2026-11-13T12:46:53.543119+00:00"
     },
@@ -1565,7 +1525,7 @@
       "image": "https://www.arielolson.com/morning-newsletter/assets/photos/2026-11-13/events-13.jpg",
       "imageAlt": "A vintage watch displayed at an earlier NYC Jewelry, Antique & Object Show",
       "checkedAt": "2026-11-13T12:36:00.972983+00:00",
-      "priority": 2987,
+      "priority": 0,
       "costSource": "https://www.eventbrite.com/e/nyc-autumn-jewelry-antique-object-show-tickets-1981908701277",
       "imageSource": "https://nycjaos.com/cdn/shop/files/NYCJAOS_56.jpg?v=1785350886&width=800",
       "imageCheckedAt": "2026-11-13T12:46:53.137046+00:00"
@@ -1588,7 +1548,7 @@
       "image": "https://www.arielolson.com/morning-newsletter/assets/photos/2026-11-13/events-14.jpg",
       "imageAlt": "Broadway cast member Gabriella Lester in an official production portrait",
       "checkedAt": "2026-11-13T12:46:03.256870+00:00",
-      "priority": 2986,
+      "priority": 0,
       "dateSource": "https://nowyouseemelive.com/",
       "imageSource": "https://broadway.nowyouseemelive.com/wp-content/uploads/2026/03/NYSM-CastSolos-405x694-Lester-1-1.webp",
       "imageCheckedAt": "2026-11-13T12:46:53.287140+00:00"
@@ -1611,7 +1571,7 @@
       "image": "https://www.arielolson.com/morning-newsletter/assets/photos/2026-11-13/events-15.jpg",
       "imageAlt": "Shuling Guo artwork photographed for the gallery exhibition",
       "checkedAt": "2026-11-13T12:37:23.571090+00:00",
-      "priority": 2985,
+      "priority": 0,
       "imageSource": "https://static-assets.artlogic.net/w_1200,h_1200,c_limit,f_auto,fl_lossy,q_auto/ws-hollistaggart/usr/exhibitions/images/245/shuling-guo-htg21528-4000.jpg",
       "imageCheckedAt": "2026-11-13T12:46:53.400879+00:00"
     },
@@ -1633,7 +1593,7 @@
       "image": "https://www.arielolson.com/morning-newsletter/assets/photos/2026-11-13/events-16.jpg",
       "imageAlt": "Teruko Yokoi painting photographed for the Seasons exhibition",
       "checkedAt": "2026-11-13T12:38:15.993634+00:00",
-      "priority": 2984,
+      "priority": 0,
       "imageSource": "https://static-assets.artlogic.net/w_1200,h_1200,c_limit,f_auto,fl_lossy,q_auto/ws-hollistaggart/usr/exhibitions/images/244/htg21469-image-1-.jpg",
       "imageCheckedAt": "2026-11-13T12:46:53.452967+00:00"
     },
@@ -1655,7 +1615,7 @@
       "image": "https://www.arielolson.com/morning-newsletter/assets/photos/2026-11-13/events-17.jpg",
       "imageAlt": "A framed painting photographed for the Bacon / de Kooning exhibition",
       "checkedAt": "2026-11-13T12:38:14.057035+00:00",
-      "priority": 2983,
+      "priority": 0,
       "imageSource": "https://cdn.sanity.io/images/8uzch5mp/database/1ca06dc2a4eef01401aa1a4a421b2a85187b87a4-2550x2550.jpg?w=1600&auto=format",
       "imageCheckedAt": "2026-11-13T12:53:40.337351+00:00"
     },
@@ -1677,7 +1637,7 @@
       "image": "https://www.arielolson.com/morning-newsletter/assets/photos/2026-11-13/events-18.jpg",
       "imageAlt": "The New York Pops performing at Carnegie Hall in an earlier concert",
       "checkedAt": "2026-11-13T12:46:03.256870+00:00",
-      "priority": 2982,
+      "priority": 0,
       "imageSource": "https://newyorkpops.org/wp-content/uploads/063-CH-NYPOPS-102425.jpg",
       "imageCheckedAt": "2026-11-13T12:46:54.186729+00:00"
     },
@@ -1700,7 +1660,7 @@
       "checkedAt": "2026-11-17T14:02:15.824149+00:00",
       "category": "Seasonal",
       "discovery": false,
-      "priority": 100
+      "priority": 0
     },
     {
       "id": "macys-santaland-2026",
@@ -1721,7 +1681,7 @@
       "checkedAt": "2026-11-17T14:02:15.824149+00:00",
       "category": "Seasonal",
       "discovery": false,
-      "priority": 100,
+      "priority": 0,
       "supportingURL": "https://investors.macysinc.com/newsroom/news/news-details/2026/Theres-Magic-Inside-Macys-This-Holiday-Season/default.aspx"
     },
     {
@@ -1743,7 +1703,7 @@
       "checkedAt": "2026-11-17T14:02:15.824149+00:00",
       "category": "Pop-ups",
       "discovery": false,
-      "priority": 100
+      "priority": 0
     },
     {
       "id": "paleyland-2026",
@@ -1764,7 +1724,7 @@
       "checkedAt": "2026-11-17T14:02:15.824149+00:00",
       "category": "Seasonal",
       "discovery": false,
-      "priority": 100,
+      "priority": 0,
       "supportingURL": "https://www.paleycenter.org/visit-visitny"
     },
     {
@@ -1786,7 +1746,7 @@
       "checkedAt": "2026-11-17T14:02:15.824149+00:00",
       "category": "Seasonal",
       "discovery": false,
-      "priority": 100
+      "priority": 0
     },
     {
       "id": "snug-harbor-wreathmaking-2026",
@@ -1807,7 +1767,7 @@
       "checkedAt": "2026-11-17T14:02:15.824149+00:00",
       "category": "Seasonal",
       "discovery": false,
-      "priority": 100
+      "priority": 0
     },
     {
       "id": "pptc-turkey-trot-2026",
@@ -1828,7 +1788,7 @@
       "checkedAt": "2026-11-17T14:02:15.824149+00:00",
       "category": "Seasonal",
       "discovery": false,
-      "priority": 100
+      "priority": 0
     },
     {
       "id": "high-rock-post-thanksgiving-hike-2026",
@@ -1849,7 +1809,7 @@
       "checkedAt": "2026-11-17T14:02:15.824149+00:00",
       "category": "Seasonal",
       "discovery": false,
-      "priority": 100
+      "priority": 0
     },
     {
       "id": "cunningham-hibernation-brumation-2026",
@@ -1870,7 +1830,7 @@
       "checkedAt": "2026-11-17T14:02:15.824149+00:00",
       "category": "Seasonal",
       "discovery": false,
-      "priority": 100
+      "priority": 0
     },
     {
       "id": "on-location-holiday-lights-movie-tour-2026",
@@ -1891,7 +1851,7 @@
       "checkedAt": "2026-11-17T14:02:15.824149+00:00",
       "category": "Seasonal",
       "discovery": false,
-      "priority": 100,
+      "priority": 0,
       "supportingURL": "https://www.business.nyctourism.com/press-media/press-releases/holidays-in-nyc-press-release-november-2026"
     },
     {
@@ -1913,7 +1873,7 @@
       "checkedAt": "2026-11-17T14:02:15.824149+00:00",
       "category": "Sample sales",
       "discovery": false,
-      "priority": 100
+      "priority": 0
     },
     {
       "id": "john-elliott-468-nov2026",
@@ -1934,7 +1894,7 @@
       "checkedAt": "2026-11-17T14:02:15.824149+00:00",
       "category": "Sample sales",
       "discovery": false,
-      "priority": 100
+      "priority": 0
     },
     {
       "id": "pitch-roast-live-2026-11-18",
@@ -1955,7 +1915,7 @@
       "checkedAt": "2026-11-17T14:02:15.824149+00:00",
       "category": "Seasonal",
       "discovery": false,
-      "priority": 100
+      "priority": 0
     },
     {
       "id": "danish-girl-in-concert-2026",
@@ -1976,7 +1936,7 @@
       "checkedAt": "2026-11-17T14:02:15.824149+00:00",
       "category": "Around town",
       "discovery": true,
-      "priority": 100
+      "priority": 0
     },
     {
       "id": "nyphil-huang-mendelssohn-nov2026",
@@ -1997,7 +1957,7 @@
       "checkedAt": "2026-11-17T14:02:15.824149+00:00",
       "category": "Around town",
       "discovery": true,
-      "priority": 100
+      "priority": 0
     },
     {
       "id": "baselitz-meine-schule-2026",
@@ -2018,7 +1978,7 @@
       "checkedAt": "2026-11-17T14:02:15.824149+00:00",
       "category": "Around town",
       "discovery": true,
-      "priority": 100
+      "priority": 0
     },
     {
       "id": "paley-hunting-wives-2026",
@@ -2039,7 +1999,7 @@
       "checkedAt": "2026-11-17T14:02:15.824149+00:00",
       "category": "Around town",
       "discovery": true,
-      "priority": 100
+      "priority": 0
     },
     {
       "id": "mcnally-man-mirror-part2-2026",
@@ -2060,7 +2020,7 @@
       "checkedAt": "2026-11-17T14:02:15.824149+00:00",
       "category": "Around town",
       "discovery": true,
-      "priority": 100
+      "priority": 0
     },
     {
       "id": "paley-tovah-feldshuh-2026",
@@ -2081,7 +2041,7 @@
       "checkedAt": "2026-11-17T14:02:15.824149+00:00",
       "category": "Around town",
       "discovery": true,
-      "priority": 100
+      "priority": 0
     },
     {
       "id": "gagosian-michael-chow-2026",
@@ -2102,7 +2062,48 @@
       "checkedAt": "2026-11-17T14:02:15.824149+00:00",
       "category": "Around town",
       "discovery": true,
-      "priority": 100
+      "priority": 0
+    },
+    {
+      "id": "nyc:morgan-sergel-fantasy-reality-2026",
+      "recommendationKey": "morgan-johan-tobias-sergel-2026",
+      "title": "Fantasy and Reality: The Art of Johan Tobias Sergel",
+      "startDate": "2026-10-30",
+      "endDate": "2027-01-31",
+      "category": "Around town",
+      "discovery": true,
+      "priority": 100,
+      "neighborhood": "Murray Hill",
+      "where": "The Morgan Library & Museum · 225 Madison Avenue",
+      "when": "Oct 30–Jan 31 · Tue–Sun; closed Mondays and Thanksgiving. Fridays until 8 p.m.",
+      "cost": "Adults $25; online service fees apply. Free Fridays 5–8 p.m. require reservations.",
+      "what": "Drawings and sculptures in marble, bronze, terracotta and plaster trace the Swedish artist’s working process. The exhibition pairs finished works with models and imaginative studies, including his celebrated Faun.",
+      "source": "The Morgan / Nationalmuseum",
+      "url": "https://www.themorgan.org/exhibitions/johan-tobias-sergel",
+      "supportingURL": "https://www.mynewsdesk.com/nationalmuseum/pressreleases/exhibition-dedicated-to-sergel-opens-at-the-morgan-library-och-museum-in-new-york-3474438",
+      "image": "https://mnd-assets.mynewsdesk.com/image/upload/b_auto,c_pad,f_jpeg,h_630,q_auto:good,w_1200/gdstylqfasbtiijrxmtcr5",
+      "imageAlt": "Johan Tobias Sergel’s drawn study of Diomedes’ helmet and head in profile, circa 1771; photograph by Cecilia Heisser, Nationalmuseum.",
+      "checkedAt": "2026-11-19T00:04:55.460493+00:00"
+    },
+    {
+      "id": "nyc:fad-empire-stores-holiday-2026",
+      "recommendationKey": "fad-empire-stores-holiday-2026",
+      "title": "FAD’s holiday makers market at Empire Stores",
+      "startDate": "2026-11-30",
+      "endDate": "2026-12-20",
+      "category": "Seasonal",
+      "discovery": false,
+      "priority": 100,
+      "neighborhood": "DUMBO",
+      "where": "Empire Stores · 55 Water Street",
+      "when": "Nov 30–Dec 20 · daily 11 a.m.–6 p.m.",
+      "cost": "Free admission; shopping optional.",
+      "what": "Browse handcrafted jewelry, clothing, homewares and small gifts inside the waterfront warehouse. More than 35 makers join on weekends, with smaller weekday markets of 14 makers.",
+      "source": "FAD Market",
+      "url": "https://www.fadmarket.co/empirestores-holiday-market",
+      "image": "https://images.squarespace-cdn.com/content/v1/56c378ad1d07c06524ed17b0/4b67b67c-7352-4528-8790-e7f40929359f/231202+Yang_FAD+Market+-+Empire+Stores-52.jpg",
+      "imageAlt": "An earlier FAD makers market inside Empire Stores, photographed for the organizer.",
+      "checkedAt": "2026-11-19T00:04:55.460493+00:00"
     }
   ]
 }
