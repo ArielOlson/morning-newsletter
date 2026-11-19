@@ -87,14 +87,14 @@ Tell Codex **“Add [X] to the newsletter for [date or week]”** in this projec
 - **Calendar:** Today and the next 14 days from public Apple/Google feeds or the connected Google snapshot.
 - **Reminders:** Date-aware entries in the events config files.
 - **NYC sample sales:** Organizer-provided names and date ranges from 260 Sample Sale’s public NYC event feed. Expired and non-NYC events are excluded.
-- **NYC discoveries:** Organizer-verified dated events, 260 Sample Sale dates, and MLB’s official Red Sox schedule for NYC venues. RSS feeds provide research leads but undated articles are not used to fill the twenty event slots.
+- **NYC discoveries:** Organizer-verified dated events, 260 Sample Sale dates, and MLB’s official Red Sox schedule for NYC venues. Optional RSS research leads remain in source configuration; the refresh no longer downloads unused leads. Undated articles never fill event slots.
 - **Finance:** Three substantive stories from Bloomberg, Financial Times, The Wall Street Journal, CNBC, and BBC Business, selected for relevance and publisher/topic variety. The daily task writes concise factual paraphrases and visible takeaways in private config/finance.local.json. Roundup/listicle teasers are excluded; summaries disclose when only a public feed excerpt was available.
 - **Deliveries:** Package status from the last successful connected Gmail scan, with direct tracking links.
-- **Curated events:** `config/nyc-events.json` can hold events with independently verified dates, category, source, and URL. The local Codex schedule can research these. The standalone GitHub workflow refreshes structured feeds only; it does not run Codex research.
+- **Curated events:** `config/nyc-events.json` can hold events with independently verified dates, category, source, and URL. The local Codex schedule can research these. GitHub deploys the prepared edition; it does not run connector scans or Codex research.
 
 The NYC section shows twenty dated picks as cream photo-and-text rows on burgundy. Every caption includes the event name, dates, cost, neighborhood, useful details, and source link. Favorite artists, Red Sox games in NYC, seasonal events, ordered-brand popups, and sample sales are prioritized. Photos come from organizers, with unavailable images labeled honestly. No category filters or extra click is required to read the details.
 
-Weather failure preserves an earlier forecast only for the **same day**, visibly marked as earlier. Calendar failures never display an empty day as if it were confirmed free. Failed news sources do not retain old leads. Every edition carries a date and refresh time. An older edition displays an explicit notice. Source timeouts and retries are bounded, and edition writes are atomic. A config error preserves the previous edition.
+Weather failure preserves an earlier forecast only for the **same day**, visibly marked as earlier. Calendar failures never display an empty day as if it were confirmed free. Unavailable sources are reported honestly. Every edition carries a date and refresh time. An older edition displays an explicit notice. Source timeouts and retries are bounded, and edition writes are atomic. A config error preserves the previous edition.
 
 Saved discoveries synchronize through private GitHub state after connection and can outlive an event; check the source before going.
 
@@ -164,65 +164,9 @@ Past editions appears beside About your edit. Each date keeps the final prepared
 Received packages, completed reminders/ideas, saved hearts and opened links synchronize through encrypted GitHub state. Past editions show current marks for their original content. Finished package choices support undo. Clearing browser data requires reconnection, not recreation of confirmed saves.
 
 
-## Daily NYC variety
 
-Keep twenty dated NYC picks, with no events repeated from the previous New York calendar day. Research at least twenty options not shown the previous day; compare stable IDs and canonical source URLs with the encrypted prior-day archive, never with an earlier refresh of the same day. Set `discovery: true` on six to eight verified cultural or other broader discoveries outside the requested priority categories, chosen with Ariel’s interests in mind; leave it false/absent for favorite artists, Red Sox games, seasonal events, purchased-brand popups and sample sales. This is an internal editorial marker, not a displayed category or a claim of a stated preference. Research a varied pool before refreshing. Keep IDs stable, including multi-day events, rather than renaming repeats. The selector enforces zero repeats and a maximum of eight discoveries and seeks six to eight discoveries among twenty picks. A shortage is recorded in `status.city` and `errors`; research additional verified options before publication rather than relaxing the repeat cap or inventing events.
+## Current requirements and efficient execution
 
+`AGENTS.md` is the authoritative current policy for seven-day cooldowns, twenty events, twenty ideas (eight dining/twelve activities, at least eight free/eight paid), discovery and sale limits, durable choices, confirmed return/refund evidence, photography, compact navigation and verified missed-day recovery. Do not use superseded previous-day-only rotation or horizontal carousel instructions.
 
-## Twenty free-time ideas
-
-Prepare twenty season-appropriate restaurant/activity ideas each day, prioritizing Ariel’s explicit wishes and filling the remaining slots with researched suggestions likely to suit her interests. Prefer activities available most days (theater, comedy, live music, museums, walks) for the suggestion slots. Mark assistant suggestions `suggested: true`; the selector labels them “Suggested for you.” Never turn a suggestion into a remembered personal wish. Keep a surplus of verified suggestions in ignored `config/ideas.local.json` so seasonal exclusions and the seven-day cooldown still leave twenty. Set `availableThrough` for a closing production; remove expired suggestions from consideration. Keep exact closures, performance schedules, costs/minimums and actual checkedAt dates honest. Preserve existing wish IDs and browser completion behavior. The twenty-card limit applies before browser-local completed items are hidden. Check `status.ideas` and replenish the pool if fewer than twenty qualify.
-
-### Phone reminder troubleshooting
-
-Refresh edition reloads the website and restores confirmed saves from private GitHub state. If a device loses its connection after clearing browser data, reconnect from Made for Ariel. Import old browser-only data before clearing its original browser. GitHub outages or expired keys preserve saved data and keep unsaved drafts visible. Run `node tests/sync-browser.mjs` for two-device and cleared-storage recovery in Chrome and WebKit; these are browser-engine tests, not physical iOS-device tests.
-
-
-## Edition photography (Rosé Ribbons, October 23, 2026)
-
-Ariel approved one aesthetic seasonal photograph in the header on October 26, replacing the two recommendation highlights. Use real NYC scenery, seasonal details or an atmospheric venue photograph; no AI images, flyers, event headlines or recommendation captions at the top. Curate `config/photography.json` with `photos` entries containing `day` (first selected day), `availableThrough` (last seasonally appropriate day), `src`, `url` (photo credit source), `alt`, `source` and the actual `checkedAt`. Keep this public catalog free of personal information. Refresh selects the latest eligible photo independently of recommendations and stores it as `brief.photography` with mode `atmosphere`. Choose a new appropriate seasonal scene during each daily refresh, and never change its check time without verification. If a new photo cannot be verified, retain an eligible prior scene honestly with its original selection day. Choose photography independently of the event and idea cards; never reuse their images for the header, including resized variants. Prefer a softly lit, well-composed landscape photo with a clear seasonal atmosphere, not an event installation or promotional image. Record its native width and height. Display the full original composition with responsive width and automatic height, never a forced-height banner crop. Inspect the complete photo and its actual phone and desktop rendering before publication. Do not display a header photo caption or source credit (Ariel’s October 30 preference). Retain its provenance in the photography catalog and edition metadata. Verify it loads on phone and desktop; never substitute event highlights or generated art on failure. Older encrypted editions retain their original photos or artwork. Preserve all existing assets and manifest entries. `docs/artwork.md` describes the selection rules. The approved page uses burgundy event rows, a striped frame around cream idea panels, blush gradients, scalloped borders and serif headings; all 20 events and 20 ideas remain available without horizontal swiping. Preserve all content, durable user state and recommendation identity/cooldown rules.
-
-
-## Package choices
-
-Packages have three sections: Incoming (Received or Return), Returns (Sent Back), and Refunds (Refunded). Confirmed choices move packages immediately and persist into later editions on connected devices. Received and Refunded hide finished packages; Show received & refunded provides undo. Returns remain until Sent Back; refunds remain until Refunded. These buttons record Ariel’s choices only; they do not initiate a merchant return, send mail, or confirm a bank refund.
-
-The private GitHub state retains a minimal encrypted package snapshot with each choice, so returns and pending refunds survive after the email feed stops including the parcel. Preserve carrier/tracking identities and legacy received marks. Never infer a manual choice from an email status. Archive views retain the current choice for parcels present in that edition, without adding newer parcels to old editions. Storage is encrypted with the newsletter password and cleared from page memory on lock. Confirmed GitHub choices survive clearing browser data; reconnect the device to restore them. Legacy browser-only choices require import from their original browser. Password migrations must include this saved package ledger.
-
-
-## No consecutive-day repeats in either carousel
-
-Both What’s happening in NYC and Ideas for your free time must exclude every item shown in the previous New York calendar day’s encrypted edition. Compare stable IDs and canonical URLs; changing titles, IDs or tracking parameters must not disguise a repeat. Same-day rebuilds still compare against yesterday, not an earlier build today. This applies to explicit wishes as well as assistant suggestions in the daily ideas carousel. Preserve hearts, saved items, completion marks, reminders and private durable state; rotation does not delete saved items or unfinished reminders. Keep at least 160 verified ideas plus a surplus for seasonal/calendar exclusions, research replacements, and require twenty eligible new ideas before publication. Never relax the no-repeat rule to fill a shortage.
-
-
-## Stronger recommendation rules (October 7, 2026)
-
-The seven-day cooldown supersedes earlier previous-day-only instructions. Both carousels must exclude items shown in EITHER section during the preceding seven New York calendar days, including every version published during each day. Read encrypted archives, compare stable IDs, canonical URLs and optional stable `recommendationKey` identities. Never change an identity to disguise a repeat. Same-day rebuilds still use preceding calendar days; keep the union of same-day exposures for tomorrow. A missing yesterday archive blocks selection rather than silently disabling rotation.
-
-Read the current private encrypted user state before selection and again before publication. Honor durable completion marks and `recommendationExclusions` (including explicit inactive/undo values); daily jobs are read-only consumers of that repository. Use relevant chats to collect only user-confirmed visits, interests and value preferences, with source-chat evidence in the private profile. Other assistants' suggestions are not user wishes. Confirm a private GitHub write before reporting that a new preference or visited-place correction is saved. Never put those facts in tracked config or documentation.
-
-Cap sample sales at TWO per edition, even when the feed or priorities contain many; zero is fine. Research twenty new dated events and twenty eligible free-time ideas with a varied mix and practical costs. Do not alternate two small pools: continuously replenish options beyond the seven-day history. Publication guards reject shortages, repeats, duplicates and excess sample sales. Preserve saved hearts, reminders, completions and archive access when cards rotate out.
-
-
-## Twenty events and twenty flexible ideas (October 8, 2026)
-
-Prepare 20 dated NYC events and 20 flexible free-time ideas daily. Ideas have no assigned date or time; dated events retain their actual schedule. Each idea requires a verified `costType` of `free` or `paid`. Aim for ten of each and require at least eight of each; a shortage blocks publication. Free means no required admission or purchase for the core activity; disclose optional food and transit costs. Mix walks, BYO picnics, free galleries, coffee, dinners, comedy and other activities. Do not count occasional free admission windows as generally free. Keep six to eight broader discoveries in the twenty dated events and at most two sample sales. Existing seven-day cooldown, stable identities, exclusions, hearts, reminders and encrypted cross-device state remain mandatory. Read accessible relevant chats for user-confirmed visits, wishes and interests; assistant suggestions are not evidence of a preference, and inaccessible wishlist contents must not be invented.
-
-
-## Verified missed-day recovery (October 14, 2026)
-
-Ariel approved a narrow recovery path when yesterday was never published. The ordinary seven-day cooldown remains mandatory. `scripts/history-recovery.mjs` checks complete Git history and paginated Pages workflow history, decrypts published versions, and compares the live current edition and every live/local archive with the immutable published commit. Missing, corrupted, removed, incomplete or unverifiable published history blocks recovery. Early releases that predate the archive feature are verified using their actual encrypted current payloads.
-
-Only after verification, exclude ALL known historical recommendations for the recovery edition. Record cards observed on the live site in the new edition's exposure union with the actual observation time in status.recommendations.recovery, keeping these cards excluded for seven more days. Do not backdate scans, manufacture missed editions, relax quotas or change saved state. Reverify history and read private state before publishing. Subsequent normal runs use the seven-day cooldown; a later interruption must verify again. Publication still requires the exact Pages commit and pnpm verify:live.
-
-
-## Compact reading and idea groups (October 30, 2026)
-
-What’s happening in NYC and Ideas for your free time are independently collapsible. They default closed on phones and open on desktop. Connected browsers save explicit open/closed preferences in encrypted private state; unconnected reading controls are temporary and do not claim a durable save. Preserve keyboard controls, section counts, hearts and completions.
-
-Every new edition must contain exactly eight ideas with `ideaGroup: "dining"` and twelve with `ideaGroup: "activity"`. Render these under Restaurants & dining for this week and Things to do. Dining includes restaurants and intentional food/coffee outings; activities include movies, theater, comedy, museums, galleries, walks and other experiences. The headings do not schedule a visit or permit weekly repeats: all twenty remain flexible and follow the existing seven-day cooldown across both sections. Keep at least eight free and eight paid ideas, aiming for ten each, with clear costs. Research additional dining options when fewer than eight qualify; never mislabel an activity to satisfy the quota. Old archives keep their original counts and content.
-
-
-## Compact edition navigation (October 30, 2026)
-
-Keep the small “In this edition” contents menu between the title/date and the header photograph. Provide direct links to Today, Weather, Reminders, NYC, Dining, Things to do, Finance and Packages. Open a collapsed recommendation section before jumping into it; connected open preferences use the existing confirmed encrypted save. Keep a small upward arrow under every main section and between the two ideas groups, with an accessible Back to top label and a 44px touch target. Returning to the top must preserve the current Today, Coming up or Saved view. Preserve this navigation in future editions.
+Follow [the efficient daily workflow](docs/efficient-refresh.md) for resumable stages, paced Gmail scans, research preflight, actual review checkpoints, timings and publication. The connector-backed agent still performs scans and editorial review; these scripts do not gain independent Gmail, calendar or chat access.

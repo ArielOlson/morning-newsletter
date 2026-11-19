@@ -18,7 +18,11 @@
     "verify:live": "node scripts/verify-live.mjs",
     "test:features": "node tests/features-browser.mjs",
     "test:packages": "node tests/packages-browser.mjs",
-    "test:sync": "node tests/sync-browser.mjs"
+    "test:sync": "node tests/sync-browser.mjs",
+    "daily": "node scripts/daily-runner.mjs",
+    "package:queue": "node scripts/package-queue-cli.mjs",
+    "research:plan": "node scripts/research-plan.mjs",
+    "research:check": "node scripts/research-plan.mjs --check-links"
   },
   "dependencies": {
     "three": "^0.180.0",

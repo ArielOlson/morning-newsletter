@@ -1,3 +1,4 @@
+import {assertMaintenanceEdition} from './maintenance-check.mjs';
 import { readFile, writeFile, mkdir, readdir, cp, rm } from 'node:fs/promises';
 import { execFileSync } from 'node:child_process';
 import { resolve, dirname, relative } from 'node:path';
@@ -9,6 +10,7 @@ import {assertRecommendations} from './recommendation-check.mjs';
 import {readRecommendationState,eligibleRecommendations} from './recommendation-state.mjs';
 import {assertPackageScan} from './package-scan.mjs';
 
+const maintenance=process.argv.includes('--maintenance');
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 const checkout=resolve(root,'.cache/publish-repo');
 const statePath=resolve(root,'.cache/publish-state.json');
@@ -31,6 +33,7 @@ async function checkTree(path){
 try{
  const briefText=await readFile(resolve(root,'public/data/brief.json'),'utf8');
  const brief=JSON.parse(briefText),age=Date.now()-Date.parse(brief.generatedAt);
+ if(!maintenance){
  const deliveryScan=await optionalJSON(resolve(root,'config/deliveries.local.json'));
  const connections=await optionalJSON(resolve(root,'config/connections.local.json'));
  assertPackageScan(deliveryScan,connections.gmail.map(x=>x.account));
@@ -39,9 +42,15 @@ try{
  assertRecommendations(brief,(await recommendationHistory(brief.day,{},brief.timezone)).items);
  const choices=await readRecommendationState(),cards=[...brief.finds,...brief.ideas];
  if((await eligibleRecommendations(cards,choices.state)).length!==cards.length)throw Error('A recommendation was completed or excluded since refresh. Refresh and rebuild before publishing.');
+ }else await readRecommendationState();
  const security=await optionalJSON(resolve(root,'config/security.local.json'));
  if(!security?.password)throw new Error('Newsletter encryption must be configured before publication.');
  passwordBytes=Buffer.from(security.password);
+ if(maintenance){
+  const baseline=await optionalJSON(statePath);
+  if(!baseline?.commit)throw Error('A previously published commit is required for maintenance');
+  await assertMaintenanceEdition({prepared:briefText,password:security.password,local:path=>readFile(resolve(root,'dist/data',path),'utf8'),published:async path=>run('git',['show',`${baseline.commit}:dist/data/${path}`])});
+ }
  const encrypted=await optionalJSON(resolve(root,'dist/data/brief.enc.json'));
  if(!encrypted || await decrypt(encrypted,security.password)!==briefText)throw new Error('Encrypted build is out of date. Run pnpm build before publishing.');
  if(await optionalJSON(resolve(root,'dist/data/brief.json')))throw new Error('Plaintext newsletter detected in build; refusing publication.');
@@ -75,11 +84,11 @@ try{
  const staged=run('git',['diff','--cached','--name-only','--diff-filter=ACMR']).split('\n').filter(Boolean);
  if(staged.some(privatePath))throw new Error('Private files were staged unexpectedly; refusing publication.');
  if(run('git',['diff','--cached','--name-only'])){
-  run('git',['-c','user.name=Ariel Olson','-c','user.email=arielolson@users.noreply.github.com','commit','-m',`Update morning newsletter for ${brief.day}`]);
+  run('git',['-c','user.name=Ariel Olson','-c','user.email=arielolson@users.noreply.github.com','commit','-m',maintenance?'Improve newsletter daily workflow':`Update morning newsletter for ${brief.day}`]);
  }
  const commit=run('git',['rev-parse','HEAD']);
  run('git',['push','origin',config.branch]);
- await writeFile(statePath,JSON.stringify({commit,publishedAt:new Date().toISOString(),edition:brief.day},null,2)+'\n');
+ await writeFile(statePath,JSON.stringify({commit,publishedAt:new Date().toISOString(),edition:brief.day,kind:maintenance?'maintenance':'edition'},null,2)+'\n');
  console.log(`Pushed ${commit} to ${config.repository}. Verify the Pages workflow and ${config.website} before claiming deployment success.`);
 }catch(e){
  console.error(e.status ? `Publication command failed (exit ${e.status}); inspect GitHub authentication and the publishing checkout before retrying.` : e.message);

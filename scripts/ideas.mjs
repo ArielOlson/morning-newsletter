@@ -8,7 +8,9 @@ export function selectIdeas(items,day,calendar,zone='America/New_York',previous=
   if(!x.seasonStart||!x.seasonEnd)return true;
   return x.seasonStart<=x.seasonEnd?md>=x.seasonStart&&md<=x.seasonEnd:md>=x.seasonStart||md<=x.seasonEnd;
  }).sort((a,b)=>Number(a.suggested===true)-Number(b.suggested===true)||(b.priority||0)-(a.priority||0)).filter(x=>{const keys=cityKeys(x);if(keys.some(k=>seen.has(k)))return false;keys.forEach(k=>seen.add(k));return true;}).map(x=>{
-  const idea={...x,kind:'idea',what:x.suggested===true?`Suggested for you. ${x.what||''}`:x.what};
+  const details=typeof x.practicalDetails==='string'?x.practicalDetails.trim():'';
+  const description=[x.what||'',details&&!String(x.what||'').includes(details)?details:''].filter(Boolean).join(' ');
+  const idea={...x,kind:'idea',what:x.suggested===true?`Suggested for you. ${description}`:description};
   for(const key of ['when','timing','suggestedDate','startDate','endDate'])delete idea[key];
   return idea;
  });

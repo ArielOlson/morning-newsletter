@@ -5,7 +5,7 @@ import { readFile, writeFile, mkdir, rename } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { resolve, dirname } from 'node:path';
 import { randomUUID } from 'node:crypto';
-import { dayInZone, addDays, remindersFor, validateEvents, weatherSummary, parseFeed, parseSales, parseFinance, topFinance, curatedFinance, deliverySnapshot, mergeCalendarPlans, redSoxEvents } from './lib.mjs';
+import { dayInZone, addDays, remindersFor, validateEvents, weatherSummary, parseSales, parseFinance, topFinance, curatedFinance, deliverySnapshot, mergeCalendarPlans, redSoxEvents } from './lib.mjs';
 import {selectIdeas} from './ideas.mjs';
 import {selectCity} from './lib.mjs';
 import {recommendationHistory} from './city-history.mjs';
@@ -61,15 +61,12 @@ async function main() {
     return result.events;
   }
   const jobs = [collect('weather', async()=> weatherSummary(JSON.parse(await download(forecastURL)), prefs, day), old.weather?.day === day ? old.weather : null),
-    ...calendar.urls.map(readCalendar),
-    ...sources.feeds.map((source,i)=>collect(`news${i}`, async()=>parseFeed(await download(source.url), source, prefs, now), null))];
+    ...calendar.urls.map(readCalendar)];
   const [results, sales, financeResults] = await Promise.all([Promise.all(jobs), collect('sampleSales', async()=>parseSales(await download(sources.sampleSalesFeed),day,prefs.timezone), null), Promise.all((sources.financeFeeds||[]).map((source,i)=>collect(`finance${i}`,async()=>parseFinance(await download(source.url),source,now),null)))]);
   const games=await collect('redSox',async()=>redSoxEvents(JSON.parse(await download(`https://statsapi.mlb.com/api/v1/schedule?sportId=1&teamId=111&startDate=${day}&endDate=${addDays(day,14)}`)),day,prefs.timezone),null);
   const finance=topFinance([...financeResults.flatMap(x=>x||[]),...curatedFinance(await readJSON('config/finance.local.json',{}),now)]);
   const weather = results[0];
   const plans = results.slice(1,1+calendar.urls.length).flatMap(x=>x||[]);
-  const news = results.slice(1+calendar.urls.length).flatMap(x=>x||[]);
-  const deduped = [...new Map(news.sort((a,b)=>b.score-a.score || b.publishedAt.localeCompare(a.publishedAt)).map(x=>[x.url,x])).values()].slice(0,prefs.maxFinds);
   const personal = events.filter(e => !e.category || e.category === 'personal');
   const cityEvents = events.filter(e => e.category && e.category !== 'personal' && (e.endDate || e.startDate) >= day && e.startDate <= addDays(day,14,prefs.timezone)).map(e => ({...e,kind:'event',source:e.source || 'Your picks'}));
   const city=selectCity(await eligibleRecommendations([...cityEvents,...(games||[]),...(sales||[])],choices.state),day,interests,rotation.items);

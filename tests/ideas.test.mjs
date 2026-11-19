@@ -27,3 +27,8 @@ test('missing dining options cannot be replaced by extra activities or unlabeled
  const result=selectIdeas(pool.filter(x=>x.ideaGroup==='activity').concat(card('unknown-group',{ideaGroup:null})),'2026-10-30',{});
  assert.equal(result.length,12);assert.ok(result.every(x=>x.ideaGroup==='activity'));
 });
+
+test('verified opening restrictions survive selection without converting legacy timing into a schedule',()=>{
+ const [idea]=selectIdeas([card('museum',{practicalDetails:'Closed Mondays.',timing:'Tomorrow at noon'})],'2026-11-19',{});
+ assert.match(idea.what,/Closed Mondays/);assert.equal(idea.timing,undefined);assert.ok(!idea.what.includes('Tomorrow'));
+});
