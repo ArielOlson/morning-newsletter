@@ -4,7 +4,7 @@
 
 Ariel approved cloud execution on November 19, 2026. The production requirement is a complete, live-verified edition before **05:00 America/New_York** each day, including daylight-saving changes. There is no 15-minute runtime requirement for cloud production. Keep all recommendation, coverage, privacy, history, durable-state and visual-review requirements.
 
-This migration is **not activated**. The existing local morning and evening schedules remain the fallback until an actual cloud-only run passes. The first readiness check found that the cloud GitHub connection has no repository access configured. A browser sign-in and repository authorization are pending. Do not describe a runnable environment listing, a prepared encrypted transfer or a local test as proof of cloud publication.
+This migration is **not activated**. The existing local morning and evening schedules remain the fallback until an actual cloud-only run passes. The published cloud environment has passed read-only GitHub, runtime-secret, encrypted-current/index/archive, operations-bundle, durable-state and bounded Google connection checks. Separate read-only tests inside the original three preference chats matched their latest user messages; these are manual access tests only. Ariel has since expanded required review to every Lifestyle chat. Folder-wide discovery, all required current-chat reviews, encrypted handoff, sufficient public-source HTTP access, unattended environment-bound scheduling and a full cloud-only publication remain unverified. Do not repeat completed repository/password setup, or describe access tests as complete scans or publication.
 
 ## Repositories and credentials
 
@@ -39,7 +39,7 @@ Verify from the cloud itself, with no local computer or remote-Mac tools:
 
 1. Node, pnpm, Git, authenticated GitHub access, internet research and a browser capable of actual mobile and desktop rendering.
 2. Read-only access to both authorized Gmail accounts and every configured calendar. Resolve account bindings from the current connection configuration and actual cloud account listings. Do not silently substitute one account or stop at two calendars.
-3. Access to recent user messages in things to do, restaurants and coffee. An exported old preference profile does not satisfy a fresh chat review. If that access is unavailable, report it and obtain an explicit supported replacement before claiming complete migration.
+3. Complete discovery of every current Lifestyle chat using the private configured project ID, including active/archived pagination and future additions, plus review of actual recent user messages in every matched chat. A fixed three-chat list or exported old preference profile does not satisfy this requirement. In-chat reviews may be used only after actual source coverage and secure encrypted handoff have been verified. Missing chat access or incomplete coverage blocks readiness; Ariel has explicitly retained daily chat review.
 4. Runtime secret access, authenticated decryption of every current/archive payload, and a fresh read of durable user choices.
 5. A genuinely cloud-backed recurring scheduler with New York timezone. A local heartbeat targeting a cloud chat is not proof of unattended cloud scheduling.
 6. An end-to-end cloud-only edition: complete sources, all content quotas/cooldowns, original-photo and phone/desktop reviews, `pnpm build`, exact-commit Pages success and full `pnpm verify:live`.

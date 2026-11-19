@@ -176,3 +176,7 @@ The evening preparation task now runs at **8:10 p.m. New York time**, preparing 
 ## Cloud production deadline (November 19, 2026)
 
 Ariel approved moving newsletter production to a private cloud task so her Mac can be asleep. The requirement is live-verified publication before 05:00 America/New_York each day, adjusting for daylight saving; cloud runs have no 15-minute runtime limit. Website hosting and durable encrypted data remain on GitHub. Secure cloud secret setup is authorized; never expose or rotate the newsletter password or copy the Mac's GitHub token. Read docs/cloud-production.md for the migration status and encrypted working-data transfer. The existing local schedules remain fallback until a complete cloud-only publication and all access/restore checks have succeeded. Do not claim migration is complete or disable the fallback based on setup or local tests alone.
+
+## Newsletter preference sources
+
+The daily workflow reviews every chat in Ariel’s Lifestyle project, discovering new additions each run. It retains only explicit user-confirmed facts relevant to the newsletter, with private source evidence. Chat discovery and complete message review are separate checks; unavailable coverage is reported. This scope applies to the local fallback and the pending cloud migration. The cloud workflow is not active until its complete unattended publication has been verified.
