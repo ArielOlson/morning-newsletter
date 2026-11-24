@@ -1,6 +1,6 @@
 import {fileURLToPath} from 'node:url';
 import {open, unlink} from 'node:fs/promises';
-import {preparationDay, preparedPath, planPreparation, preparationDigest, preparationLinks, validatePreparation, preparationInputs, assertCurrentPreparation, selectPreparation, loadPreparation, digest} from './prepared-research.mjs';
+import {preparationDay, preparedPath, planPreparation, preparationDigest, preparationLinks, reusablePreparationLinks, validatePreparation, preparationInputs, assertCurrentPreparation, selectPreparation, loadPreparation, digest} from './prepared-research.mjs';
 import {eligibleRecommendations} from './recommendation-state.mjs';
 import {readJSON, atomicJSON, mapBounded} from './workflow-utils.mjs';
 import {probe} from './research-plan.mjs';
@@ -18,7 +18,7 @@ try {
   else if (command === 'plan') {
     const inputs = await preparationInputs(day);
     const next = planPreparation({...inputs, events: await eligibleRecommendations(inputs.events, inputs.choices.state), ideas: await eligibleRecommendations(inputs.ideas, inputs.choices.state), history: inputs.history.items});
-    if (next.fingerprint !== bundle?.fingerprint) { bundle = next; await atomicJSON(path, bundle); }
+    if (next.fingerprint !== bundle?.fingerprint) { next.links = reusablePreparationLinks(bundle, next); bundle = next; await atomicJSON(path, bundle); }
     console.log(JSON.stringify({day, events: 24, ideas: 24, path, sealed: !!bundle.sealedAt}));
   } else if (command === 'check') {
     const ready = await loadPreparation(day);

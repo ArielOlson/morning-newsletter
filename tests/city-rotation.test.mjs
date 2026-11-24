@@ -42,12 +42,24 @@ test('same-day rebuilds compare with yesterday from encrypted history, with priv
 test('weekly history blocks alternating pools and includes every same-day exposure across both sections',async()=>{
  const original=process.cwd(),dir=await mkdtemp(join(tmpdir(),'weekly-history-'));process.chdir(dir);
  try{
-  await mkdir('.cache/editions',{recursive:true});
-  for(const day of ['2026-10-06','2026-10-05','2026-09-30','2026-09-29'])await writeFile(`.cache/editions/${day}.json`,JSON.stringify({day,finds:[{id:'event:'+day}],ideas:[{id:'idea:'+day}],recommendationExposures:[{id:'earlier:'+day}]}));
+  await mkdir('dist/data/editions',{recursive:true});await mkdir('config');
+  await writeFile('config/security.local.json',JSON.stringify({password:'test-only-archive-secret'}));
+  for(const day of ['2026-10-06','2026-10-05','2026-09-30','2026-09-29'])await writeFile(`dist/data/editions/${day}.enc.json`,JSON.stringify(await encrypt(JSON.stringify({day,finds:[{id:'event:'+day}],ideas:[{id:'idea:'+day}],recommendationExposures:[{id:'earlier:'+day}]}),'test-only-archive-secret')));
   const history=await recommendationHistory('2026-10-07',{day:'2026-10-07',finds:[{id:'today'}]});
   assert.deepEqual(history.days,['2026-10-06','2026-10-05','2026-09-30']);
   assert.equal(history.items.length,9);assert.ok(history.items.some(x=>x.id==='earlier:2026-10-06'));
   assert.ok(history.items.some(x=>x.id==='idea:2026-10-05'));assert.ok(!history.items.some(x=>x.id==='today'));
-  await rm('.cache/editions/2026-10-06.json');await assert.rejects(recommendationHistory('2026-10-07'),/missing/);
+  await rm('dist/data/editions/2026-10-06.enc.json');await assert.rejects(recommendationHistory('2026-10-07'),/missing/);
+ }finally{process.chdir(original);await rm(dir,{recursive:true,force:true});}
+});
+
+test('an unpublished yesterday draft cannot bypass verified publication-gap recovery',async()=>{
+ const original=process.cwd(),dir=await mkdtemp(join(tmpdir(),'unpublished-history-'));process.chdir(dir);
+ try{
+  const draft={day:'2026-11-23',finds:[{id:'unpublished-event'}],ideas:[]};
+  assert.equal((await previousCityEdition('2026-11-24',draft)).encryptedArchive,false);
+  await assert.rejects(recommendationHistory('2026-11-24',draft),/publication-gap recovery could not be verified/);
+  await mkdir('.cache/editions',{recursive:true});await writeFile('.cache/editions/2026-11-23.json',JSON.stringify(draft));
+  await assert.rejects(recommendationHistory('2026-11-24'),/publication-gap recovery could not be verified/);
  }finally{process.chdir(original);await rm(dir,{recursive:true,force:true});}
 });

@@ -13,9 +13,12 @@ import {recommendationHistory} from './city-history.mjs';
 import {readRecommendationState,eligibleRecommendations} from './recommendation-state.mjs';
 import {selectHeaderPhotos} from '../src/photography.mjs';
 import {assertPackageScan} from './package-scan.mjs';
+import {atomicJSON} from './workflow-utils.mjs';
+import {refreshFailureDiagnostic} from './refresh-diagnostics.mjs';
+let refreshPhase = 'configuration';
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 process.chdir(root);
-const readJSON = async (path, fallback) => { try { return JSON.parse(await readFile(path, 'utf8')); } catch(e) { if (e.code === 'ENOENT' && fallback !== undefined) return fallback; throw new Error(`Cannot read ${path}: check JSON syntax`); } };
+const readJSON = async (path, fallback) => { try { return JSON.parse(await readFile(path, 'utf8')); } catch(e) { if (e.code === 'ENOENT' && fallback !== undefined) return fallback; throw new Error(`Cannot read ${path}: check JSON syntax`, {cause:e}); } };
 const atomic = async (path, data) => { await mkdir(dirname(path), { recursive: true }); const temp = `${path}.${randomUUID()}.tmp`; await writeFile(temp, JSON.stringify(data, null, 2)); await rename(temp,path); };
 export async function download(url) {
   for (let attempt=0;attempt<2;attempt++) {
@@ -39,13 +42,18 @@ async function main() {
   if (process.env.ICAL_URLS) calendar.urls = JSON.parse(process.env.ICAL_URLS);
   if (!Array.isArray(calendar.urls) || calendar.urls.some(u => typeof u !== 'string' || !/^((https:\/\/)|(webcal:\/\/))/.test(u))) throw new Error('Calendar urls must be an array of HTTPS or webcal links');
   const linkedCalendar = await readJSON('config/calendar-snapshot.local.json', {});
+  refreshPhase = 'package-coverage';
   const deliveryData=await readJSON('config/deliveries.local.json',null);
   if(deliveryData){const connections=await readJSON('config/connections.local.json');assertPackageScan(deliveryData,connections.gmail.map(x=>x.account));}
   const packages = deliverySnapshot(deliveryData, now);
+  refreshPhase = 'recommendation-config';
   const events = validateEvents([...(await readJSON('config/events.json')).events, ...(await readJSON('config/events.local.json', {events:[]})).events, ...(await readJSON('config/nyc-events.json', {events:[]})).events]);
   const old = await readJSON('public/data/brief.json', {});
+  refreshPhase = 'recommendation-history';
   const rotation=await recommendationHistory(day,old,prefs.timezone,7);
+  refreshPhase = 'durable-state';
   const choices=await readRecommendationState();
+  refreshPhase = 'prepared-research';
   const prepared = process.env.MORNING_PREPARED === '1' ? await loadPreparation(day, {history: rotation, choices}) : null;
   const status = {}, errors = [];
   if (prepared) status.preparation = {day, fingerprint: prepared.bundle.fingerprint, preparedAt: prepared.bundle.sealedAt, factsReviewedAt: prepared.bundle.review.checkedAt};
@@ -63,15 +71,19 @@ async function main() {
     if(result.status.state!=='fresh')errors.push(`calendar${i}`);
     return result.events;
   }
+  refreshPhase = 'public-sources';
   const jobs = [collect('weather', async()=> weatherSummary(JSON.parse(await download(forecastURL)), prefs, day), old.weather?.day === day ? old.weather : null),
     ...calendar.urls.map(readCalendar)];
   const [results, sales, financeResults] = await Promise.all([Promise.all(jobs), collect('sampleSales', async()=>parseSales(await download(sources.sampleSalesFeed),day,prefs.timezone), null), Promise.all((sources.financeFeeds||[]).map((source,i)=>collect(`finance${i}`,async()=>parseFinance(await download(source.url),source,now),null)))]);
+  refreshPhase = 'red-sox-source';
   const games=await collect('redSox',async()=>redSoxEvents(JSON.parse(await download(`https://statsapi.mlb.com/api/v1/schedule?sportId=1&teamId=111&startDate=${day}&endDate=${addDays(day,14)}`)),day,prefs.timezone),null);
+  refreshPhase = 'finance-selection';
   const finance=topFinance([...financeResults.flatMap(x=>x||[]),...curatedFinance(await readJSON('config/finance.local.json',{}),now)]);
   const weather = results[0];
   const plans = results.slice(1,1+calendar.urls.length).flatMap(x=>x||[]);
   const personal = events.filter(e => !e.category || e.category === 'personal');
   const cityEvents = events.filter(e => e.category && e.category !== 'personal' && (e.endDate || e.startDate) >= day && e.startDate <= addDays(day,14,prefs.timezone)).map(e => ({...e,kind:'event',source:e.source || 'Your picks'}));
+  refreshPhase = 'recommendation-selection';
   const city=prepared?.selection.city || selectCity(await eligibleRecommendations([...cityEvents,...(games||[]),...(sales||[])],choices.state),day,interests,rotation.items);
   status.recommendations={state:'fresh',updatedAt:choices.checkedAt,historyDays:rotation.days,cooldownDays:7,maxSampleSales:2};
   if(rotation.recovery)status.recommendations.recovery=rotation.recovery;
@@ -82,6 +94,7 @@ async function main() {
     reminders:remindersFor(personal,day,prefs.timezone), upcomingReminders:personal.filter(e=>e.startDate>day && e.startDate<=addDays(day,14,prefs.timezone)),
     finds:city.items, finance, deliveries:packages, directories:sources.directories, status, errors };
   brief.ideas=prepared?.selection.ideas || selectIdeas(await eligibleRecommendations((await readJSON('config/ideas.local.json',{ideas:[]})).ideas,choices.state),day,brief.calendar,prefs.timezone,[...rotation.items,...city.items]);
+  refreshPhase = 'photography-selection';
   brief.photography={mode:'atmosphere',photos:prepared ? [prepared.selection.photo] : selectHeaderPhotos(brief,await readJSON('config/photography.json',{photos:[]}))};
   status.photography={state:brief.photography.photos.length===1?'selected':'unavailable',count:brief.photography.photos.length};
   if(!brief.photography.photos.length)errors.push('photography');
@@ -91,9 +104,17 @@ async function main() {
   // Keep every card exposed by earlier same-day builds for tomorrow's rotation.
   brief.recommendationExposures=[...(rotation.observed||[]),...(old.day===day?[...(old.recommendationExposures||[]),...(old.finds||[]),...(old.ideas||[])]:[]),...brief.finds,...brief.ideas].map(({id,url,recommendationKey})=>({id,url,...(recommendationKey?{recommendationKey}:{})})).filter((item,index,items)=>items.findIndex(x=>x.id===item.id&&x.url===item.url&&x.recommendationKey===item.recommendationKey)===index);
   if(status.ideas.state!=='fresh')errors.push('ideas');
+  refreshPhase = 'write-edition';
   await atomic('public/data/brief.json',brief);
   // Private calendar details are intentionally excluded from logs and history.
   console.log(`Morning edit updated for ${day}. Weather: ${status.weather.state}. Calendar: ${brief.calendar.state}. NYC finds: ${brief.finds.length}.`);
   if (errors.length) console.warn(`Sources needing attention: ${errors.join(', ')}. The page shows their availability accurately.`);
 }
-main().catch(() => { console.error('Refresh failed. Check config JSON, calendar URL format, and network access. The previous edition was preserved.'); process.exitCode=1; });
+main().catch(async error => {
+  const diagnostic = refreshFailureDiagnostic(error, refreshPhase);
+  try { await atomicJSON('.cache/refresh-error.local.json', diagnostic); }
+  catch { console.error('Could not save the private refresh diagnostic.'); }
+  const causes = diagnostic.errors.map(item => [item.name, item.code, item.operation].filter(Boolean).join('/')).join(' <- ');
+  console.error(`Refresh failed during ${diagnostic.phase}: ${causes}. The previous edition was preserved. See the private refresh diagnostic.`);
+  process.exitCode=1;
+});

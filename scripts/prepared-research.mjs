@@ -24,6 +24,17 @@ export function preparationLinks(bundle) {
     {url: bundle.photo.src, image: true}, {url: bundle.photo.url, image: false}
   ].map(x => [JSON.stringify(x), x])).values()];
 }
+// Availability is tied to an exact URL and resource type, not card identity.
+// Replanning still discards editorial review and sealing; only recent successful
+// probes survive a replacement so unchanged sources need not be fetched again.
+export function reusablePreparationLinks(previous, next, now = Date.now()) {
+  const required = new Set(preparationLinks(next).map(x => JSON.stringify([x.url, x.image])));
+  return (previous?.links || []).filter(x => {
+    const checked = Date.parse(x.checkedAt);
+    return x.ok === true && Number.isFinite(checked) && checked <= now && now - checked < 3600000
+      && required.has(JSON.stringify([x.url, x.image]));
+  }).map(x => structuredClone(x));
+}
 export const preparationDigest = bundle => digest({day: bundle.day, events: bundle.events, ideas: bundle.ideas, photo: bundle.photo});
 const rawPicks = (items, pool) => items.map(x => structuredClone(pool.find(raw => raw.id === x.id)));
 const uniqueFrom = (items, excluded) => {

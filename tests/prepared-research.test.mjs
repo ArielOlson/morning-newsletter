@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {planPreparation, validatePreparation, preparationLinks, preparationDay, selectPreparation, preparationDigest, assertCurrentPreparation, digest, PREPARATION_MAX_AGE} from '../scripts/prepared-research.mjs';
+import {planPreparation, validatePreparation, preparationLinks, reusablePreparationLinks, preparationDay, selectPreparation, preparationDigest, assertCurrentPreparation, digest, PREPARATION_MAX_AGE} from '../scripts/prepared-research.mjs';
 import {emptyState} from '../src/sync.mjs';
 import {historyId} from '../src/history.mjs';
 import {selectHeaderPhotos} from '../src/photography.mjs';
@@ -54,4 +54,20 @@ test('new unrelated research does not invalidate preparation but changed selecte
   const b = seal(); assert.doesNotThrow(() => assertCurrentPreparation(b, {...inputs(), events:[...events,card('extra')]}));
   assert.throws(() => assertCurrentPreparation(b, {...inputs(), events: events.map(x => x.id === b.events[0].id ? {...x,cost:'Changed'} : x)}), /changed/);
   assert.throws(() => planPreparation({...inputs(), ideas: ideas.filter(x => x.ideaGroup !== 'dining')}, now), /twenty/);
+});
+
+test('replanning one source preserves only recent exact availability checks and requires fresh review', () => {
+  const previous = seal(), next = planPreparation(inputs(), now + 1000);
+  next.events[0].url = 'https://example.com/replacement';
+  next.fingerprint = preparationDigest(next);
+  previous.links[2].ok = false;
+  previous.links[3].checkedAt = new Date(now - 3600000).toISOString();
+  previous.links[4].checkedAt = new Date(now + 10000).toISOString();
+  previous.links[5].image = !previous.links[5].image;
+  next.links = reusablePreparationLinks(previous, next, now + 1000);
+  assert.ok(!next.links.some(x => x.url === previous.events[0].url));
+  for (const i of [2,3,4,5]) assert.ok(!next.links.some(x => x.url === previous.links[i].url));
+  assert.ok(next.links.some(x => x.url === previous.links[6].url && x.checkedAt === new Date(now).toISOString()));
+  assert.equal(next.review, undefined); assert.equal(next.seal, undefined);
+  assert.throws(() => validatePreparation(next, day, now + 1000, {sealed:false}), /review/);
 });

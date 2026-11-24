@@ -53,7 +53,8 @@ export async function recoverPublicationGap(day,zone='America/New_York'){
  const git=(...args)=>run('git',args);
  const expected=[`https://github.com/${config.repository}`,`https://github.com/${config.repository}.git`,`git@github.com:${config.repository}.git`];
  assert.ok(expected.includes(git('remote','get-url','origin')),'Unexpected history repository');
- git('-c','credential.https://github.com.helper=!gh auth git-credential','fetch','origin',config.branch);
+ // Published history is public; avoid interactive credential helpers during unattended reads.
+ git('-c','credential.helper=','-c','credential.https://github.com.helper=','fetch','origin',config.branch);
  assert.equal(git('rev-parse','--is-shallow-repository'),'false','Full Git history is required for recovery');
  const head=git('rev-parse',`origin/${config.branch}`);
  const pages=JSON.parse(run('gh',['api',`repos/${config.repository}/actions/workflows/static.yml/runs?per_page=100`,'--paginate','--slurp']));

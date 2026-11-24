@@ -20,12 +20,15 @@ This migration is **not activated**. The existing local morning and evening sche
 
 `pnpm cloud:context pack` makes a private encrypted transfer in ignored `.cache/cloud-transfer/`. `pnpm cloud:context push --initialize` initializes the designated private operations repository. Subsequent `push` calls require the previously confirmed remote SHA and reject concurrent changes.
 
-In a fresh cloud checkout, after secret and GitHub setup:
+In a fresh cloud checkout, after secret and GitHub setup, enable Node 24's use of the managed environment proxy before running Node or pnpm commands:
 
 ```sh
+export NODE_USE_ENV_PROXY=1
 pnpm install --frozen-lockfile
 pnpm cloud:context pull
 ```
+
+Set `NODE_USE_ENV_PROXY=1` in every fresh cloud shell or command environment, including scheduled runs; a shell export only reaches that shell and its child processes. Node-based weather requests and `pnpm verify:live` need this initialization even when a separate HTTP client can connect successfully. Preserve the inherited proxy variables and CA trust settings; do not bypass the managed proxy or disable TLS verification. After changing the setting, retry with a fresh Node process.
 
 The pull authenticates the encrypted bundle, rejects unknown paths, credentials, raw-mail fields and symlinks, and restores only absent or byte-identical files. Existing different private files stop restoration for reconciliation. It writes the existing secret to the ignored security file only at runtime; build tools still use that file. Do not pass the password on a command line.
 
