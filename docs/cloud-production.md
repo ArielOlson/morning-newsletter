@@ -1,10 +1,12 @@
-# Cloud production migration
+# Cloud production migration — paused
 
 ## Current state
 
-Ariel approved cloud execution on November 19, 2026. The production requirement is a complete, live-verified edition before **05:00 America/New_York** each day, including daylight-saving changes. There is no 15-minute runtime requirement for cloud production. Keep all recommendation, coverage, privacy, history, durable-state and visual-review requirements.
+On November 24, 2026, Ariel requested a return to normal local production. **Local Mac production is primary; cloud migration is paused and was never activated.** Preserve the local evening preparation schedule at **20:10** and morning production at **04:10 America/New_York**, including daylight-saving changes. The Mac must be awake, online and running Codex with the required connections. Aim for live-verified publication before **05:00**; do not guarantee the deadline or promise operation while the Mac sleeps or with its lid closed. All recommendation, coverage, privacy, history, durable-state and visual-review requirements remain in force.
 
-This migration is **not activated**. The existing local morning and evening schedules remain the fallback until an actual cloud-only run passes. The published cloud environment has passed read-only GitHub, runtime-secret, encrypted-current/index/archive, operations-bundle, durable-state and bounded Google connection checks. Separate read-only tests inside the original three preference chats matched their latest user messages; these are manual access tests only. Ariel has since expanded required review to every Lifestyle chat. Folder-wide discovery, all required current-chat reviews, encrypted handoff, sufficient public-source HTTP access, unattended environment-bound scheduling and a full cloud-only publication remain unverified. Do not repeat completed repository/password setup, or describe access tests as complete scans or publication.
+Do not resume migration, start new cloud tasks or activate cloud schedules without a later explicit request from Ariel. Preserve existing cloud setup, credentials and repositories without deletion or rotation. The cloud-specific instructions below are inactive historical reference, not authorization to continue setup. Existing encrypted GitHub operations backups remain usable by the local workflow; keeping a backup does not activate cloud production.
+
+Ariel's earlier cloud approval was given on November 19. The prior migration record reports that the published cloud environment passed read-only GitHub, runtime-secret, encrypted-current/index/archive, operations-bundle, durable-state and bounded Google connection checks. Separate read-only tests inside the original three preference chats matched their latest user messages; these are manual access tests only. Ariel has since expanded required review to every Lifestyle chat. Folder-wide discovery, all required current-chat reviews, encrypted handoff, sufficient public-source HTTP access, unattended environment-bound scheduling and a full cloud-only publication remain unverified. Do not repeat completed repository/password setup, or describe access tests as complete scans or publication.
 
 ## Repositories and credentials
 
@@ -36,9 +38,9 @@ The allowlist preserves private calendar configuration/snapshots, connection ref
 
 After an actual completed phase, run `pnpm cloud:context push` to preserve working data. A new cloud checkout must restore the latest bundle. A persistent working copy must reconcile a changed remote SHA before continuing; never reset it to overwrite another worker. Pending upload confirmation is recoverable without treating an unconfirmed write as saved.
 
-## Cloud readiness gates
+## Cloud readiness gates (inactive reference)
 
-Verify from the cloud itself, with no local computer or remote-Mac tools:
+Only after Ariel explicitly requests resuming migration, verify from the cloud itself, with no local computer or remote-Mac tools:
 
 1. Node, pnpm, Git, authenticated GitHub access, internet research and a browser capable of actual mobile and desktop rendering.
 2. Read-only access to both authorized Gmail accounts and every configured calendar. Resolve account bindings from the current connection configuration and actual cloud account listings. Do not silently substitute one account or stop at two calendars.
@@ -47,11 +49,11 @@ Verify from the cloud itself, with no local computer or remote-Mac tools:
 5. A genuinely cloud-backed recurring scheduler with New York timezone. A local heartbeat targeting a cloud chat is not proof of unattended cloud scheduling.
 6. An end-to-end cloud-only edition: complete sources, all content quotas/cooldowns, original-photo and phone/desktop reviews, `pnpm build`, exact-commit Pages success and full `pnpm verify:live`.
 
-Do not activate the cloud schedule or retire the local fallback until these gates have actual evidence. A push alone is not publication success.
+Even after a later explicit request to resume, do not activate the cloud schedule or replace local production until these gates have actual evidence. Passing old setup checks alone never authorizes resuming the paused migration. A push alone is not publication success.
 
-## Planned schedule and deadline
+## Historical cloud schedule proposal (inactive)
 
-Retain evening preparation around 20:10 New York. Start the morning cloud work around **02:10 New York**, leaving room for full source checks, additional research when required, bounded retries, review and deployment before 05:00. Use the scheduler's supported timezone handling; do not hardcode one UTC offset all year. Record the actual next scheduled run before activating.
+The November 19 proposal kept evening preparation around 20:10 New York and started morning cloud work around **02:10 New York**, allowing time for checks, research, retries, review and deployment before 05:00. This is not the active local schedule; local morning production remains at **04:10**. If Ariel later requests resuming cloud migration, reconfirm the cloud schedule, use supported New York timezone handling rather than a fixed UTC offset, and record the actual next run before activation.
 
 The former 15-minute limit does not justify stopping useful overnight research. Reuse valid preparation and checkpoints; if preparation is missing, complete the ordinary full-refresh path while there is time. Never weaken evidence or publish an incomplete edition to meet the deadline. Avoid simultaneous publishers. Keep the last complete edition on a blocking failure and report the specific problem before the deadline when possible. Service failures and scheduler delays still prevent an absolute uptime guarantee.
 

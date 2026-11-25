@@ -2,6 +2,12 @@
 
 AGENTS.md contains the current requirements. This runbook changes execution, not coverage, privacy, editorial standards or publication gates. The daily agent still needs authorized connector tools, web research and visual inspection; Node scripts do not independently access Gmail, Calendar or chats. Keep all progress/evidence in ignored `.cache/` or private `config/*.local.json`. Never put credentials, raw messages, personal wishes or screenshots in source commits.
 
+## Current execution: local Mac (November 24, 2026)
+
+Ariel requested the normal local setup. Local Mac production is primary: keep evening preparation at **20:10** and morning production at **04:10 America/New_York**, adjusting for daylight saving. The Mac must be awake, online and running Codex with the required connections. Aim for complete, live-verified publication before **05:00**; sleep, access failures, throttling and deployment delays can prevent it. Do not promise operation while the Mac sleeps or with its lid closed, or guarantee the deadline.
+
+Cloud migration is paused and was never activated. Do not resume it, start new cloud tasks or activate cloud schedules without a later explicit request from Ariel. Preserve its existing setup, credentials and repositories as inactive reference in [cloud-production.md](cloud-production.md). All content, privacy, durable-state and publication requirements remain unchanged.
+
 ## Evening preparation: 8:10 p.m. New York
 
 The user approved preparing research ahead to target a morning run under 15 minutes. This moves work earlier; it does not promise fifteen minutes of total daily work or a cloud runner. Keep the existing four-calendar, two-account, privacy and publication requirements.

@@ -7,7 +7,13 @@ Ariel requires ALL saved user changes to synchronize across devices and survive 
 Use the encrypted state file in private `ArielOlson/morning-newsletter-state`, through the GitHub Contents API with a repository-limited fine-grained token entered by Ariel on each device. Never embed a token in public assets or copy the Mac's gh token into the site. Confirm each durable save before showing success; preserve drafts and old state on failures. Re-read the latest SHA and reapply only the intended mutation on conflicts. Keep deletion/undo tombstones so imports cannot resurrect older choices. Daily publication must never replace or reset this state repository. Verify clean-browser restoration and concurrent-device changes for state-related updates. Until Ariel connects a browser, legacy local data remains readable and new hosted saves require connection; do not claim sync is active on that device.
 
 
-This is the runbook for the existing Codex heartbeat at 4:10 a.m. America/New_York. Use current New York dates (Luxon is installed). Keep runs quiet on routine success. Ariel has authorized daily GitHub pushes and publication to the configured website. Do not send email, change mail labels, or edit calendar events.
+This is the runbook for the local Codex morning heartbeat at 4:10 a.m. America/New_York, supported by evening preparation at 8:10 p.m. Use current New York dates (Luxon is installed). Keep runs quiet on routine success. Ariel has authorized daily GitHub pushes and publication to the configured website. Do not send email, change mail labels, or edit calendar events.
+
+## Current execution: local Mac (November 24, 2026)
+
+Ariel requested the normal local setup. Local Mac production is primary: keep evening preparation at **20:10** and morning production at **04:10 America/New_York**, adjusting for daylight saving. The Mac must be awake, online and running Codex with the required connections. Aim for complete, live-verified publication before **05:00**; sleep, access failures, throttling and deployment delays can prevent it. Do not promise operation while the Mac sleeps or with its lid closed, or guarantee the deadline.
+
+Cloud migration is paused and was never activated. Do not resume it, start new cloud tasks or activate cloud schedules without a later explicit request from Ariel. Preserve its existing setup, credentials and repositories as inactive reference in [cloud-production.md](cloud-production.md). All content, privacy, durable-state and publication requirements remain unchanged.
 
 ## 1. Calendar
 
